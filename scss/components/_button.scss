@@ -1,0 +1,102 @@
+.button {
+  cursor: e-resize;
+
+  a {
+    @extend %sans-serif;
+    background-color: $text-color;
+    color: $pop-color;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: .5em .75em;
+    letter-spacing: 0.05em;
+    cursor: e-resize;
+    border-bottom: 0;
+  }
+
+  .arrow-geometry {
+    fill: $pop-color;
+  }
+
+  &:hover {
+    a {
+      color: $pop-color;
+    }
+    .button__arrow {
+      padding-left: 0.5rem;
+    }
+    .button--left.button__arrow {
+      padding-right: 0.5rem;
+      padding-left: 0rem;
+    }
+    .arrow-geometry {
+      fill: $pop-color;
+    }
+  }
+}
+
+.button__arrow {
+  transition: all 0.28s ease;
+  .arrow {
+    height: 0.6em;
+  }
+}
+
+.button--left svg {
+  transform: rotate(180deg) translate(0px, 1px);
+}
+
+.home-module__narrative {
+  .button a {
+    color: $pop-color;
+    border-bottom: 0;
+
+    &:hover {
+      color: $pop-color;
+    }
+  }
+  .arrow-geometry {
+    fill: $pop-color;
+  }
+}
+
+.home-module__list {
+  .button a {
+    color: $background-color;
+    border-bottom: 0;
+
+    &:hover {
+      color: $background-color;
+    } 
+  }
+  .arrow-geometry {
+    fill: $background-color;
+  }
+}
+
+.modal__star--left .modal__button,
+.modal__star--right .modal__button {
+  a:hover {
+    color: $background-color;
+    .arrow-geometry {
+      fill: $background-color;
+    }
+  }
+}
+
+.modal__star--left .modal__button {
+  a {
+    color: var(--pop-color-2);  
+  }
+  .arrow-geometry {
+    fill: var(--pop-color-2);
+  }
+}
+
+.modal__star--right .modal__button {
+  a {
+    color: var(--pop-color);  
+  }
+  .arrow-geometry {
+    fill: var(--pop-color);
+  }
+}

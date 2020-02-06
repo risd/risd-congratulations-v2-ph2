@@ -1,0 +1,60 @@
+{% set admissions_modal_url = 'https://admissions.risd.edu/portal/ugstatus' %}
+<section class="modal">
+  <div class="modal__content--desktop">
+    <div class="modal__star modal__star--left">
+      {% include "templates/partials/icons/modal-star-2--desktop.html" %}
+      <div class="modal__content">
+        <h3 class="modal__heading">Take required actions</h3>
+        <p class="modal__line-item"><span class="modal__pictogram">{% include "templates/partials/icons/modal--deposit--desktop.svg" %}</span><span class="modal__line-item-text">Make your deposit</span></p>
+        <p class="modal__line-item"><span class="modal__pictogram">{% include "templates/partials/icons/modal--housing--desktop.svg" %}</span><span class="modal__line-item-text">Review housing options</span></p>
+        <p class="modal__line-item"><span class="modal__pictogram">{% include "templates/partials/icons/modal--documents--desktop.svg" %}</span><span class="modal__line-item-text">Submit required documents</span></p>
+        <div class="modal__button button">
+          <a href="{{ admissions_modal_url }}" {{ openExternalLinkInNewWindow(admissions_modal_url) }}><span class="button__arrow button--left">{% include "templates/partials/icons/arrow--naked.html" %}</span>Log in</a>
+        </div>
+      </div>
+    </div>
+    <div class="modal__star modal__star--right">
+      <div class="modal__close" onclick="modal.dismiss()">
+        {% include "templates/partials/icons/modal--close--desktop.html" %}
+      </div>
+      {% include "templates/partials/icons/modal--star-3--desktop.html" %}
+      <div class="modal__content">
+        <h3 class="modal__heading">Plan for your first year</h3>
+        <p class="modal__line-item"><span class="modal__pictogram">{% include "templates/partials/icons/modal--campus--desktop.svg" %}</span><span class="modal__line-item-text">Learn about life on campus</span></p>
+        <p class="modal__line-item"><span class="modal__pictogram">{% include "templates/partials/icons/modal--dates--desktop.svg" %}</span><span class="modal__line-item-text">See key dates</span></p>
+        <p class="modal__line-item"><span class="modal__pictogram">{% include "templates/partials/icons/modal--events--desktop.svg" %}</span><span class="modal__line-item-text">Register for events</span></p>
+        <div class="modal__button button">
+          <a onclick="modal.dismiss()">Learn more<span class="button__arrow">{% include "templates/partials/icons/arrow--naked.html" %}</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal__content--mobile">
+    <div class="modal__star modal__star--top">
+      <div class="modal__close" onclick="modal.dismiss()">
+        {% include "templates/partials/icons/modal--close--mobile.html" %}
+      </div>
+      {% include "templates/partials/icons/modal--star-2--mobile.html" %}
+      <a class="modal__link" href="{{ admissions_modal_url }}" {{ openExternalLinkInNewWindow(admissions_modal_url) }}>
+        <div class="modal__content">
+          <h3 class="modal__heading">Take required actions</h3>
+          <div class="modal__arrow">
+            {% include "templates/partials/icons/arrow-knocked-out--left.svg" %}
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="modal__star modal__star--bottom">
+      {% include "templates/partials/icons/modal--star-3--mobile.html" %}
+      <a class="modal__link" onclick="modal.dismiss()">
+        <div class="modal__content">
+          <h3 class="modal__heading">Plan for your<br>first year</h3>
+          <div class="modal__arrow">
+            {% include "templates/partials/icons/arrow-knocked-out--right.svg" %}
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="modal__help"><p>Need more help?<br>Email us at <a href="mailto:welcome@risd.edu">welcome@risd.edu</a></p></div>
+</section>

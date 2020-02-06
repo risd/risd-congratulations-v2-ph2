@@ -1,4 +1,68 @@
-{# Simple search form, remove from search index #}
-<form action="/search-results/" method="get" data-search-index="false">
- <input type="text" name="q" placeholder="Search" id="tipue_search_input" />
-</form>
+{# Phase 1 - Enrollment #}
+{% if cms.phases.current_phase === "Enrollment" %}
+  {% set nav = cms.phase1primarynav %}
+  {% set sections = nav.phase_1__secondary_nav_items %}
+{# Phase 2 - Orientation #}
+{% elseif cms.phases.current_phase === "Orientation" %}
+  {% set nav = cms.phase2primarynav %}
+  {% set sections = nav.phase_2__secondary_nav_items %}
+{% endif %}
+
+{% set currentUrl = getCurrentUrl() %}
+
+{% set navItems = [{
+  text: 'Home',
+  url: '/',
+  className: 'main-nav__home-link',
+}] %}
+
+{% for section in sections %}
+  {% set activeSection = false %}
+  {% set subItems = [] %}
+
+  {% for page in section.universal__pages %}
+    {% set pageUrl = url(page) %}
+    {% set pageClassName = 'main-nav__page-link' %}
+    {% if currentUrl === pageUrl %}
+      {% set pageClassName = pageClassName + ' main-nav__page--active' %}
+      {% set activeSection = true %}
+    {% endif %}
+    {% set subItems = subItems.concat([{
+      text: page.name,
+      url: pageUrl,
+      className: pageClassName,
+    }]) %}
+  {% endfor %}
+  
+  {% set sectionClassName = 'main-nav__section-heading' %}
+  {% if activeSection === true %}
+    {% set sectionClassName = sectionClassName + ' main-nav__section--active' %}
+  {% endif %}
+  {% set navItems = navItems.concat([{
+    text: section.name,
+    className: sectionClassName,
+    subitems: subItems,
+  }]) %}
+{% endfor %}
+
+{% set usefulLinks = [] %}
+{% for usefulLink in nav.useful_links %}
+  {% set usefulLink.className = 'main-nav__useful-link' %}
+  {% set usefulLinks = usefulLinks.concat([usefulLink]) %}
+{% endfor %}
+
+{% if usefulLinks|size > 0 %}
+  {% set usefulLinksItem = {
+    text: nav.useful_links_text,
+    className: 'main-nav__useful-links-heading',
+    subitems: usefulLinks,
+  } %}
+  {% set navItems = navItems.concat([usefulLinksItem]) %}
+{% endif %}
+
+{% react "Nav" with {
+  siteTitle: "Welcome",
+  homepageUrl: "/",
+  hasSearch: false,
+  items: navItems
+} %}

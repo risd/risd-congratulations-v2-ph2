@@ -1,0 +1,25 @@
+.arrow {
+  height: 100%;
+  display: inline-block;
+  padding-left: 0.1em;
+  transition: all 0.2s ease;
+
+  path, polygon, circle {
+    transition: fill 0.2s ease;
+  }
+}
+
+.arrow--naked {
+
+}
+
+.arrow--clothed {
+  .arrow-geometry {
+    fill: $text-color;
+  }
+}
+
+.arrow--up-small {
+  width: 22px;
+  height: 28px; 
+}

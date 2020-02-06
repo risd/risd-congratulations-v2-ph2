@@ -2,6 +2,8 @@
   'use strict';
 })();
 
+const { components, ThemeProvider, themes } = require("@risd/ui");
+
 module.exports = function(grunt) {
 
   grunt.initConfig({
@@ -13,13 +15,13 @@ module.exports = function(grunt) {
         files: ['scss/**/*.scss'],
         tasks: ['sass',
           'autoprefixer',
-          'build-static'
+          'build-styles'
         ]
       },
       browserify: {
         files: ['script/src/**/*.js'],
         tasks: ['browserify:client',
-          'build-static'
+          'build-scripts'
         ]
       },
       concat: {
@@ -105,9 +107,16 @@ module.exports = function(grunt) {
      * available the swig instance used to compile templates.
      */
     swig: {
-      tags: [],
+      tags: [
+        require("@risd/webhook-react-tag")
+          .setComponents(components)
+          .setThemeProvider(ThemeProvider)
+          .setTheme(themes.congratulationsV2)
+      ],
       filters: [],
-      functions: [],
+      functions: [
+        'swig/open-external-link-in-new-window.js',
+      ],
     }
 
   });

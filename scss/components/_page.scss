@@ -1,3 +1,8 @@
+.page__wrapper {
+  margin-top: var(--nav-height);
+  width: 100%;
+}
+
 .section--full {
   width: 100%;
   box-sizing: border-box;
@@ -32,6 +37,37 @@
 
 .section--white {
   background-color: $background-color;
+}
+
+.section__link-list-wrapper {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.section__link-list {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+.section__link-list-item {
+  @extend %sans-serif;
+  font-weight: bold;
+  @include text-size($sans-l);
+}
+
+.section__link-list-item .arrow {
+  transform: scale(1.2) translateY(-1px);
+  margin-right: 0.6rem;
+
+  @include respond-above(medium) {
+    transform: scale(1.6) translateY(-2px);
+    margin-right: 1.0rem;
+  }
+}
+
+.section__link-list-item .arrow-geometry {
+  fill: var(--pop-color);
 }
 
 .page__hero-image {
@@ -175,7 +211,7 @@
 }
 
 .page__title-wrapper {
-  padding-top: calc(var(--nav-height) + 3rem);
+  padding-top: 3rem;
 }
 
 .page__title {

@@ -1,6 +1,9 @@
 {% set footer = cms.universalfooter %}
 
 <footer class="footer__container">
+  {% if hide_footer_nav === true %}
+    {# continue without rendering #}
+  {% else %}
   <div class="footer__sections">
     {# Phase 1 - Enrollment #}
     {% if cms.phases.current_phase === "Enrollment" %}
@@ -28,6 +31,7 @@
       {% endfor %}
     {% endif %}
   </div>
+  {% endif %}
   <div class="footer__final">
     <div class="footer__logo">
       {% set footer_url = 'https://www.risd.edu/' %}

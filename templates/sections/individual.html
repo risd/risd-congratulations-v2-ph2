@@ -1,5 +1,7 @@
 {% extends "templates/partials/base.html" %}
 
+{% set hide_footer_nav = true %}
+
 {% block title %}
   {% parent %}
   {% set site_title = [item.name, site_title]|join(' | ') %}

@@ -8,19 +8,18 @@
   {% set sections = nav.phase_2__secondary_nav_items %}
 {% endif %}
 
+{% set nav = cms.navigation %}
+{% set sections = nav.sections %}
+
 {% set currentUrl = getCurrentUrl() %}
 
-{% set navItems = [{
-  text: 'Home',
-  url: '/',
-  className: 'main-nav__home-link',
-}] %}
+{% set navItems = [] %}
 
 {% for section in sections %}
   {% set activeSection = false %}
   {% set subItems = [] %}
 
-  {% for page in section.universal__pages %}
+  {% for page in section.pages %}
     {% set pageUrl = url(page) %}
     {% set pageClassName = 'main-nav__page-link' %}
     {% if currentUrl === pageUrl %}

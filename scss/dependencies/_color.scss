@@ -12,6 +12,7 @@ $button-white: #FFFFFF;
 $button-light: #FBF5DB;
 $button-medium: #F2DD83;
 $button-dark: #EDC92D;
+$button-black: #000000;
 
 :root {
   --text-color: #{ $text-color };
@@ -23,4 +24,5 @@ $button-dark: #EDC92D;
   --button-light: #{ $button-light };
   --button-medium: #{ $button-medium };
   --button-dark: #{ $button-dark };
+  --button-black: #{ $button-black  };
 }

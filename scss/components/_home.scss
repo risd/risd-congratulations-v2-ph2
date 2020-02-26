@@ -1,6 +1,8 @@
 .home {
   display: flex;
   flex-wrap: wrap;
+
+  --block-padding: 2rem;
 }
 
 .home__hero {
@@ -61,7 +63,7 @@
 
 .home__hero-lockup-wrapper {
   text-align: center;
-  max-width: calc(100% - 2rem);
+  max-width: calc(100% - var(--block-padding));
 }
 
 .home__hero-lockup {
@@ -92,7 +94,7 @@
   &.button a {
     @extend %sans-serif;
     @include text-size($serif-l);
-    margin-top: 2rem;
+    margin-top: var(--block-padding);
     color: $text-color;
     background-color: $pop-color;
     padding: 0.3em 0.5em;
@@ -150,11 +152,239 @@
   }
 }
 
-.home-module--third {
-  flex-basis: 33%;
-  flex-grow: 1;
+// Statement
+.home-module__statement {
+  background-color: var(--pop-color);
+  padding: var(--block-padding);
+
+  p {
+    @extend %sans-serif;
+    @include text-size($modal-heading);
+    font-weight: bold; 
+  }
 }
 
+// Text Link
+.home-module__text-link {
+  display: flex;
+  align-items: flex-start;
+  align-content: center;
+  padding: var(--block-padding);
+  @extend %sans-serif;
+  @include text-size($sans-xl);
+  font-weight: bold;
+}
+
+.home-module__text-link a {
+  text-decoration: none;
+  border-bottom: none;
+  display: flex;
+}
+
+.home-module__text-link-text {
+  transition: color 0.2s ease;
+}
+
+.home-module__text-link-arrow {
+  margin-right: 1rem;
+
+  @include respond-above(medium) {
+    margin-right: 2rem;
+  }
+}
+
+.home-module__text-link .arrow {
+  transform: scale(1.6);
+
+  @include respond-above(medium) {
+    transform: scale(3);    
+  }
+}
+
+.home-module__background--white {
+  background-color: var(--button-white);
+  color: var(--button-black);
+
+  & a:hover,
+  & a:hover .home-module__text-link-text {
+    color: var(--button-dark);
+  }
+
+  & a:hover .arrow-geometry {
+    fill: var(--button-dark);
+  }
+}
+
+.home-module__background--light {
+  background-color: var(--button-light);
+  color: var(--button-black);
+
+  & a:hover,
+  & a:hover .home-module__text-link-text {
+    color: var(--button-dark);
+  }
+
+  & a:hover .arrow-geometry {
+    fill: var(--button-dark);
+  }
+}
+
+.home-module__background--medium {
+  background-color: var(--button-medium);
+  color: var(--button-black);
+
+  & a:hover,
+  & a:hover .home-module__text-link-text {
+    color: var(--button-white);
+  }
+
+  & a:hover .arrow-geometry {
+    fill: var(--button-white);
+  }
+}
+
+.home-module__background--dark {
+  background-color: var(--button-dark);
+  color: var(--button-black);
+
+  & a:hover,
+  & a:hover .home-module__text-link-text {
+    color: var(--button-white);
+  }
+
+  & a:hover .arrow-geometry {
+    fill: var(--button-white);
+  }
+}
+
+.home-module__background--black {
+  background-color: var(--button-black);
+  color: var(--button-dark);
+
+  & .home-module__text-link-text {
+    color: var(--button-dark);    
+  }
+
+  .arrow-geometry {
+    fill: var(--button-dark);
+  }
+
+  & a:hover,
+  & a:hover .home-module__text-link-text {
+    color: var(--button-white);
+  }
+
+  & a:hover .arrow-geometry {
+    fill: var(--button-white);
+  }
+}
+
+// Image Link
+.home-module__image-links {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.home-module__image-link {
+  display: flex;
+  flex-direction: column;
+  padding: var(--block-padding);
+  width: 100%;
+
+  @include respond-above(medium) {
+    width: 50%;
+  }
+}
+
+.home-module__image-link-link {
+  border: none;  
+}
+
+// .home-module__image-link-text {
+//   @extend %sans-serif;
+//   @include text-size($sans-m);
+//   font-weight: bold;
+// }
+
+.home-module__image-link:nth-child(1),
+.home-module__image-link:nth-child(4),
+.home-module__image-link:nth-child(5),
+.home-module__image-link:nth-child(8),
+.home-module__image-link:nth-child(9),
+.home-module__image-link:nth-child(12) {
+  background-color: var(--button-white);
+  color: var(--button-black);
+
+  & a:hover .home-module__image-link-text {
+    color: var(--button-dark);    
+  }
+}
+
+.home-module__image-link:nth-child(2),
+.home-module__image-link:nth-child(3),
+.home-module__image-link:nth-child(6),
+.home-module__image-link:nth-child(7),
+.home-module__image-link:nth-child(10),
+.home-module__image-link:nth-child(11) {
+  background-color: var(--button-dark);
+  color: var(--button-black);
+
+  & a:hover .home-module__image-link-text {
+    color: var(--button-white);    
+  }
+}
+
+// Videos
+.home-module__videos {
+  padding: var(--block-padding);
+  background-color: var(--button-light);
+}
+
+.home-module__videos-wrapper {
+  margin-top: var(--block-padding);
+}
+
+.home-module__videos-wrapper {
+  display: flex;
+}
+
+.home-module__videos-video {
+  width: 100%;
+
+  @include respond-above(medium) {
+    width: 50%;  
+  }
+}
+
+.home-module__videos-video:nth-child(odd) {
+  padding-right: var(--block-padding);
+}
+
+.home-module__videos-video:nth-child(even) {
+  padding-left: var(--block-padding);
+}
+
+.home-module__videos-video-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 0;
+  /* 9/16 = 0.5625, used for 16:9 videos
+     see aspect-ratio classes below for more options */
+  padding-bottom: 56.25%;
+  margin-bottom: 0.5rem;
+  clear: both;
+  float: left;
+
+  iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+}
 
 // Button
 
@@ -162,7 +392,7 @@
   flex-grow: 1;
   a {
     border-bottom: none;
-    padding: 2rem;
+    padding: var(--block-padding);
     display: block;
 
     &:hover {
@@ -264,7 +494,7 @@
 }
 
 .home-module__narrative-text {
-  padding: 2rem;
+  padding: var(--block-padding);
 }
 
 .home-module__narrative-title {
@@ -291,7 +521,7 @@
 
 .home-module__quote {
   background-color: var(--button-light);
-  padding: 2rem;
+  padding: var(--block-padding);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -313,7 +543,7 @@
 // List
 
 .home-module__list {
-  padding: 2rem;
+  padding: var(--block-padding);
   background-color: var(--button-medium);
   display: flex;
   flex-wrap: wrap;
@@ -347,7 +577,7 @@
 }
 
 .home-module__list-button {
-  margin-top: 2rem;
+  margin-top: var(--block-padding);
   a {
     display: inline-block;
   }
@@ -380,7 +610,7 @@
     @include respond-above(medium) {
       height: 8rem;
       width: 8rem;
-      margin: 0 2rem 2rem 2rem;
+      margin: 0 var(--block-padding) var(--block-padding) var(--block-padding);
     };
 
     &:hover {

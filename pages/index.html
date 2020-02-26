@@ -6,13 +6,7 @@
 
   {% include "templates/partials/modal--site-context.html" %}
 
-  {# Phase 1 - Enrollment #}
-  {% if cms.phases.current_phase === "Enrollment" %}
-    {% set home = cms.phase1home %}
-  {# Phase 2 - Orientation #}
-  {% elseif cms.phases.current_phase === "Orientation" %}
-    {% set home = cms.ph2home %}
-  {% endif %}
+  {% set home = cms.home %}
 
   <main class="page__wrapper">
 
@@ -59,7 +53,97 @@
       </div>
     </section>
 
+    {% set imageDimension = 600 %}
+
     <section class="section--full home">
+      {% if home.show_statement and home.statement %}
+      <div class="home-module home-module--full home-module__statement">
+        {{ home.statement|safe }}
+      </div>
+      {% endif %}
+  
+      {# --- text links 1 #}
+      {% for text_link in home.text_links_1 %}
+        {% include 'templates/partials/text-link.html' with { text_link: text_link } only %}
+      {% endfor %}
+
+      {# --- image links #}
+      {% for image_link in home.image_links %}
+        {% if loop.first %}
+        <div class="section--full home-module__image-links">
+        {% endif %}
+
+        {% if image_link.show_image_link %}
+          <div class="home-module home-module--half home-module__image-link">
+
+            {% if image_link.image_url %}
+             <a class="home-module__image-link-link" href="{{ image_link.image_url }}" {{ openExternalLinkInNewWindow(image_link.image_url) }} >
+            {% endif %}
+
+            {% if image_link.image %}
+            <img class="home-module__image-link-image" src="{{ image_link.image|imageSize(imageDimension) }}" alt="">
+            {% endif %}
+
+            {% if image_link.image_text %}
+              <h3 class="home-module__image-link-text">{{ image_link.image_text }}</h3>
+            {% endif %}
+
+            {% if image_link.image_url %}
+            </a>
+            {% endif %}
+
+          </div>
+        {% endif %}
+
+        {% if loop.last %}
+        </div>
+        {% endif %}
+      {% endfor %}
+
+      {% if home.show_videos and home.videos  %}
+        {% for video in home.videos %}
+          {% if loop.first %}
+          <div class="home-module--full home-module__videos">
+            {% if home.video_title %}
+              <h2 class="home-module__videos-title">{{ home.video_title }}</h2>
+            {% endif %}
+            <div class="home-module__videos-wrapper">
+          {% endif %}
+
+          {% if video.show_video %}
+            <div class="home-module__videos-video">
+              {% if video.video.html %}
+              <div class="home-module__videos-video-wrapper">
+                {{ video.video.html|safe }}  
+              </div>
+              {% endif %}
+              
+              {% if video.video_url %}
+              <a href="{{ video.video_url }}" {{ openExternalLinkInNewWindow(video.video_url) }}>
+              {% endif %}
+
+              {% if video.video_text %}
+                <h3 class="home-module__videos-title">{{ video.video_text }}</h3>
+              {% endif %}
+
+              {% if video.video_url %}
+              </a>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if loop.last %}
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {# --- text links 2 #}
+      {% for text_link in home.text_links_2 %}
+        {% include 'templates/partials/text-link.html' with { text_link: text_link } only %}
+      {% endfor %}
+
     {% for module in home.grid %}
       {% set sizeClass = module.size|lower %}
       {% if module.size === "Full" %}

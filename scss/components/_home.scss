@@ -159,8 +159,9 @@
 
   p {
     @extend %sans-serif;
-    @include text-size($modal-heading);
+    @include text-size($home-body-text);
     font-weight: bold; 
+    max-width: 30em;
   }
 }
 
@@ -306,7 +307,7 @@
   color: var(--button-black);
 
   & a:hover .home-module__image-link-text {
-    color: var(--button-dark);    
+    color: var(--button-dark);
   }
 }
 
@@ -340,13 +341,17 @@
   .home-module__image-link:nth-child(7),
   .home-module__image-link:nth-child(10),
   .home-module__image-link:nth-child(11) {
-    background-color: var(--button-dark);
+    background-color: var(--button-medium);
     color: var(--button-black);
 
     & a:hover .home-module__image-link-text {
       color: var(--button-white);    
     }
   } 
+}
+
+.home-module__image-link-text {
+  @include text-size($home-body-text);
 }
 
 // Videos
@@ -407,4 +412,8 @@
       width: 100%;
       height: 100%;
     }
+}
+
+.home-module__videos-title {
+  @include text-size($home-body-text);
 }

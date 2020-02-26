@@ -53,10 +53,13 @@
       </div>
     </section>
 
-    {% set imageDimension = 600 %}
+    {% set imageDimension = {
+      width: 1200,
+      height: 600,
+    } %}
 
     <section class="section--full home">
-      
+
       {% if home.show_statement and home.statement %}
       <div class="home-module home-module--full home-module__statement">
         {{ home.statement|safe }}
@@ -82,7 +85,7 @@
             {% endif %}
 
             {% if image_link.image %}
-            <img class="home-module__image-link-image" src="{{ image_link.image|imageSize(imageDimension) }}" alt="">
+            <img class="home-module__image-link-image" src="{{ image_link.image|imageCrop(imageDimension.width, imageDimension.height) }}" alt="">
             {% endif %}
 
             {% if image_link.image_text %}

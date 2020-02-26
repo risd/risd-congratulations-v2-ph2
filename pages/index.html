@@ -56,6 +56,7 @@
     {% set imageDimension = 600 %}
 
     <section class="section--full home">
+      
       {% if home.show_statement and home.statement %}
       <div class="home-module home-module--full home-module__statement">
         {{ home.statement|safe }}
@@ -143,87 +144,6 @@
       {% for text_link in home.text_links_2 %}
         {% include 'templates/partials/text-link.html' with { text_link: text_link } only %}
       {% endfor %}
-
-    {% for module in home.grid %}
-      {% set sizeClass = module.size|lower %}
-      {% if module.size === "Full" %}
-        {% set imageDimension = 1200 %}
-      {% elseif module.size === "Half" %}
-        {% set imageDimension = 600 %}
-      {% elseif module.size === "Third" %}
-        {% set imageDimension = 400 %}
-      {% endif %}
-      <div class="home-module home-module--{{ sizeClass }}">
-
-        {# Large button #}
-        {% if module.show_large_button === true %}
-          <h2 class="home-module__button home-module__button--{{ module.large_button_background_color|lower }}"><a href="{{ module.large_button_link }}" target="_self">{{ module.large_button_text }}<span class="home-module__button-toggle">{% include "templates/partials/icons/arrow--clothed.html" %}</span></a></h2>
-        {% endif %}
-
-        {# Narrative Moment #}
-        {% if module.show_narrative_moment === true %}
-        <div class="home-module__narrative">
-          {# Image #}
-          {% if module.narrative_image %}
-            <img class="home-module__narrative-image" src="{{ module.narrative_image|imageSize(imageDimension) }}" alt="">
-          {% endif %}
-          {# Video #}
-          {% if module.narrative_video %}
-            <div class="home-module__narrative-video">{{ module.narrative_video.html|safe }}</div>
-          {% endif %}
-          {# Text #}
-          <div class="home-module__narrative-text">
-            <h3 class="home-module__narrative-title">{{ module.narrative_title }}</h3>
-            <div class="home-module__narrative-description">{{ module.narrative_description|safe }}</div>
-            {# Link #}
-            {% if module.narrative_link_text %}
-              <div class="home-module__narrative-link button">
-                <a href="{{ module.narrative_link_url }}">{{ module.narrative_link_text }}<span class="button__arrow">{% include "templates/partials/icons/arrow--naked.html" %}</span></a>
-              </div>
-            {% endif %}
-          </div>
-
-        </div>
-        {% endif %}
-
-        {# Quotation #}
-        {% if module.show_quotation === true %}
-        <div class="home-module__quote">
-          {{ module.quotation_text|safe }}
-          <cite class="home-module__quote-citation">{{ module.quotation_citation }}</cite>
-        </div>
-        {% endif %}
-
-        {# Lists #}
-        {% if module.show_list === true %}
-        <div class="home-module__list">
-          <p class="home-module__list-text">
-            <span class="home-module__list-intro">{{ module.related_list.intro_line }}</span>
-            {% for person in module.related_list.list_items|slice(0, 20) %}
-              <a href="{{ person.link }}">{{ person.title }}</a>
-              {% if loop.last %}
-                <span class="home-module__list-more">…</span>
-              {% endif %}
-            {% endfor %}
-          </p>
-          <div class="home-module__list-button button">
-            <a href="{{ module.list_link_url }}">{{ module.list_link_text }}<span class="button__arrow">{% include "templates/partials/icons/arrow--naked.html" %}</span></a>
-          </div>
-        </div>
-        {% endif %}
-
-      </div>
-    {% endfor %}
-
-      {# Contact #}
-      {% if home.contact_link_text and home.contact_link_url %}
-      <div class="home-module home-module--full">
-        <div class="home-module__contact">
-          <p class="home-module__contact-link button"><a href="{{ home.contact_link_url }}">{{ home.contact_link_text }}<span class="button__arrow">{% include "templates/partials/icons/arrow--naked.html" %}</span></a></p>
-
-        </div>
-      </div>
-      {% endif %}
 
     </section>
 

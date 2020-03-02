@@ -72,7 +72,9 @@ div[class^='nav__Sidebar'] > ul {
 }
 
 [data-react-component='Nav'] ul li.main-nav__page--active > a {
-  color: $pop-color;
+  border-bottom: 2px solid var(--button-dark);
+  margin-bottom: 0.1rem;
+  padding-bottom: 0.15rem;
 }
 
 .main-nav__home-link {

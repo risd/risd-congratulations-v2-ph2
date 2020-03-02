@@ -123,11 +123,11 @@
               {% endif %}
               
               {% if video.video_url %}
-              <a href="{{ video.video_url }}" {{ openExternalLinkInNewWindow(video.video_url) }}>
+              <a class="home-module__video-link" href="{{ video.video_url }}" {{ openExternalLinkInNewWindow(video.video_url) }}>
               {% endif %}
 
               {% if video.video_text %}
-                <h3 class="home-module__videos-title">{{ video.video_text }}</h3>
+                <h3 class="home-module__video-title">{{ video.video_text }}</h3>
               {% endif %}
 
               {% if video.video_url %}

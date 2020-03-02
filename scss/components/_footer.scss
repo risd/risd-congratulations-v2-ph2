@@ -238,3 +238,13 @@
   @extend %sans-serif;
   color: $pop-color;
 }
+
+@include respond-below(small) {
+  .footer__title,
+  .footer__subtitle,
+  .footer__contact p,
+  .footer__social-link,
+  .footer__external-link {
+    @include text-size($footer-overrides);
+  }
+}

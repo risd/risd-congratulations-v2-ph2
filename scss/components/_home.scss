@@ -173,9 +173,6 @@
   align-items: flex-start;
   align-content: center;
   padding: var(--block-padding);
-  @extend %sans-serif;
-  @include text-size($sans-xl);
-  font-weight: bold;
 }
 
 .home-module__text-link a {
@@ -186,6 +183,13 @@
 
 .home-module__text-link-text {
   transition: color 0.2s ease;
+  @extend %sans-serif;
+  font-weight: bold;
+  @include text-size($home-body-text);
+
+  @include respond-above(medium) {
+    @include text-size($sans-xl);
+  }
 }
 
 .home-module__text-link-arrow {
@@ -418,4 +422,18 @@
 
 .home-module__videos-title {
   @include text-size($home-body-text);
+
+  @include respond-above(medium) {
+    @include text-size($sans-xl);
+    font-weight: bold;
+    letter-spacing: -0.04em;
+  }
+}
+
+.home-module__video-title {
+  @include text-size($home-body-text);
+}
+
+.home-module__video-link:hover .home-module__video-title {
+  color: var(--button-dark);
 }

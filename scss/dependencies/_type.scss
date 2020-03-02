@@ -182,7 +182,12 @@ $modal-heading: (
 );
 
 $home-body-text: (
-  base: (44px, 48px)
+  base: (24px, 26px),
+  medium: (36px, 39px)
+);
+
+$footer-overrides: (
+  base: (16px, 17.33px)
 );
 
 $modal-description: (

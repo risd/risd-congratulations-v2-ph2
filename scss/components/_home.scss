@@ -1,8 +1,10 @@
+:root {
+  --block-padding: 2rem;
+}
+
 .home {
   display: flex;
   flex-wrap: wrap;
-
-  --block-padding: 2rem;
 }
 
 .home__hero {
@@ -63,7 +65,7 @@
 
 .home__hero-lockup-wrapper {
   text-align: center;
-  max-width: calc(100% - var(--block-padding));
+  max-width: calc(100% - (2 * var(--block-padding)));
 }
 
 .home__hero-lockup {

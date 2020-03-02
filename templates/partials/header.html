@@ -16,7 +16,7 @@
 {% set navItems = [] %}
 
 {% for section in sections %}
-  {% set activeSection = false %}
+  {% set activePageInSection = false %}
   {% set subItems = [] %}
 
   {% for page in section.pages %}
@@ -24,7 +24,7 @@
     {% set pageClassName = 'main-nav__page-link' %}
     {% if currentUrl === pageUrl %}
       {% set pageClassName = pageClassName + ' main-nav__page--active' %}
-      {% set activeSection = true %}
+      {% set activePageInSection = true %}
     {% endif %}
     {% set subItems = subItems.concat([{
       text: page.name,
@@ -34,7 +34,8 @@
   {% endfor %}
   
   {% set sectionClassName = 'main-nav__section-heading' %}
-  {% if activeSection === true %}
+  {% set sectionUrl = url(section) %}
+  {% if currentUrl === sectionUrl %}
     {% set sectionClassName = sectionClassName + ' main-nav__section--active' %}
   {% endif %}
   {% set navItems = navItems.concat([{

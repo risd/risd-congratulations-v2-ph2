@@ -39,11 +39,11 @@
 }
 
 div[class^='nav__Sidebar'] {
-  width: 16rem;
+  width: 100vw;
+  max-width: 100vw;
 
   @include respond-above(medium) {
     width: 32rem;
-    max-width: 100vw;
   }
 
   @include respond-above(medium) {
@@ -66,15 +66,12 @@ div[class^='nav__Sidebar'] > ul {
 [data-react-component='Nav'] ul li > a,
 [data-react-component='Nav'] ul li.main-nav__page--active > a {
   &:hover {
-    text-decoration: none;
     color: $pop-color;
   }
 }
 
 [data-react-component='Nav'] ul li.main-nav__page--active > a {
-  border-bottom: 2px solid var(--button-dark);
-  margin-bottom: 0.1rem;
-  padding-bottom: 0.15rem;
+  text-decoration: underline;
 }
 
 .main-nav__home-link {
@@ -103,14 +100,19 @@ div[class^='nav__Sidebar'] > ul {
 
 .main-nav__section-heading span span a {
   color: var(--pop-color);
+  text-decoration: none;
 
   &:hover {
-    text-decoration: none;
+    text-decoration: underline;
   }
 }
 
-.main-nav__section-heading {
+.main-nav__section-heading.main-nav__section--active span span a {
+  text-decoration: underline;
 
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .main-nav__section-heading ul li.main-nav__page-link {

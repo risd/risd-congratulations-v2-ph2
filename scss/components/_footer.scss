@@ -172,6 +172,10 @@
   }
 }
 
+.footer__section-container:first-child .footer__title {
+  margin-top: 0;
+}
+
 .footer__title {
   color: $text-color;
   @extend %sans-serif;
@@ -221,7 +225,6 @@
 
 .footer__external-links ul {
   list-style: none;
-  padding-top: 0.5rem;
 }
 
 .footer__external-links .footer__title {

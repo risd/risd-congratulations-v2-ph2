@@ -11,10 +11,14 @@
 
   <main class="page__wrapper">
 
-    {% if item.hero_image %}
+    {% if item.hero_image or item.mobile_hero_image %}
     <section class="section--full page__hero">
+      {% if item.hero_image %}
       <div class="page__hero--desktop" style="background-image: url({{ item.hero_image|imageSize(1200) }})"></div>
-      <img src="{{ item.hero_image|imageSize(1200) }}" alt="" class="page__hero--mobile">
+      {% endif %}
+      {% if item.mobile_hero_image %}
+        <img src="{{ item.mobile_hero_image|imageSize(600) }}" alt="" class="page__hero--mobile">
+      {% endif %}
     </section>
     {% endif %}
 

@@ -358,6 +358,7 @@
 
 .home-module__image-link-text {
   @include text-size($home-body-text);
+  padding-top: 0.5rem;
 }
 
 // Videos
@@ -422,11 +423,13 @@
 
 .home-module__videos-title {
   @include text-size($home-body-text);
+  text-transform: uppercase;
 
   @include respond-above(medium) {
     @include text-size($sans-xl);
     font-weight: bold;
     letter-spacing: -0.04em;
+    text-transform: none;
   }
 }
 

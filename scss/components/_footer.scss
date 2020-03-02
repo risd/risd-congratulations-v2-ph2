@@ -146,7 +146,7 @@
   flex-basis: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 2rem;
+  padding: 0 2rem 2rem 2rem;
   text-algin: center;
 
   @include respond-above(small) {
@@ -170,10 +170,6 @@
   @include respond-above(large) {
     flex-basis: 20%;
   }
-}
-
-.footer__section-container:first-child .footer__title {
-  margin-top: 0;
 }
 
 .footer__title {
@@ -225,6 +221,7 @@
 
 .footer__external-links ul {
   list-style: none;
+  // padding-top: 0.5rem;
 }
 
 .footer__external-links .footer__title {

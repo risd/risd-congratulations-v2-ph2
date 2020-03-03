@@ -172,6 +172,7 @@
   display: flex;
   align-items: flex-start;
   align-content: center;
+  align-items: center;
   padding: var(--block-padding);
 }
 
@@ -179,6 +180,7 @@
   text-decoration: none;
   border-bottom: none;
   display: flex;
+  align-items: center;
 }
 
 .home-module__text-link-text {

@@ -38,8 +38,12 @@
             {% endif %}
           </h3>
         {% endif %}
-
-        <div class="calendar__item">
+        
+        {% set calendarItemClasses = "calendar__item" %}
+        {% if date.show_description_on_load === true %}
+          {% set calendarItemClasses = calendarItemClasses + " toggled" %}
+        {% endif %}
+        <div class="{{ calendarItemClasses }}">
           {% if date.end_date %}
             <div class="calendar__dates">
               <div class="calendar__date">

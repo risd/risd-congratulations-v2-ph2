@@ -84611,7 +84611,8 @@ if (modal && modal.emitter) {
       galleries[0].resume();
     }
   });
-  modal.show(true);
+  var forceShowModal = false;
+  modal.show(forceShowModal);
 } // var exampleModule = require('./exampleModule.js')();
 // var stickyNav = require('./stickyNav.js')();
 // var mobileMenuToggle = require('./mobileMenuToggle.js')();

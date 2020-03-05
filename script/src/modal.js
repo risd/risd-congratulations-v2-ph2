@@ -43,7 +43,7 @@ function Modal () {
 
   function show ( force ) {
     var dismissed = window.localStorage.getItem( dismissedKey )
-
+    
     // determine whether to show modal or not
     var showModal = false;
     // do not show if previously dismissed

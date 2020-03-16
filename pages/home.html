@@ -29,6 +29,26 @@
         {{ cms.home.last_updated|date('F d Y') }}
       </li>
       <li>
+        <strong>Global Notification: </strong>
+        {{ cms.home.global_notification }}
+      </li>
+      <li>
+        <strong>Notification Active: </strong>
+        {{ cms.home.notification_active }}
+      </li>
+      <li>
+        <strong>Notification: </strong>
+        {{ cms.home.notification|safe }}
+      </li>
+      <li>
+        <strong>Notification Background Color: </strong>
+        {{ cms.home.notification_background_color }}
+      </li>
+      <li>
+        <strong>Notification Text Color: </strong>
+        {{ cms.home.notification_text_color }}
+      </li>
+      <li>
         <strong>Hero Carousel Images: </strong>
         {# Loop of your Repeatable Form items. Remember, you can sort the order in your CMS if you need. #}
         <ul>

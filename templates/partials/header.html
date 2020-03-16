@@ -1,12 +1,12 @@
-{# Phase 1 - Enrollment #}
-{% if cms.phases.current_phase === "Enrollment" %}
-  {% set nav = cms.phase1primarynav %}
-  {% set sections = nav.phase_1__secondary_nav_items %}
-{# Phase 2 - Orientation #}
-{% elseif cms.phases.current_phase === "Orientation" %}
-  {% set nav = cms.phase2primarynav %}
-  {% set sections = nav.phase_2__secondary_nav_items %}
-{% endif %}
+{% set notification = {
+    active: cms.home.notification_active,
+    notification: cms.home.notification,
+    background_color: cms.home.notification_background_color,
+    text_color: cms.home.notification_text_color,
+  }
+%}
+
+{% include 'node_modules/@risd/component-notification/template.swig' with notification only %}
 
 {% set nav = cms.navigation %}
 {% set sections = nav.sections %}

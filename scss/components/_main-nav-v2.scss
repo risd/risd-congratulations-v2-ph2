@@ -2,6 +2,10 @@
   display: none;
 }
 
+body.notification--is-opened [data-react-component='Nav'] header {
+  top: var(--notification-height);
+}
+
 [data-react-component='Nav'] a {
   font-weight: bold;
 }

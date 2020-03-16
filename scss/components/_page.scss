@@ -3,6 +3,10 @@
   width: 100%;
 }
 
+body.notification--is-opened .page__wrapper {
+  margin-top: calc(var(--notification-height) + var(--nav-height));
+}
+
 .section--full {
   width: 100%;
   box-sizing: border-box;

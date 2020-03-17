@@ -54,9 +54,34 @@ body.modal--showing .modal {
   margin: 0 auto;
   text-align: center;
   padding-top: 8em;
+  width: 100vw;
 
   @include respond-above(large) {
     display: none;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .modal__content--mobile {
+    // screens that can not fit the svg at 100% size
+    transform: scale(0.9);
+  }
+}
+
+@media screen and (max-width: 321px) {
+  .modal__content--mobile {
+    // screens that can not fit the svg at 100% size
+    transform: scale(0.9);
+  }
+}
+
+@include respond-below(small) {
+  .modal__content--mobile .modal__star {
+    display: flex;
+  }
+
+  .modal__content--mobile svg {
+     width: 100%;
   }
 }
 
@@ -137,8 +162,27 @@ body.modal--showing .modal {
 .modal__content {
   position: absolute;
   top: 130px;
-  left: 100px;
+  left: 80px;
   width: 50%;
+}
+
+.modal__star--bottom .modal__content {
+  top: 100px;
+}
+
+@media screen and (min-width: 321px) and (max-width: 400px) {
+  .modal__star--bottom .modal__content {
+    top: 120px;
+  }  
+}
+
+@media screen and (min-width: 401px) and (max-width: 1024px) {
+  .modal__content--mobile .modal__content {
+    left: 97px;
+  }
+  .modal__star--bottom .modal__content {
+    top: 130px;
+  }  
 }
 
 .modal__content--desktop .modal__content {
@@ -165,7 +209,7 @@ body.modal--showing .modal {
 .modal__close {
   position: absolute;
   right: 0rem;
-  top: 2.7rem;
+  top: 3.7rem;
   cursor: pointer;
   z-index: 3;
 }
@@ -173,6 +217,10 @@ body.modal--showing .modal {
 .modal__content--desktop .modal__close {
   top: 0;
   right: 0;
+}
+
+.modal__close svg {
+  width: auto;
 }
 
 .modal__button {

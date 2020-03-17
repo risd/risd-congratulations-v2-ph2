@@ -6,15 +6,9 @@
 
   {% include "templates/partials/modal--site-context.html" %}
 
-  {# Phase 1 - Enrollment #}
-  {% if cms.phases.current_phase === "Enrollment" %}
-    {% set home = cms.phase1home %}
-  {# Phase 2 - Orientation #}
-  {% elseif cms.phases.current_phase === "Orientation" %}
-    {% set home = cms.ph2home %}
-  {% endif %}
+  {% set home = cms.home %}
 
-  <main>
+  <main class="page__wrapper">
 
     {# Poster Moment Gallery Specification --- Start #}
 
@@ -59,87 +53,100 @@
       </div>
     </section>
 
+    {% set imageDimension = {
+      width: 1200,
+      height: 600,
+    } %}
+
     <section class="section--full home">
-    {% for module in home.grid %}
-      {% set sizeClass = module.size|lower %}
-      {% if module.size === "Full" %}
-        {% set imageDimension = 1200 %}
-      {% elseif module.size === "Half" %}
-        {% set imageDimension = 600 %}
-      {% elseif module.size === "Third" %}
-        {% set imageDimension = 400 %}
-      {% endif %}
-      <div class="home-module home-module--{{ sizeClass }}">
 
-        {# Large button #}
-        {% if module.show_large_button === true %}
-          <h2 class="home-module__button home-module__button--{{ module.large_button_background_color|lower }}"><a href="{{ module.large_button_link }}" target="_self">{{ module.large_button_text }}<span class="home-module__button-toggle">{% include "templates/partials/icons/arrow--clothed.html" %}</span></a></h2>
+      {% if home.show_statement and home.statement %}
+      <div class="home-module home-module--full home-module__statement">
+        {{ home.statement|safe }}
+      </div>
+      {% endif %}
+  
+      {# --- text links 1 #}
+      {% for text_link in home.text_links_1 %}
+        {% include 'templates/partials/text-link.html' with { text_link: text_link } only %}
+      {% endfor %}
+
+      {# --- image links #}
+      {% for image_link in home.image_links %}
+        {% if loop.first %}
+        <div class="section--full home-module__image-links">
         {% endif %}
 
-        {# Narrative Moment #}
-        {% if module.show_narrative_moment === true %}
-        <div class="home-module__narrative">
-          {# Image #}
-          {% if module.narrative_image %}
-            <img class="home-module__narrative-image" src="{{ module.narrative_image|imageSize(imageDimension) }}" alt="">
-          {% endif %}
-          {# Video #}
-          {% if module.narrative_video %}
-            <div class="home-module__narrative-video">{{ module.narrative_video.html|safe }}</div>
-          {% endif %}
-          {# Text #}
-          <div class="home-module__narrative-text">
-            <h3 class="home-module__narrative-title">{{ module.narrative_title }}</h3>
-            <div class="home-module__narrative-description">{{ module.narrative_description|safe }}</div>
-            {# Link #}
-            {% if module.narrative_link_text %}
-              <div class="home-module__narrative-link button">
-                <a href="{{ module.narrative_link_url }}">{{ module.narrative_link_text }}<span class="button__arrow">{% include "templates/partials/icons/arrow--naked.html" %}</span></a>
-              </div>
+        {% if image_link.show_image_link %}
+          <div class="home-module home-module--half home-module__image-link">
+
+            {% if image_link.image_url %}
+             <a class="home-module__image-link-link" href="{{ image_link.image_url }}" {{ openExternalLinkInNewWindow(image_link.image_url) }} >
             {% endif %}
+
+            {% if image_link.image %}
+            <img class="home-module__image-link-image" src="{{ image_link.image|imageSize(imageDimension.width) }}" alt="">
+            {% endif %}
+
+            {% if image_link.image_text %}
+              <h3 class="home-module__image-link-text">{{ image_link.image_text }}</h3>
+            {% endif %}
+
+            {% if image_link.image_url %}
+            </a>
+            {% endif %}
+
           </div>
-
-        </div>
         {% endif %}
 
-        {# Quotation #}
-        {% if module.show_quotation === true %}
-        <div class="home-module__quote">
-          {{ module.quotation_text|safe }}
-          <cite class="home-module__quote-citation">{{ module.quotation_citation }}</cite>
+        {% if loop.last %}
         </div>
         {% endif %}
+      {% endfor %}
 
-        {# Lists #}
-        {% if module.show_list === true %}
-        <div class="home-module__list">
-          <p class="home-module__list-text">
-            <span class="home-module__list-intro">{{ module.related_list.intro_line }}</span>
-            {% for person in module.related_list.list_items|slice(0, 20) %}
-              <a href="{{ person.link }}">{{ person.title }}</a>
-              {% if loop.last %}
-                <span class="home-module__list-more">…</span>
+      {% if home.show_videos and home.videos  %}
+        {% for video in home.videos %}
+          {% if loop.first %}
+          <div class="home-module--full home-module__videos">
+            {% if home.video_title %}
+              <h2 class="home-module__videos-title">{{ home.video_title }}</h2>
+            {% endif %}
+            <div class="home-module__videos-wrapper">
+          {% endif %}
+
+          {% if video.show_video %}
+            <div class="home-module__videos-video">
+              {% if video.video.html %}
+              <div class="home-module__videos-video-wrapper">
+                {{ video.video.html|safe }}  
+              </div>
               {% endif %}
-            {% endfor %}
-          </p>
-          <div class="home-module__list-button button">
-            <a href="{{ module.list_link_url }}">{{ module.list_link_text }}<span class="button__arrow">{% include "templates/partials/icons/arrow--naked.html" %}</span></a>
+              
+              {% if video.video_url %}
+              <a class="home-module__video-link" href="{{ video.video_url }}" {{ openExternalLinkInNewWindow(video.video_url) }}>
+              {% endif %}
+
+              {% if video.video_text %}
+                <h3 class="home-module__video-title">{{ video.video_text }}</h3>
+              {% endif %}
+
+              {% if video.video_url %}
+              </a>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if loop.last %}
+            </div>
           </div>
-        </div>
-        {% endif %}
-
-      </div>
-    {% endfor %}
-
-      {# Contact #}
-      {% if home.contact_link_text and home.contact_link_url %}
-      <div class="home-module home-module--full">
-        <div class="home-module__contact">
-          <p class="home-module__contact-link button"><a href="{{ home.contact_link_url }}">{{ home.contact_link_text }}<span class="button__arrow">{% include "templates/partials/icons/arrow--naked.html" %}</span></a></p>
-
-        </div>
-      </div>
+          {% endif %}
+        {% endfor %}
       {% endif %}
+
+      {# --- text links 2 #}
+      {% for text_link in home.text_links_2 %}
+        {% include 'templates/partials/text-link.html' with { text_link: text_link } only %}
+      {% endfor %}
 
     </section>
 

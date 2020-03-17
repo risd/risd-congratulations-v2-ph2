@@ -146,7 +146,7 @@
   flex-basis: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 2rem;
+  padding: 0 2rem 2rem 2rem;
   text-algin: center;
 
   @include respond-above(small) {
@@ -179,6 +179,10 @@
   margin-top: 2rem;
   margin-bottom: 1rem;
   text-transform: uppercase;
+  
+  & a:hover {
+    color: var(--background-color);
+  }
 }
 
 .footer__pages {
@@ -217,7 +221,7 @@
 
 .footer__external-links ul {
   list-style: none;
-  padding-top: 0.5rem;
+  // padding-top: 0.5rem;
 }
 
 .footer__external-links .footer__title {
@@ -233,4 +237,14 @@
 .footer__external-link a {
   @extend %sans-serif;
   color: $pop-color;
+}
+
+@include respond-below(small) {
+  .footer__title,
+  .footer__subtitle,
+  .footer__contact p,
+  .footer__social-link,
+  .footer__external-link {
+    @include text-size($footer-overrides);
+  }
 }

@@ -34,7 +34,8 @@ if ( modal && modal.emitter ) {
     }
   } )
 
-  modal.show( true ) 
+  var forceShowModal = false
+  modal.show( forceShowModal )
 }
 
 // var exampleModule = require('./exampleModule.js')();

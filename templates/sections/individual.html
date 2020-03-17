@@ -1,0 +1,55 @@
+{% extends "templates/partials/base.html" %}
+
+{% set hide_footer_nav = true %}
+
+{% block title %}
+  {% parent %}
+  {% set site_title = [item.name, site_title]|join(' | ') %}
+{% endblock %}
+
+{% block content %}
+
+  <main class="page__wrapper">
+
+    {% if item.hero_image or item.mobile_hero_image %}
+    <section class="section--full page__hero">
+      {% if item.hero_image %}
+      <div class="page__hero--desktop" style="background-image: url({{ item.hero_image|imageSize(1200) }})"></div>
+      {% endif %}
+      {% if item.mobile_hero_image %}
+        <img src="{{ item.mobile_hero_image|imageSize(600) }}" alt="" class="page__hero--mobile">
+      {% endif %}
+    </section>
+    {% endif %}
+
+    <section class="section--full">
+      <div class="section__content--contained page__title-wrapper">
+        <h2 class="page__title">{{ item.name }}</h2>
+      </div>
+    </section>
+
+    {% for page in item.pages %}
+      {% if loop.first %}
+        <section class="section--full">
+          <div class="section__content--contained section__link-list-wrapper">
+            <ul class="section__link-list">
+      {% endif %}
+
+        <li class="section__link-list-item">
+          <span class="section__link-list-icon">
+            {% include 'templates/partials/icons/arrow--naked.html' %}
+          </span>
+          <span class="section__link-list-text">
+            <a href="{{ url(page) }}">{{ page.name }}</a>
+          </span>
+        </li>
+
+      {% if loop.last %}
+            </ul>
+          </div>
+        </section>
+      {% endif %}
+    {% endfor %}
+
+  </main> <!-- .page__wrapper closes -->
+{% endblock %}

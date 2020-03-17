@@ -1,0 +1,21 @@
+{% if text_link.show_text_link %}
+  {% set backgroundColor = text_link.text_link_color.toLowerCase() %}
+
+  <div class="home-module home-module--full home-module__text-link home-module__background--{{ backgroundColor }}">
+    {% if text_link.text_link_url %}
+    <a href="{{ text_link.text_link_url }}" {{ openExternalLinkInNewWindow(text_link.text_link_url) }}>
+    {% endif %}
+
+    <span class="home-module__text-link-arrow">
+      {% include 'templates/partials/icons/arrow--naked.html' %}
+    </span>
+    <h2 class="home-module__text-link-text">
+      {{ text_link.text_link }}
+    </h2>
+
+    {% if text_link.text_link_url %}
+    </a>
+    {% endif %}
+
+  </div>
+{% endif %}

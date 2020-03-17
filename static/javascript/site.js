@@ -84611,7 +84611,8 @@ if (modal && modal.emitter) {
       galleries[0].resume();
     }
   });
-  modal.show(true);
+  var forceShowModal = false;
+  modal.show(forceShowModal);
 } // var exampleModule = require('./exampleModule.js')();
 // var stickyNav = require('./stickyNav.js')();
 // var mobileMenuToggle = require('./mobileMenuToggle.js')();
@@ -84911,8 +84912,12 @@ function MainNav() {
     return new MainNav();
   }
 
-  var headingsspoS = Headings();
+  var headings = Headings();
   var externalLinks = ExternalLinks();
+  return {
+    headings: headings,
+    externalLinks: externalLinks
+  };
 }
 
 function Headings() {
@@ -84927,52 +84932,16 @@ function Headings() {
   return {};
 
   function init() {
-    appendToogleButton();
-    addToggleListeners();
+    addLinksToHeadings();
   }
 
-  function appendToogleButton() {
-    $(".".concat(classes.root)).each(function (index, heading) {
-      var $heading = $(heading); // this svg is a duplicate of /templates/partials/icons/arrow--up-small.svg
-
-      $heading.append("<span class=\"".concat(classes.toggle, "\">\n            <svg viewBox=\"30 20 50 50\" class=\"arrow--up-small\">\n              <path class=\"toggle-geometry\" d=\"M47.2,61.4L34.9,49.2c-1.4-1.4-1.4-3.9,0-5.4c1.5-1.4,4-1.4,5.4,0l9.5,9.5l9.4-9.5c1.5-1.4,3.9-1.4,5.4,0 c1.4,1.5,1.4,4,0,5.4L52.6,61.4c-0.7,0.7-1.8,1.2-2.7,1.2C48.8,62.6,47.9,62.1,47.2,61.4z\"/>\n            </svg>\n          </span>"));
+  function addLinksToHeadings() {
+    $(".".concat(classes.root, " span span")).replaceWith(function () {
+      var $span = $(this);
+      var text = $span.text();
+      var textSlug = text.toLowerCase().replace(/ /g, '-');
+      return "\n          <span>\n            <a href=\"/".concat(textSlug, "/\">").concat(text, "</a>\n          </span>");
     });
-  }
-
-  function addToggleListeners() {
-    $(".".concat(classes.root)).on('click', toggleOpened);
-
-    function toggleOpened(event) {
-      var $clicked = $(event.target);
-
-      if ($clicked.hasClass(classes.link) || $clicked.parent().hasClass(classes.link)) {
-        // clicking a link, no need to change the display
-        return;
-      } else if ($clicked.hasClass(classes.root)) {
-        var $heading = $clicked;
-      } else {
-        var $heading = $clicked.closest(".".concat(classes.root));
-      } // var currentKey = $heading.attr( 'key' )
-      // closeOthers( currentKey )
-
-
-      if ($heading.hasClass(classes.opened)) {
-        $heading.removeClass(classes.opened);
-      } else {
-        $heading.addClass(classes.opened);
-      }
-    }
-
-    function closeOthers(currentKey) {
-      $(".".concat(classes.root)).each(function (index, heading) {
-        var $heading = $(heading);
-        var headingKey = $heading.attr('key');
-
-        if (currentKey !== headingKey) {
-          $heading.removeClass(classes.opened);
-        }
-      });
-    }
   }
 }
 
@@ -84990,8 +84959,9 @@ function ExternalLinks() {
 
   function appendExternalLinkIcon() {
     $(".".concat(classes.link)).each(function (index, link) {
-      var $link = $(link);
-      $link.children('a').append("<span class=\"".concat(classes.icon, "\">\n          <svg viewBox=\"10 10 60 60\">\n            <path class=\"external-geometry\" d=\"M68.2,55.2L56,67.4c-1.4,1.4-3.9,1.4-5.4,0c-1.4-1.5-1.4-4,0-5.4l5.7-5.7H35.8c-2.1,0-3.8-1.8-3.8-3.8\n              c0-2.2,1.8-3.8,3.8-3.8h20.4L50.6,43c-1.4-1.5-1.4-3.9,0-5.4c1.5-1.4,4-1.4,5.4,0l12.2,12.2c0.7,0.7,1.2,1.8,1.2,2.7\n              C69.4,53.5,68.9,54.4,68.2,55.2z\"/>\n          </svg>\n        </span>"));
+      var $link = $(link); // this svg is a duplicate of /templates/partials/icons/arrow--naked.svg
+
+      $link.children('a').prepend("<span class=\"".concat(classes.icon, "\">\n          <svg class=\"arrow arrow--naked\" width=\"16px\" height=\"13px\" viewBox=\"0 0 16 13\">\n            <title>arrow naked</title>\n            <path d=\"M9.47789 5.2828L0.903218 5.28279L0.903216 8.14102L9.47789 8.14102L4.61891 13L8.90624 13L15.1943 6.71191L8.90625 0.423814L4.61891 0.423814L9.47789 5.2828Z\" class=\"arrow-geometry\" />\n          </svg>\n        </span>"));
     });
   }
 }
@@ -85015,9 +84985,9 @@ function Modal() {
   }
 
   var emitter = new EventEmitter();
-  var dismissedKey = 'modal-dismissed';
   var showingClassName = 'modal--showing';
   var animateInClassName = 'animate-in';
+  var toggler = Toggler();
   var selectors = {
     root: '.modal',
     left: '.modal__star--left',
@@ -85041,22 +85011,8 @@ function Modal() {
   };
 
   function show(force) {
-    var dismissed = window.localStorage.getItem(dismissedKey); // determine whether to show modal or not
-
-    var showModal = false; // do not show if previously dismissed
-
-    if (dismissed === "true") showModal = false; // do not show if coming from admissions site
-
-    if (document.referrer === "https://admissions.risd.edu/") showModal = false; // do not show if coming from same site
-
-    if (document.referrer.indexOf(window.location.host)) {
-      showModal = false;
-      console.log('samesies');
-    } // show if forced
-
-
-    if (force === true) showModal = true;
-    if (showModal === false) return;
+    var toShow = toggler.tryShow(force);
+    if (toShow === false) return;
     emitter.emit('show'); // show the modal
 
     document.body.classList.add(showingClassName); // position modal elements to be animated in if they haven't already
@@ -85104,9 +85060,61 @@ function Modal() {
     function completeDismissModal() {
       $selectors.root.off('transitionend', completeDismissModal);
       document.body.classList.remove(showingClassName);
-      window.localStorage.setItem(dismissedKey, "true");
+      toggler.dismiss();
       emitter.emit('dismiss');
     }
+  }
+}
+
+function Toggler() {
+  var dismissedKey = 'modal-dismissed';
+  return {
+    tryShow: tryShow,
+    dismiss: dismiss
+  };
+
+  function tryShow(force) {
+    var dismissed = window.localStorage.getItem(dismissedKey); // determine whether to show modal or not
+
+    var showModal = true; // do not show if previously dismissed
+    // - turned off to make room for time based dismissal
+    // if ( dismissed === "true" ) showModal = false;
+    // do not show if coming from admissions site
+
+    if (document.referrer === "https://admissions.risd.edu/") showModal = false; // do not show if coming from same site
+    // - turned off for now, because manually typing the URL gives you 
+    //   the same host
+    // if ( document.referrer.indexOf( window.location.host ) ) { showModal = false; console.log('samesies')}
+    // show if forced
+
+    if (Number.isInteger(Number(dismissed))) {
+      var lastDismissed = Number(dismissed);
+      var now = timeInMilliSeconds();
+      var sinceDismissed = now - lastDismissed;
+      var sessionTime = 30 * 1000 * 60;
+      /* 30 minutes in milliseconds */
+
+      if (sinceDismissed > sessionTime) {
+        // show if the time that has elapsed since being dismissed
+        // is longer than a single session time
+        showModal = true;
+      } else {
+        showModal = false;
+      }
+    }
+
+    if (force === true) showModal = true;
+    return showModal;
+  }
+
+  function dismiss() {
+    var dismissedTime = timeInMilliSeconds();
+    window.localStorage.setItem(dismissedKey, dismissedTime);
+  }
+
+  function timeInMilliSeconds(date) {
+    if (!date) date = new Date();
+    return date.getTime();
   }
 }
 

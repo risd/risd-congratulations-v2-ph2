@@ -15,8 +15,10 @@ function MainNav() {
   if (!(this instanceof MainNav)) {
     return new MainNav()
   }
-  var headingsspoS = Headings()
+  var headings = Headings()
   var externalLinks = ExternalLinks()
+
+  return { headings, externalLinks }
 }
 
 function Headings () {
@@ -33,65 +35,20 @@ function Headings () {
   return {}
 
   function init () {
-    appendToogleButton()
-    addToggleListeners()
+    addLinksToHeadings()
   }
 
-  function appendToogleButton () {
-    $( `.${ classes.root }` )
-      .each( function ( index, heading ) {
-        var $heading = $( heading )
-
-        // this svg is a duplicate of /templates/partials/icons/arrow--up-small.svg
-        $heading.append( `<span class="${ classes.toggle }">
-            <svg viewBox="30 20 50 50" class="arrow--up-small">
-              <path class="toggle-geometry" d="M47.2,61.4L34.9,49.2c-1.4-1.4-1.4-3.9,0-5.4c1.5-1.4,4-1.4,5.4,0l9.5,9.5l9.4-9.5c1.5-1.4,3.9-1.4,5.4,0 c1.4,1.5,1.4,4,0,5.4L52.6,61.4c-0.7,0.7-1.8,1.2-2.7,1.2C48.8,62.6,47.9,62.1,47.2,61.4z"/>
-            </svg>
+  function addLinksToHeadings () {
+    $( `.${ classes.root } span span` )
+      .replaceWith( function () {
+        var $span = $( this )
+        var text = $span.text()
+        var textSlug = text.toLowerCase().replace( / /g, '-' )
+        return `
+          <span>
+            <a href="/${ textSlug }/">${ text }</a>
           </span>`
-        )
       } )
-  }
-
-  function addToggleListeners () {
-    $( `.${ classes.root }` )
-      .on( 'click', toggleOpened )
-
-    function toggleOpened ( event ) {
-      var $clicked = $( event.target )
-
-      if ( $clicked.hasClass( classes.link ) ||
-           $clicked.parent().hasClass( classes.link ) ) {
-        // clicking a link, no need to change the display
-        return;
-      }
-      else if ( $clicked.hasClass( classes.root ) ) {
-        var $heading = $clicked
-      }
-      else {
-        var $heading = $clicked.closest( `.${ classes.root }` )  
-      }
-      
-      // var currentKey = $heading.attr( 'key' )
-      
-      // closeOthers( currentKey )
-      
-      if ( $heading.hasClass( classes.opened ) ) {
-        $heading.removeClass( classes.opened )
-      }
-      else {
-        $heading.addClass( classes.opened )
-      }
-    }
-
-    function closeOthers ( currentKey ) {
-      $( `.${ classes.root }` ).each( function ( index, heading ) {
-        var $heading = $( heading )
-        var headingKey = $heading.attr( 'key' )
-        if ( currentKey !== headingKey ) {
-          $heading.removeClass( classes.opened )
-        }
-      } )
-    }
   }
 }
 
@@ -113,13 +70,13 @@ function ExternalLinks () {
     $( `.${ classes.link }` ).each( function ( index, link) {
       var $link = $( link )
 
+      // this svg is a duplicate of /templates/partials/icons/arrow--naked.svg
       $link
         .children( 'a' )
-        .append( `<span class="${ classes.icon }">
-          <svg viewBox="10 10 60 60">
-            <path class="external-geometry" d="M68.2,55.2L56,67.4c-1.4,1.4-3.9,1.4-5.4,0c-1.4-1.5-1.4-4,0-5.4l5.7-5.7H35.8c-2.1,0-3.8-1.8-3.8-3.8
-              c0-2.2,1.8-3.8,3.8-3.8h20.4L50.6,43c-1.4-1.5-1.4-3.9,0-5.4c1.5-1.4,4-1.4,5.4,0l12.2,12.2c0.7,0.7,1.2,1.8,1.2,2.7
-              C69.4,53.5,68.9,54.4,68.2,55.2z"/>
+        .prepend( `<span class="${ classes.icon }">
+          <svg class="arrow arrow--naked" width="16px" height="13px" viewBox="0 0 16 13">
+            <title>arrow naked</title>
+            <path d="M9.47789 5.2828L0.903218 5.28279L0.903216 8.14102L9.47789 8.14102L4.61891 13L8.90624 13L15.1943 6.71191L8.90625 0.423814L4.61891 0.423814L9.47789 5.2828Z" class="arrow-geometry" />
           </svg>
         </span>` )
     } )

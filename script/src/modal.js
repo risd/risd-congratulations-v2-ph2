@@ -11,9 +11,10 @@ function Modal () {
 
   var emitter = new EventEmitter()
 
-  var dismissedKey = 'modal-dismissed'
   var showingClassName = 'modal--showing'
   var animateInClassName = 'animate-in'
+
+  var toggler = Toggler()
 
   var selectors = {
     root: '.modal',
@@ -42,19 +43,9 @@ function Modal () {
   }
 
   function show ( force ) {
-    var dismissed = window.localStorage.getItem( dismissedKey )
+    var toShow = toggler.tryShow( force )
 
-    // determine whether to show modal or not
-    var showModal = false;
-    // do not show if previously dismissed
-    if ( dismissed === "true" ) showModal = false;
-    // do not show if coming from admissions site
-    if ( document.referrer === "https://admissions.risd.edu/" ) showModal = false;
-    // do not show if coming from same site
-    if ( document.referrer.indexOf( window.location.host ) ) { showModal = false; console.log('samesies')}
-    // show if forced
-    if ( force === true ) showModal = true;
-    if ( showModal === false ) return;
+    if ( toShow === false ) return;
 
     emitter.emit( 'show' )
     
@@ -116,8 +107,61 @@ function Modal () {
     function completeDismissModal () {
       $selectors.root.off( 'transitionend', completeDismissModal )
       document.body.classList.remove( showingClassName )
-      window.localStorage.setItem( dismissedKey, "true" )
+      toggler.dismiss()
       emitter.emit( 'dismiss' )
     }
+  }
+}
+
+function Toggler () {
+  var dismissedKey = 'modal-dismissed'
+
+  return {
+    tryShow: tryShow,
+    dismiss: dismiss,
+  }
+
+  function tryShow ( force ) {
+    var dismissed = window.localStorage.getItem( dismissedKey )
+    
+    // determine whether to show modal or not
+    var showModal = true;
+    // do not show if previously dismissed
+    // - turned off to make room for time based dismissal
+    // if ( dismissed === "true" ) showModal = false;
+    // do not show if coming from admissions site
+    if ( document.referrer === "https://admissions.risd.edu/" ) showModal = false;
+    // do not show if coming from same site
+    // - turned off for now, because manually typing the URL gives you 
+    //   the same host
+    // if ( document.referrer.indexOf( window.location.host ) ) { showModal = false; console.log('samesies')}
+    // show if forced
+    if ( Number.isInteger( Number( dismissed ) ) ) {
+      var lastDismissed = Number( dismissed )
+      var now = timeInMilliSeconds()
+      var sinceDismissed = now - lastDismissed
+      var sessionTime = 30 * 1000 * 60  /* 30 minutes in milliseconds */
+      if ( sinceDismissed > sessionTime ) {
+        // show if the time that has elapsed since being dismissed
+        // is longer than a single session time
+        showModal = true
+      }
+      else {
+        showModal = false;
+      }
+    }
+    if ( force === true ) showModal = true;
+
+    return showModal
+  }
+
+  function dismiss () {
+    var dismissedTime = timeInMilliSeconds()
+    window.localStorage.setItem( dismissedKey, dismissedTime )
+  }
+
+  function timeInMilliSeconds ( date ) {
+    if ( ! date ) date = new Date()
+    return date.getTime()
   }
 }

@@ -310,6 +310,10 @@
   border: none;  
 }
 
+.home-module__image-link-image {
+  width: 100%;
+}
+
 .home-module__image-link:nth-child(odd) {
   background-color: var(--button-white);
   color: var(--button-black);

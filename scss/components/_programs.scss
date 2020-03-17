@@ -22,8 +22,6 @@
   display: inline-block;
   flex-basis: 100%;
   line-height: 0;
-  padding-left: 2rem;
-  padding-right: 2rem;
   padding-bottom: 2rem;
   // cursor: zoom-in;
 
@@ -63,8 +61,11 @@
   }
 }
 
-.program__image + .program__text {
-  padding-left: 2rem;
+@include respond-above(medium) {
+
+  .program__image + .program__text {
+    padding-left: 2rem;
+  } 
 }
 
 .program__title {

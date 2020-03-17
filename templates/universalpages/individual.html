@@ -37,6 +37,14 @@
 
 {# END Meta Title and Description #}
 
+{# Set body attribute for Open RISD specific gif #}
+{% block body_attributes %}
+  {% if item.slug === "next-steps/open-risd" %}
+    class="open-risd"
+  {% endif %}
+{% endblock %}
+{# End body attribute for Open RISD specific gif #}
+
 {% block content %}
 
   {% if item.description_background === "White" %}
@@ -46,6 +54,9 @@
   {% endif %}
 
   <main class="page__wrapper">
+  <script>
+    console.log({{item.slug|json|safe}});
+  </script>
 
   {# Hero image ------------------------------------------------------------ #}
 

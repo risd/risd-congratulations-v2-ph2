@@ -85,7 +85,7 @@
             {% endif %}
 
             {% if image_link.image %}
-            <img class="home-module__image-link-image" src="{{ image_link.image|imageCrop(imageDimension.width, imageDimension.height) }}" alt="">
+            <img class="home-module__image-link-image" src="{{ image_link.image|imageSize(imageDimension.width) }}" alt="">
             {% endif %}
 
             {% if image_link.image_text %}

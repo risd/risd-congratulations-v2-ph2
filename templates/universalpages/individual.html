@@ -66,6 +66,12 @@
       <div class="page__hero--desktop" style="background-image: url({{ item.hero_image|imageSize(1200) }})"></div>
       <img src="{{ item.hero_image|imageSize(1200) }}" alt="" class="page__hero--mobile">
     </section>
+  {% elseif item.hero_video %}
+    <section class="section--full" id="livestream">
+      <div class="video-module">
+        <div class="video-module__container">{{ item.hero_video.html|safe }}</div>
+      </div>
+    </section>
   {% elseif item.edge_images %}
     {% set storyTitleClass = '' %}
     <section class="section--full page__edge-images">

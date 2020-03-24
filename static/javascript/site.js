@@ -84584,9 +84584,10 @@ var _require2 = require('@risd/ui'),
     themes = _require2.themes; // Hydrate React components
 
 
-hydrateComponents(themes.congratulationsV2); // unhide nav element once it's hydrated
+hydrateComponents(themes.congratulationsV2);
+var navSelector = '[data-react-component="Nav"]'; // unhide nav element once it's hydrated
 
-var navElement = document.querySelector('[data-react-component="Nav"]');
+var navElement = document.querySelector(navSelector);
 navElement.style.display = 'block';
 
 var galleries = require('./galleries')({
@@ -84647,8 +84648,14 @@ var alumniAccordion = require('./alumniAccordion.js')();
 
 var edgeImageShift = require('./edgeImageShift.js')();
 
+var videoSize = require('./video-size')({
+  headerSelector: navSelector,
+  videoModuleSelector: '.video-module',
+  videoContainerSelector: '.video-module__container'
+});
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./alumniAccordion.js":242,"./calendarAccordion.js":243,"./edgeImageShift.js":245,"./galleries":246,"./lightbox.js":248,"./linkTarget.js":249,"./main-nav-v2":250,"./modal":251,"./resourceImageSort.js":252,"@risd/react-hydrator":4,"@risd/ui":22,"jquery":204,"lodash":205,"smartquotes":237}],248:[function(require,module,exports){
+},{"./alumniAccordion.js":242,"./calendarAccordion.js":243,"./edgeImageShift.js":245,"./galleries":246,"./lightbox.js":248,"./linkTarget.js":249,"./main-nav-v2":250,"./modal":251,"./resourceImageSort.js":252,"./video-size":253,"@risd/react-hydrator":4,"@risd/ui":22,"jquery":204,"lodash":205,"smartquotes":237}],248:[function(require,module,exports){
 "use strict";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -85210,4 +85217,49 @@ function StudioImageSort() {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"imagesloaded":201,"jquery-bridget":203,"packery":213}]},{},[247]);
+},{"imagesloaded":201,"jquery-bridget":203,"packery":213}],253:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var $ = global.jQuery;
+module.exports = VideoSize;
+
+function VideoSize(opts) {
+  if (!(this instanceof VideoSize)) {
+    return new VideoSize(opts);
+  }
+
+  if (!opts) opts = {};
+  var headerSelector = opts.headerSelector;
+  var videoModuleSelector = opts.videoModuleSelector;
+  var videoContainerSelector = opts.videoContainerSelector;
+  console.log(opts);
+  var headerHeight;
+  var videoModule;
+  var videoBox;
+  var windowHeight;
+  var videoModuleHeight;
+  setVideoSize();
+  $(window).resize(function () {
+    setVideoSize();
+  });
+
+  function setVideoSize() {
+    headerHeight = $(headerSelector).outerHeight();
+    videoModule = $(videoModuleSelector);
+    videoBox = $(videoContainerSelector);
+    windowHeight = $(window).height();
+    videoModuleHeight = windowHeight - headerHeight;
+    videoModule.css({
+      height: videoModuleHeight,
+      marginTop: -headerHeight
+    });
+    videoBox.css({
+      height: videoModuleHeight,
+      top: headerHeight
+    });
+  }
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}]},{},[247]);

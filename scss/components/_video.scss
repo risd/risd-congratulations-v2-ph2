@@ -1,0 +1,23 @@
+.video-module {
+  width: 100vw;
+  height: 100vh;
+  margin-top: 0;
+  position: relative;
+}
+
+.video-module__container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: black;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

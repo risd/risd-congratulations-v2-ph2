@@ -82,7 +82,7 @@ body.notification--is-opened .page__wrapper {
 .page__hero--desktop {
   display: none;
   height: 100%;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   @include respond-above(medium) {
     display: block;
@@ -94,7 +94,7 @@ body.open-risd .page__hero--desktop {
   height: 100%;
   background-size: contain;
   background-position: center;
-  background-repeat: no-repeat;
+  // background-repeat: no-repeat;
   background-color: black;
 }
 

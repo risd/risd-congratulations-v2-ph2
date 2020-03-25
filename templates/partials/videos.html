@@ -1,0 +1,29 @@
+{% for video in videos %}
+  {% if loop.first %}
+    {% if videos_title %}
+      <h2 class="videos__title" id="{{ videos_title|slugify }}">
+        {{ videos_title }}
+      </h2>
+    {% endif %}
+  {% endif %}
+
+  <div class="video__container">
+    {% if video.video.html %}
+    <div class="video__wrapper">
+      {{ video.video.html|safe }}  
+    </div>
+    {% endif %}
+              
+    {% if video.video_url %}
+    <a class="video__link" href="{{ video.video_url }}" {{ openExternalLinkInNewWindow(video.video_url) }}>
+    {% endif %}
+
+    {% if video.video_title %}
+      <h3 class="video__title">{{ video.video_title }}</h3>
+    {% endif %}
+
+    {% if video.video_url %}
+    </a>
+    {% endif %}
+  </div>
+{% endfor %}

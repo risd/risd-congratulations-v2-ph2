@@ -1,0 +1,28 @@
+{#
+  Expects
+  link_list : [
+    {
+      link_text : String,
+      link_url : String,
+    }
+  ]
+#}
+
+{% for link in link_list %}
+  {% if loop.first %}
+    <ul class="section__link-list">
+  {% endif %}
+
+      <li class="section__link-list-item">
+        <span class="section__link-list-icon">
+          {% include 'templates/partials/icons/arrow--naked.html' %}
+        </span>
+        <span class="section__link-list-text">
+          <a href="{{ link.link_url }}" {{ openExternalLinkInNewWindow(link.link_url) }}>{{ link.link_text }}</a>
+        </span>
+      </li>
+
+  {% if loop.last %}
+    </ul>
+  {% endif %}
+{% endfor %}

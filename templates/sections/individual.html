@@ -28,28 +28,25 @@
       </div>
     </section>
 
-    {% for page in item.pages %}
-      {% if loop.first %}
-        <section class="section--full">
-          <div class="section__content--contained section__link-list-wrapper">
-            <ul class="section__link-list">
-      {% endif %}
-
-        <li class="section__link-list-item">
-          <span class="section__link-list-icon">
-            {% include 'templates/partials/icons/arrow--naked.html' %}
-          </span>
-          <span class="section__link-list-text">
-            <a href="{{ url(page) }}">{{ page.name }}</a>
-          </span>
-        </li>
-
-      {% if loop.last %}
-            </ul>
-          </div>
-        </section>
-      {% endif %}
-    {% endfor %}
+    {% if item.pages %}
+      <section class="section--full">
+        <div class="section__content--contained section__link-list-wrapper">
+      
+        {% set link_list = [] %}
+        {% for page in item.pages %}
+          {% set link_url = url(page) %}
+          {% set link = {
+            link_text: page.name,
+            link_url: link_url,
+          } %}
+          {% set link_list = link_list.concat([link]) %}
+        {% endfor %}
+        
+        {% include "templates/partials/link-list.html" %}
+        
+        </div>
+      </section>
+    {% endif %}
 
   </main> <!-- .page__wrapper closes -->
 {% endblock %}

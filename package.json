@@ -34,7 +34,7 @@
   "dependencies": {
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
-    "@risd/component-notification": "^1.0.8",
+    "@risd/component-notification": "^1.0.10",
     "@risd/react-hydrator": "^4.8.7",
     "@risd/ui": "^15.6.4",
     "@risd/webhook-react-tag": "^3.0.0",

@@ -60,11 +60,31 @@
 
     <section class="section--full home">
 
-      {% if home.show_statement and home.statement %}
+      {% if home.show_statement and home.statement and
+            !home.show_statement_quote and
+            !home.show_statement_video %}
       <div class="home-module home-module--full home-module__statement">
         {{ home.statement|safe }}
       </div>
       {% endif %}
+      {% if home.show_statement_quote and
+            home.statement_quote %}
+      <div class="home-module home-module--full home-module__statement-quote">
+        <div class="home-module__statement-quote-wrapper">
+          {{ home.statement_quote|safe }}
+        </div>
+      </div>
+      {% endif %}
+      {% if home.show_statement_video and
+            home.statement_video and
+            home.statement_video.html %}
+      <div class="home-module home-module--full home-module__statement-video">
+        <div class="home-module__statement-video-wrapper home-module__videos-video-wrapper">
+          {{ home.statement_video.html|safe }}
+        </div>
+      </div>
+      {% endif %}
+        
   
       {# --- text links 1 #}
       {% for text_link in home.text_links_1 %}

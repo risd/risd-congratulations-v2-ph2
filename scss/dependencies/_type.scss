@@ -169,6 +169,18 @@ $sans-xxl:(
   medium:(110px,110px)
 );
 
+// XXXL
+$sans-xxxl: (
+  base: (64px, 64px),
+  medium: (168px, 168px),
+);
+
+// XXXXL
+$sans-xxxl: (
+  base: (85px, 85px),
+  medium: (256px, 256px),
+);
+
 $date-numbers:(
   base: (64px, 64px)
 );

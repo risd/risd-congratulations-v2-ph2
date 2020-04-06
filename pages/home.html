@@ -83,6 +83,21 @@
         {{ cms.home.statement|safe }}
       </li>
       <li>
+        <strong>Show Statement Quote: </strong>
+        {{ cms.home.show_statement_quote }}
+      </li>
+      <li>
+        <strong>Statement Quote: </strong>
+        {{ cms.home.statement_quote|safe }}
+      </li>
+      <li>
+        <strong>Show Statement Video: </strong>
+        {{ cms.home.show_statement_video }}
+      </li>
+      <li>
+        <strong>Statement Video: </strong>
+        {# Embed.ly content usually comes with more data. Info here: #}{# http://www.webhook.com/docs/widget-template-reference/#embedly #}{{ cms.home.statement_video.html|safe  }}      </li>
+      <li>
         <strong>Text Links 1: </strong>
         {# Loop of your Repeatable Form items. Remember, you can sort the order in your CMS if you need. #}
         <ul>

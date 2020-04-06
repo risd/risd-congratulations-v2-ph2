@@ -167,6 +167,76 @@
   }
 }
 
+// Statement quote
+.home-module__statement-quote {
+  background-color: var(--pop-color);
+  padding: 3rem var(--block-padding) 2rem var(--block-padding);
+
+  @include respond-above(medium) {
+    padding: 5rem var(--block-padding) 2rem var(--block-padding);    
+  }
+
+  .home-module__statement-quote-wrapper {
+    position: relative;
+    margin: 0 auto;
+    max-width: 43em;
+  }
+
+  .home-module__statement-quote-wrapper:before {
+    position: relative;
+    @extend %sans-serif;
+    @include text-size($sans-xxxl);
+    font-weight: bold;
+    display: block;
+    text-align: left;
+    content: "“";
+    color: var(--button-white);
+
+    @include respond-above(base) {
+      line-height: 0.3;
+    }
+
+    @include respond-above(medium) {
+      line-height: 0.25;
+      margin-left: -15px;
+      margin-top: 35px;
+    }
+  }
+
+  .home-module__statement-quote-wrapper:after {
+    position: relative;
+    @extend %sans-serif;
+    @include text-size($sans-xxxl);
+    font-weight: bold;
+    display: block;
+    text-align: right;
+    content: "”";
+    color: var(--button-white);
+
+    @include respond-above(base) {
+      line-height: 0.3;
+      margin-top: 40px;
+    }
+
+    @include respond-above(medium) {
+      line-height: 0.25;
+      margin-top: 100px;
+    }
+  }
+
+  p {
+    @extend %sans-serif;
+    @include text-size($sans-xl);
+    font-weight: bold;
+  }
+}
+
+// Statement Video
+.home-module__statement-video {
+  background-color: var(--pop-color);
+  padding: 0 var(--block-padding) var(--block-padding) var(--block-padding);
+}
+
 // Text Link
 .home-module__text-link {
   display: flex;

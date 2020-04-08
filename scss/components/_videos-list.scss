@@ -29,9 +29,12 @@
 }
 
 .videos__title {
-  // @include text-size($sans-l);
+  @include text-size($sans-l);
   color: var(--pop-color);
+  text-align: center;
   margin-bottom: 1rem;
+  margin-bottom: 3rem;
+  margin-top: 4rem;
 }
 
 .video__title {

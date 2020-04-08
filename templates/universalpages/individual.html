@@ -99,7 +99,7 @@ k{% extends "templates/partials/base.html" %}
 
   {# Page Title ------------------------------------------------------------ #}
 
-  {% if !stories and !item.hero_video %}
+  {% if !stories %}
     <section class="section--full {{ item.descriptionClass }}">
       <div class="section__content--contained page__title-wrapper">
         <h2 class="page__title">{{ item.name }}</h2>

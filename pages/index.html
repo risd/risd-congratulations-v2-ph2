@@ -125,42 +125,19 @@
       {% endfor %}
 
       {% if home.show_videos and home.videos  %}
-        {% for video in home.videos %}
-          {% if loop.first %}
-          <div class="home-module--full home-module__videos">
-            {% if home.video_title %}
-              <h2 class="home-module__videos-title">{{ home.video_title }}</h2>
-            {% endif %}
-            <div class="home-module__videos-wrapper">
-          {% endif %}
+        {% set videos_spec = {
+          video_title: home.video_title,
+          video_list: home.videos
+        } %}
+        {% include 'templates/partials/home-module__videos.html' with videos_spec only %}
+      {% endif %}
 
-          {% if video.show_video %}
-            <div class="home-module__videos-video">
-              {% if video.video.html %}
-              <div class="home-module__videos-video-wrapper">
-                {{ video.video.html|safe }}  
-              </div>
-              {% endif %}
-              
-              {% if video.video_url %}
-              <a class="home-module__video-link" href="{{ video.video_url }}" {{ openExternalLinkInNewWindow(video.video_url) }}>
-              {% endif %}
-
-              {% if video.video_text %}
-                <h3 class="home-module__video-title">{{ video.video_text }}</h3>
-              {% endif %}
-
-              {% if video.video_url %}
-              </a>
-              {% endif %}
-            </div>
-          {% endif %}
-
-          {% if loop.last %}
-            </div>
-          </div>
-          {% endif %}
-        {% endfor %}
+      {% if home.show_videos_2 and home.videos_2  %}
+        {% set videos_spec = {
+          video_title: home.video_2_title,
+          video_list: home.videos_2
+        } %}
+        {% include 'templates/partials/home-module__videos.html' with videos_spec only %}
       {% endif %}
 
       {# --- text links 2 #}

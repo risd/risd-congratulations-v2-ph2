@@ -442,6 +442,9 @@
   padding: var(--block-padding);
   background-color: var(--button-light);
 }
+.home-module__videos + .home-module__videos {
+  background-color: var(--button-white);
+}
 
 .home-module__videos-wrapper {
   display: flex;

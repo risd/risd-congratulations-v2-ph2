@@ -8,8 +8,10 @@ var { themes } = require('@risd/ui');
 // Hydrate React components
 hydrateComponents(themes.congratulationsV2);
 
+var navSelector = '[data-react-component="Nav"]'
+
 // unhide nav element once it's hydrated
-const navElement = document.querySelector('[data-react-component="Nav"]');
+const navElement = document.querySelector(navSelector);
 navElement.style.display = 'block';
 
 var galleries = require('./galleries')({
@@ -60,3 +62,8 @@ var linkTarget = require('./linkTarget.js')();
 var calendarAccordion = require('./calendarAccordion.js')();
 var alumniAccordion = require('./alumniAccordion.js')();
 var edgeImageShift = require('./edgeImageShift.js')();
+var videoSize = require( './video-size' )( {
+  headerSelector: navSelector,
+  videoModuleSelector: '.video-module',
+  videoContainerSelector: '.video-module__container',
+} )

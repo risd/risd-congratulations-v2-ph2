@@ -158,6 +158,11 @@ $sans-xl:(
   medium:(64px, 64px)
 );
 
+$sans-xl-v2:(
+  base:(24px, 24px),
+  medium:(50px, 60px)
+);
+
 $serif-xl:(
   base:(36px, 36px),
   medium:(72px, 72px)
@@ -167,6 +172,18 @@ $serif-xl:(
 $sans-xxl:(
   base:(48px, 48px),
   medium:(110px,110px)
+);
+
+// XXXL
+$sans-xxxl: (
+  base: (64px, 64px),
+  medium: (168px, 168px),
+);
+
+// XXXXL
+$sans-xxxxl: (
+  base: (85px, 85px),
+  medium: (200px, 200px),
 );
 
 $date-numbers:(

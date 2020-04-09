@@ -1,4 +1,4 @@
-{% extends "templates/partials/base.html" %}
+k{% extends "templates/partials/base.html" %}
 
 {# Page Section data defintion #}
 {% set stories = item.universal__stories %}
@@ -10,6 +10,10 @@
 {% set lists = item.universal__graphic_alumni_lists %}
 {% set dates_1 = item.universal__calendar_items_1 %}
 {% set dates = item.universal__calendar_items %}
+{% set videos_title = item.univerisal__video_title %}
+{% set videos = item.universal__video %}
+{% set link_list_title = item.universal__link_list_title %}
+{% set link_list = item.universal__link %}
 {% set information_snippets = item.universal__providence_specifics %}
 {% set postenrollment_info = item.universal__postenrollment_info %}
 {# END Page Section data defintion #}
@@ -65,6 +69,12 @@
     <section class="section--full page__hero">
       <div class="page__hero--desktop" style="background-image: url({{ item.hero_image|imageSize(1200) }})"></div>
       <img src="{{ item.hero_image|imageSize(1200) }}" alt="" class="page__hero--mobile">
+    </section>
+  {% elseif item.hero_video and item.hero_video.html %}
+    <section class="section--full" id="livestream">
+      <div class="video-module">
+        <div class="video-module__container">{{ item.hero_video.html|safe }}</div>
+      </div>
     </section>
   {% elseif item.edge_images %}
     {% set storyTitleClass = '' %}
@@ -215,6 +225,24 @@
     </section>
   {% endif %}
 
+
+  {# Videos ------------------------------------------------------------ #}
+  {% if videos %}
+    <section class="section--contained videos-list">
+      {% include "templates/partials/videos.html" %}
+    </section>
+  {% endif %}
+  
+
+  {# Information snippets ------------------------------------------------------------ #}
+  {% if link_list %}
+    <section class="section--contained link-list">
+      {% if link_list_title %}
+        <h2 class="link-list__title">{{ link_list_title }}</h2>
+      {% endif %}
+      {% include "templates/partials/link-list.html" %}
+    </section>
+  {% endif %}
 
   {# Information snippets ------------------------------------------------------------ #}
 

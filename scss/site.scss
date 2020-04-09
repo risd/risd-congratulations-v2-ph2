@@ -28,6 +28,9 @@
 @import "components/lightbox";
 @import "components/supporting-content";
 @import "components/modal--site-context";
+@import "components/video";
+@import "components/videos-list";
+@import "components/link-list";
 @import "../node_modules/@risd/component-notification/scss/index";
 
 //Page specific modules, which hopefully can distill down even further into components.

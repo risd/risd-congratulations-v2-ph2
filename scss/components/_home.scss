@@ -1,5 +1,6 @@
 :root {
   --block-padding: 2rem;
+  --home-statement-quote-before-margin-top: -12px;
 }
 
 .home {
@@ -165,6 +166,97 @@
     font-weight: bold; 
     max-width: 30em;
   }
+}
+
+// Statement quote
+.home-module__statement-quote {
+  background-color: var(--pop-color);
+  padding: 3rem var(--block-padding) 2rem var(--block-padding);
+
+  @include respond-above(medium) {
+    padding: 5rem var(--block-padding) var(--block-padding) var(--block-padding);    
+  }
+
+  .home-module__statement-quote-wrapper {
+    position: relative;
+    margin: 0 auto;
+  }
+
+  .home-module__statement-quote-wrapper:before {
+    position: relative;
+    @extend %sans-serif;
+    @include text-size($sans-xxxxl);
+    font-weight: bold;
+    display: block;
+    text-align: left;
+    content: "“";
+    color: var(--button-white);
+
+    @include respond-above(base) {
+      line-height: 0.3;
+      margin-left: -5px;
+    }
+
+    @include respond-above(medium) {
+      line-height: 0.25;
+      margin-left: var(--home-statement-quote-before-margin-top);
+      margin-top: 35px;
+    }
+  }
+
+  .home-module__statement-quote-wrapper:after {
+    position: relative;
+    @extend %sans-serif;
+    @include text-size($sans-xxxxl);
+    font-weight: bold;
+    display: block;
+    text-align: right;
+    content: "”";
+    color: var(--button-white);
+
+    @include respond-above(base) {
+      line-height: 0.3;
+      margin-top: 40px;
+    }
+
+    @include respond-above(medium) {
+      line-height: 0.25;
+      margin-top: 100px;
+    }
+  }
+
+  p {
+    @extend %sans-serif;
+    @include text-size($sans-xl-v2);
+    font-weight: bold;
+    max-width: 20em;
+  }
+}
+
+// Statement Video
+.home-module__statement-video {
+  background-color: var(--pop-color);
+  padding: 0 var(--block-padding) var(--block-padding) var(--block-padding);
+
+  @include respond-above(medium) {
+    padding-bottom: calc(5rem + var(--home-statement-quote-before-margin-top));
+  }
+}
+
+.home-module__statement-container {
+  // set type spec to match the statement quote p
+  // above, so they can have the same max-width
+  @extend %sans-serif;
+  @include text-size($sans-xl-v2);
+  font-weight: bold;
+  max-width: 20em;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.home-module__statement-video-title {
+  @include text-size($home-body-text);
+  padding-top: 0.5rem;
 }
 
 // Text Link
@@ -371,6 +463,9 @@
 .home-module__videos {
   padding: var(--block-padding);
   background-color: var(--button-light);
+}
+.home-module__videos + .home-module__videos {
+  background-color: var(--button-white);
 }
 
 .home-module__videos-wrapper {

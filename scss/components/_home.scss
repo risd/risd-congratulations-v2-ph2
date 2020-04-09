@@ -1,5 +1,6 @@
 :root {
   --block-padding: 2rem;
+  --home-statement-quote-before-margin-top: -12px;
 }
 
 .home {
@@ -173,7 +174,7 @@
   padding: 3rem var(--block-padding) 2rem var(--block-padding);
 
   @include respond-above(medium) {
-    padding: 5rem var(--block-padding) 2rem var(--block-padding);    
+    padding: 5rem var(--block-padding) var(--block-padding) var(--block-padding);    
   }
 
   .home-module__statement-quote-wrapper {
@@ -198,7 +199,7 @@
 
     @include respond-above(medium) {
       line-height: 0.25;
-      margin-left: -12px;
+      margin-left: var(--home-statement-quote-before-margin-top);
       margin-top: 35px;
     }
   }
@@ -236,6 +237,10 @@
 .home-module__statement-video {
   background-color: var(--pop-color);
   padding: 0 var(--block-padding) var(--block-padding) var(--block-padding);
+
+  @include respond-above(medium) {
+    padding-bottom: calc(5rem + var(--home-statement-quote-before-margin-top));
+  }
 }
 
 .home-module__statement-container {
@@ -252,7 +257,6 @@
 .home-module__statement-video-title {
   @include text-size($home-body-text);
   padding-top: 0.5rem;
-  margin-bottom: var(--block-padding);
 }
 
 // Text Link

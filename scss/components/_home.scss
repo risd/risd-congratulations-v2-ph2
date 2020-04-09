@@ -491,6 +491,10 @@
   }
 }
 
+.home-module__videos-video:nth-child(n+3) {
+  margin-top: var(--block-padding);
+}
+
 @include respond-above(medium) {
   .home-module__videos-video:nth-child(odd) {
     padding-right: var(--block-padding);

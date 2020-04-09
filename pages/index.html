@@ -79,8 +79,20 @@
             home.statement_video and
             home.statement_video.html %}
       <div class="home-module home-module--full home-module__statement-video">
-        <div class="home-module__statement-video-wrapper home-module__videos-video-wrapper">
-          {{ home.statement_video.html|safe }}
+        <div class="home-module__statement-container">
+          <div class="home-module__statement-video-wrapper home-module__videos-video-wrapper">
+            {{ home.statement_video.html|safe }}
+          </div>
+          {% if home.statement_video_url %}
+            <a class="home-module__statement-video-url" href="{{ home.statement_video_url }}" {{ openExternalLinkInNewWindow(home.statement_video_url) }}>
+          {% endif %}
+          {% if home.statement_video_title %}
+            <h3 class="home-module__statement-video-title">{{ home.statement_video_title }}</h3>
+          {% endif %}
+          {% if home.statement_video_url %}
+            </a>
+          {% endif %}
+          </a>
         </div>
       </div>
       {% endif %}

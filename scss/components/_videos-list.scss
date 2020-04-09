@@ -41,6 +41,10 @@
   @include text-size($sans-l);
 }
 
+.video__description {
+  max-width: 30em;
+}
+
 .video__link:hover,
 .video__link:hover .video__title {
   color: var(--pop-color);

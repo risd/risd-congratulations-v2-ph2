@@ -193,6 +193,7 @@
 
     @include respond-above(base) {
       line-height: 0.3;
+      margin-left: -5px;
     }
 
     @include respond-above(medium) {

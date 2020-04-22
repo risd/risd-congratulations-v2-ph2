@@ -22,14 +22,14 @@
       <h3 class="video__title">{{ video.video_title }}</h3>
     {% endif %}
 
+    {% if video.video_url %}
+    </a>
+    {% endif %}
+
     {% if video.video_description %}
       <div class="video__description">
         {{ video.video_description|safe }}
       </div>
-    {% endif %}
-
-    {% if video.video_url %}
-    </a>
     {% endif %}
   </div>
 {% endfor %}

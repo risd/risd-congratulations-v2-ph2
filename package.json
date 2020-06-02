@@ -94,6 +94,6 @@
     "rm-webhook": "^2.0.5"
   },
   "risd.systems": {
-    "generate": "2.5.2"
+    "generate": "2.5.7"
   }
 }

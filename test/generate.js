@@ -28,7 +28,7 @@ const pspawn = (cmd, args) => {
 
 test('download-data', async (t) => {
   try {
-    const data = await pspawn('grunt', ['download-data'])  
+    const data = await pspawn('grunt', ['download-data', '--emitter'])  
     t.ok('download-data:success')
   } catch (stderr) {
     t.ifError(stderr)

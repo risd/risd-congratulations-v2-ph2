@@ -1,8 +1,12 @@
 'use strict';
 
 // Requires
-const { initializeApp } = require('firebase/app')
-const { getDatabase } = require('firebase/database')
+const debug = require('debug')('generator')
+const {
+  initializeDatabase,
+  getBucketData,
+  getDnsChildData,
+} = require('./firebase.js')
 var request = require('request');
 var mkdirp = require('mkdirp');
 var path = require('path');
@@ -143,12 +147,11 @@ module.exports.generator = function (config, options, logger, fileParser) {
   // We dont error out here so init can still be run
   if (firebaseName && firebaseAPIKey)
   {
-    const app = initializeApp({
+    this.root = initializeDatabase({
       apiKey: firebaseAPIKey,
       authDomain: `${ firebaseName }.firebaseapp.com`,
       databaseURL: `${ firebaseName }.firebaseio.com`,
     })
-    this.root = getDatabase(app)
   } else {
     this.root = null;
   }
@@ -170,21 +173,6 @@ module.exports.generator = function (config, options, logger, fileParser) {
   }
 
 
-  /**
-   * Used to get the bucket were using (combinaton of config and environment)
-   */
-  var getBucket = function() {
-    return self.root.ref('buckets/' + config.get('webhook').siteName + '/' + config.get('webhook').siteKey + '/dev');
-  };
-
-  /**
-   * Used to get the dns information about a site (used for certain swig functions)
-   */
-  var getDnsChild = function() {
-    return self.root.ref('management/sites/' + config.get('webhook').siteName + '/dns');
-  };
-
-
   var getTypeData = function(type, callback) {
     getBucket().child('contentType').child(type).once('value', function(data) {
       callback(data.val());
@@ -195,7 +183,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * Retrieves snapshot of data from Firebase
    * @param  {Function}   callback   Callback function to run after data is retrieved, is sent the snapshot
    */
-  var getData = function(callback) {
+  var getData = async function(callback) {
 
     if(self.cachedData)
     {
@@ -219,8 +207,12 @@ module.exports.generator = function (config, options, logger, fileParser) {
       throw new Error('Missing firebase reference, may need to run init');
     }
 
-    getBucket().once('value', function(data) {
-      data = data.val() || {};
+    try {
+      let data = await getBucketData({
+        siteName: config.get('webhook').siteName,
+        siteKey: config.get('webhook').siteKey,
+      })
+
       var typeInfo = {};
       var settings = {};
 
@@ -258,19 +250,19 @@ module.exports.generator = function (config, options, logger, fileParser) {
       swigFunctions.setSettings(settings);
       swigFilters.setTypeInfo(typeInfo);
 
-      getDnsChild().once('value', function(snap) {
-        var siteDns = snap.val() || config.get('webhook').siteName + '.webhook.org';
-        self.cachedData.siteDns = siteDns;
-        swigFilters.setSiteDns(siteDns);
-        if (self._settings.site_url) {
-          self.cachedData.siteDns = self._settings.site_url;
-          swigFilters.setSiteDns(self._settings.site_url);
-        }
-        swigFilters.setFirebaseConf(config.get('webhook'));
+      let siteDns = await getDnsChildData({ siteName: config.get('webhook').siteName })
+      if (!siteDns) config.get('webhook').siteName + '.webhook.org'
 
-        callback(data, typeInfo);
-      });
-    }, function(error) {
+      self.cachedData.siteDns = siteDns;
+      swigFilters.setSiteDns(siteDns);
+      if (self._settings.site_url) {
+        self.cachedData.siteDns = self._settings.site_url;
+        swigFilters.setSiteDns(self._settings.site_url);
+      }
+      swigFilters.setFirebaseConf(config.get('webhook'));
+
+      callback(data, typeInfo);
+    } catch (error) {
       if(error.code === 'PERMISSION_DENIED') {
         console.log('\n========================================================'.red);
         console.log('# Permission denied                                         #'.red);
@@ -282,7 +274,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
       } else {
         throw new Error(error);
       }
-    });
+    }
   };
 
   /**

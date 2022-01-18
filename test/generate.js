@@ -113,10 +113,6 @@ test('build-page-cms', async (t) => {
   t.end()
 })
 
-// test('development-serve', async (t) => {
-//   t.end()
-// })
-
 test('build-static', async (t) => {
   try {
     await pspawn('grunt', [
@@ -131,3 +127,49 @@ test('build-static', async (t) => {
   }
   t.end()
 })
+
+test('build-styles', async (t) => {
+  try {
+    await pspawn('grunt', [
+      'build-styles',
+      '--emitter'
+    ])
+    t.ok('build-styles:success')
+  } catch (error) {
+    console.error(error)
+    t.fail('build-styles:failed')
+  }
+  t.end()
+})
+
+test('build-scripts', async (t) => {
+  try {
+    await pspawn('grunt', [
+      'build-scripts',
+      '--emitter'
+    ])
+    t.ok('build-scripts:success')
+  } catch (error) {
+    console.error(error)
+    t.fail('build-scripts:failed')
+  }
+  t.end()
+})
+
+test('build', async (t) => {
+  try {
+    await pspawn('grunt', [
+      'build',
+      '--emitter'
+    ])
+    t.ok('build:success')
+  } catch (error) {
+    console.error(error)
+    t.fail('build:failed')
+  }
+  t.end()
+})
+
+// test('development-serve', async (t) => {
+//   t.end()
+// })

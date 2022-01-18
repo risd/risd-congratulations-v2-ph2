@@ -140,6 +140,24 @@ const fileExists = async (filePath) => {
   })
 }
 
+const readFile = async (filePath) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, (error, content) => {
+      if (error) return reject(error)
+      resolve(content.toString())
+    })
+  })
+}
+
+const writeFile = async (filePath, content) => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(filePath, content, (error) => {
+      if (error) return reject(error)
+      resolve()
+    })
+  })
+}
+
 /**
  * Generator that handles various commands
  * @param  {Object}   config     Configuration options from .firebase.conf
@@ -210,7 +228,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Function}   callback   Callback function to run after data is retrieved, is sent the snapshot
    */
   var getData = async function(callback) {
-
+    debug('get-data')
     if(self.cachedData)
     {
       Object.assign(self.cachedData.settings.general, self._settings)
@@ -1017,7 +1035,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
     if(cb) cb(done);
     else if (done) done()
 
-    Promise.resolve()
+    return Promise.resolve()
   };
 
   var generatedSlugs = {};
@@ -1195,8 +1213,6 @@ module.exports.generator = function (config, options, logger, fileParser) {
             newPath = baseNewPath + 'index.html';
           }
 
-          debug('render-template:process-file:overrideFile')
-          debug(overrideFile)
           if(await fileExists(overrideFile)) {
             await writeTemplate(overrideFile, newPath, { item: val, emitter: opts.emitter });
             overrideFile = null;
@@ -1218,8 +1234,6 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
           newPath = previewPath + '/' + val.preview_url + '/index.html';
 
-          debug('render-template:process-file:overrideFile')
-          debug(overrideFile)
           if(await fileExists(overrideFile)) {
             await writeTemplate(overrideFile, newPath, { item: val, emitter: opts.emitter });
             overrideFile = null;
@@ -1438,6 +1452,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
   /**
    * Copies the static directory into .build/static for asset generation
    * @param  {boolean}  opts
+   * @param  {string}   opts.baseDirectory?  Optional directory to copy. Sefaults to 'static'
    * @param  {boolean}  opts.emitter?      Boolean to determine if the build process should emit events of progress to process.stdin
    *                                        If true, other processes can operate on the partially built site.
    * @param  {Function} callback     Callback called after creation of directory is done
@@ -1448,13 +1463,24 @@ module.exports.generator = function (config, options, logger, fileParser) {
     if(await fileExists(baseDirectory)) {
       var staticDirectory = path.join( '.build', baseDirectory )
       await mkdirp(staticDirectory)
-      await fse.copy(baseDirectory, staticDirectory)
+      try {
+        await fse.copy(baseDirectory, staticDirectory)
+      } catch (error) {
+        debug('copy-static:copy:error')
+        debug(error)
+      }
       if ( opts.emitter ) {
-        const buildStaticFiles = await pglob('*', { cwd: staticDirectory })
-        buildStaticFiles.forEach( function ( builtFile ) {
-          var builtFilePath = path.join( staticDirectory, builtFile );
-          console.log( BUILD_DOCUMENT_WRITTEN( `./${ builtFilePath }` ) )
-        } )
+        try {
+          const buildStaticFiles = await pglob('**/*', { cwd: staticDirectory })  
+          debug('copy-statc:build-static-files')
+          buildStaticFiles.forEach( function ( builtFile ) {
+            var builtFilePath = path.join( staticDirectory, builtFile );
+            console.log( BUILD_DOCUMENT_WRITTEN( `./${ builtFilePath }` ) )
+          } )
+        } catch (error) {
+          debug('copy-static:emit-built-files:error')
+          debug(error)
+        }
       }
     }
     if (callback) callback();
@@ -1468,27 +1494,39 @@ module.exports.generator = function (config, options, logger, fileParser) {
   * This creates a hash table of all the static files, used to send detailed information to livereload
   * We only do this for static files for speed, for regular files a full reload usually is ok.
   */
-  var createStaticHashs = function() {
+  var createStaticHashs = async function() {
+    debug('create-static-hashes')
     self.staticHashs = {};
     self.changedStaticFiles = [];
 
-    if(fs.existsSync('.build/static')) {
-      var files = wrench.readdirSyncRecursive('.build/static');
+    if(await fileExists('.build/static')) {
+      var files = await pglob('**/*', { cwd: '.build/static' })
 
-      files.forEach(function(file) {
-        var file = '.build/static/' + file;
-
-        if(!fs.lstatSync(file).isDirectory()) {
-          var hash = md5(fs.readFileSync(file));
-
-          self.staticHashs[file] = hash;
-        }
+      const hashers = files.map(function(file) {
+        return new Promise(async (resolve, reject) => {
+          const staticPath = '.build/static/' + file;
+          if(!await isDirectory(staticPath)) {
+            try {
+              const content = await readFile(staticPath)
+              var hash = md5(content)
+              self.staticHashs[staticPath] = hash
+            } catch (error) {
+              debug('create-static-hashes:error')
+              debug(error)
+            }
+          }
+          resolve()
+        })
       })
+
+      await Promise.all(hashers)
     } else {
       self.staticHashs = false;
       self.changedStaticFiles = [];
     }
-  };
+
+    return Promise.resolve()
+  }
 
   /**
    * Cleans the build directory
@@ -1497,19 +1535,23 @@ module.exports.generator = function (config, options, logger, fileParser) {
    */
   this.cleanFiles = async function(done, cb) {
       logger.ok('Cleaning files');
-      await fse.remove(directory)
+      await fse.remove('.build')
       if (done) done()
       if (cb) cb()
+      debug('clean-files:resolve')
       return Promise.resolve()
   };
 
   var buildQueue = async.queue(async function (task, callback) {
+    debug('build-queue')
     if(task.type === 'static') {
+      debug('build-queue:static')
 
       // For static builds we create a hash table to send correct livereload info
       // We only do this for static files for speed, normal builds dont really matter
-      createStaticHashs();
+      await createStaticHashs()
 
+      debug('remove:static')
       await fse.remove('.build/static')
       var copyStaticOptions = {
         emitter: task.emitter
@@ -1520,6 +1562,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
       return Promise.resolve()
     }
     else if (task.type === 'styles') {
+      debug('build-queue:styles')
       var copyStaticOptions = {
         emitter: task.emitter,
         baseDirectory: path.join('static', 'css')
@@ -1530,6 +1573,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
       return Promise.resolve()
     }
     else if (task.type === 'scripts') {
+      debug('build-queue:scripts')
       var copyStaticOptions = {
         emitter: task.emitter,
         baseDirectory: path.join('static', 'javascript'),
@@ -1547,7 +1591,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
         pages: task.pages,
         templates: task.templates,
       }
-      await self.realBuildBoth( buildBothOptions)
+      await self.realBuildBoth(buildBothOptions)
       await self.reloadFiles()
       if (callback) callback()
       return Promise.resolve()
@@ -1600,16 +1644,16 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {object}  options.data  The data to write to file
    * @return {string}  file          The file written to
    */
-  var writeDataCache = function ( options ) {
+  var writeDataCache = async function ( options ) {
     if ( !options ) options = {}
 
-    mkdirp.sync( path.dirname( options.file ) );
+    await mkdirp( path.dirname( options.file ) );
 
     if ( typeof options.data === 'function') var data = options.data();
     if ( typeof options.data === 'object' )  var data = JSON.stringify( options.data );
 
-    fs.writeFileSync( options.file, data )
-    return options.file;
+    await writeFile(options.file, data)
+    return Promise.resolve(options.file)
   }
 
   /**
@@ -1693,15 +1737,17 @@ module.exports.generator = function (config, options, logger, fileParser) {
    *                                   If true, other processes can operate on the partially built site.
    * @param  {Function} done Task done callback.
    */
-  this.buildStatic = function(opts, done) {
+  this.buildStatic = async function(opts, done) {
     var task = { type: 'static' };
 
-    buildQueue.push(Object.assign( task, opts ), function( error ) {
-      if ( error ) {
-        return done( error )
-      }
-      done();
-    });
+    return new Promise((resolve, reject) => {
+      buildQueue.push(Object.assign( task, opts ), function( error ) {
+        if (error && done) done(error)
+        if (error) return reject(error)
+        if (done) done()
+        resolve()
+      });
+    })
   };
 
   this.buildStyles = function (opts, done) {
@@ -1740,6 +1786,8 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Function}   cb       Callback called after finished, passed list of files changed and done function
    */
   this.realBuildBoth = async function(opts, done, cb) {
+    debug('real-build-both')
+    debug(opts)
     self.cachedData = null;
     var series = []
 
@@ -1774,34 +1822,39 @@ module.exports.generator = function (config, options, logger, fileParser) {
       }
     })
 
-    async function cleanFilesStep () {
-      return await self.cleanFiles()
+    async function cleanFilesStep (step) {
+      await self.cleanFiles()
+      step()
     }
 
     async function getDataStep ( step ) {
-      return await getData()
+      await getData()
+      step()
     }
 
-    function writeDataCacheStep ( step ) {
-      writeDataCache( { file: DATA_CACHE_PATH, data: self.cachedData } )
+    async function writeDataCacheStep ( step ) {
+      await writeDataCache( { file: DATA_CACHE_PATH, data: self.cachedData } )
       step()
     }
 
     function renderTemplatesStep ( opts ) {
       return async function renderTemplatesStepFn ( step ) {
-        return await self.renderTemplates(opts)
+        await self.renderTemplates(opts)
+        step()
       }
     }
 
     function copyStaticStep ( opts ) {
       return async function copyStaticFn ( step ) {
-        return await self.copyStatic( opts )
+        await self.copyStatic( opts )
+        step()
       }
     }
 
     function renderPagesStep ( opts ) {
       return async function renderPagesStepFn ( step ) {
-        return await self.renderPages( opts )
+         await self.renderPages( opts )
+         step()
       }
     }
   };
@@ -1958,10 +2011,11 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Function}   done      Callback passed either a true value to indicate its done, or an error
    */
   this.reloadFiles = async function(done) {
+    debug('reload-files')
     var fileList = 'true';
 
     if(self.staticHashs !== false && fs.existsSync('.build/static')) {
-      var newFiles = await fse.remove('.build/static')
+      var newFiles = await pglob('**/*', { cwd: '.build/static' })
 
       newFiles.forEach(function(file) {
         var file = '.build/static/' + file;

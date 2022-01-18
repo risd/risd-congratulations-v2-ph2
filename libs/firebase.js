@@ -21,8 +21,6 @@ const getKey = (key, defaultValue) => {
     get(key)
       .then(snapshot => {
         const data = snapshot.val()
-        debug('data')
-        debug(data)
         if (data) {
           resolve(data)
         }

@@ -198,8 +198,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
       swigFilters.setTypeInfo(self.cachedData.typeInfo);
       if (self._settings.site_url) swigFilters.setSiteDns(self._settings.site_url);
 
-      callback(self.cachedData.data, self.cachedData.typeInfo);
-      return;
+      return Promise.resolve(self.cachedData.data, self.cachedData.typeInfo)
     }
 
     if(!self.root)
@@ -261,7 +260,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
       }
       swigFilters.setFirebaseConf(config.get('webhook'));
 
-      callback(data, typeInfo);
+      return Promise.resolve(data, typeInfo)
     } catch (error) {
       if(error.code === 'PERMISSION_DENIED') {
         console.log('\n========================================================'.red);
@@ -270,7 +269,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
         console.log('#'.red + ' You don\'t have permission to this site or your subscription expired.'.red);
         console.log('# Visit '.red + 'https://billing.webhook.com/site/'.yellow + config.get('webhook').siteName.yellow + '/'.yellow  + ' to manage your subscription.'.red);
         console.log('# ---------------------------------------------------- #'.red)
-        process.exit(0);
+        process.exit(1);
       } else {
         throw new Error(error);
       }
@@ -287,16 +286,15 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {object}   options.emitter?  Specificy whether to emit progress to process.stout
    * @param  {Function} done
    */
-  this.downloadData = function ( options, done ) {
+  this.downloadData = async function ( options, done ) {
     if ( typeof done === 'undefined' ) done = options;
     if ( !options ) options = {};
     if ( !options.file ) options.file = DATA_CACHE_PATH;
 
 
-    getData( function ( data ) {
-      writeDataCache( { file: options.file, data: self.cachedData } )
-      done();
-    } );
+    const data = await getData()
+    writeDataCache( { file: options.file, data: self.cachedData } )
+    done()
   }
 
   var searchEntryStream = null;

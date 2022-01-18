@@ -52,6 +52,22 @@ test('build-page', async (t) => {
   t.end()
 })
 
+test('build-template', async (t) => {
+  try {
+    const template = pspawn('grunt', [
+      'build-template',
+      '--inFile=templates/universalpages/individual.html',
+      '--data=./.build/data.json',
+      '--emitter'
+    ])
+    t.ok('build-template:success')
+  } catch (error) {
+    console.error(error)
+    t.fail('build-template:failed')
+  }
+  t.end()
+})
+
 // test('development-serve', async (t) => {
 //   t.end()
 // })

@@ -122,18 +122,19 @@ const pglob = async (pattern, options) => {
   })
 }
 
-const isDirectory = async (path) => {
+const isDirectory = async (filePath) => {
   return new Promise((resolve, reject) => {
-    fs.lstat(path, (error, stats) => {
+    fs.lstat(filePath, (error, stats) => {
       if (error) return reject(error)
       resolve(stats.isDirectory())
     })
   })
 }
 
-const fileExists = async (path) => {
+const fileExists = async (filePath) => {
+  if (!filePath) return Promise.resolve(false)
   return new Promise((resolve, reject) => {
-    fs.access(path, fs.constants.F_OK, (error) => {
+    fs.access(filePath, fs.constants.F_OK, (error) => {
       resolve(error ? false : true)
     })
   })
@@ -1053,7 +1054,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
    *                                   If true, other processes can operate on the partially built site.
    * @param  {Function} done           callback
    */
-  this.renderTemplate = function (opts, done) {
+  this.renderTemplate = async function (opts, done) {
     // todo, return any errors from processFile
 
     opts.file = (opts.file.indexOf('templates/') === 0)
@@ -1062,205 +1063,211 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
     setSettingsFrom( opts.settings )
     setDataFrom( opts.data )
-    getData( function ( data, typeInfo ) {
-      if ( opts.emitter ) console.log(  BUILD_TEMPLATE_START( opts.file ) )
-      processFile( opts.file );
-      if ( opts.emitter ) console.log( BUILD_TEMPLATE_END( opts.file ) )
-      done();
 
-      function processFile ( file ) {
-        // Here we try and abstract out the content type name from directory structure
-        var baseName = path.basename(file, '.html');
-        var newPath = path.dirname(file).replace('templates', './.build').split('/').slice(0,3).join('/');
+    const { data, typeInfo } = await getData()
 
-        var pathParts = path.dirname(file).split('/');
-        var objectName = pathParts[1];
-        var items = data[objectName];
-        var info = typeInfo[objectName];
-        var filePath = path.dirname(file);
-        var overrideFile = null;
+    if ( opts.emitter ) console.log(  BUILD_TEMPLATE_START( opts.file ) )
+    await processFile( opts.file );
+    if ( opts.emitter ) console.log( BUILD_TEMPLATE_END( opts.file ) )
+    if (done) done();
+    return Promise.resolve()
 
-        if(!items) {
-          logger.error('Missing data for content type ' + objectName);
-        }
+    async function processFile ( file ) {
+      debug('render-template:process-file')
+      // Here we try and abstract out the content type name from directory structure
+      var baseName = path.basename(file, '.html');
+      var newPath = path.dirname(file).replace('templates', './.build').split('/').slice(0,3).join('/');
 
-        items = _.map(items, function(value, key) { value._id = key; value._type = objectName; return value });
+      var pathParts = path.dirname(file).split('/');
+      var objectName = pathParts[1];
+      var items = data[objectName];
+      var info = typeInfo[objectName];
+      var filePath = path.dirname(file);
+      var overrideFile = null;
 
-        var build_preview = true;
-        if ( opts.itemKey ) {
-          build_preview = true;
-          items = items.filter( function ( item ) { return item._id === opts.itemKey } )
-        }
-
-        var publishedItems = _.filter(items, function(item) {
-          if(!item.publish_date) {
-            return false;
-          }
-
-          var now = Date.now();
-          var pdate = Date.parse(item.publish_date);
-
-          if(pdate > now + (1 * 60 * 1000)) {
-            return false;
-          }
-
-          return true;
-        });
-
-        var baseNewPath = '';
-
-        // Find if this thing has a template control
-        var templateWidgetName = null;
-
-        if(typeInfo[objectName]) {
-          typeInfo[objectName].controls.forEach(function(control) {
-            if(control.controlType === 'layout') {
-              templateWidgetName = control.name;
-            }
-          });
-        }
-
-        var listPath = null;
-
-        if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.listUrl) {
-          var customPathParts = newPath.split('/');
-
-          if(typeInfo[objectName].customUrls.listUrl === '#') // Special remove syntax
-          {
-            listPath = customPathParts.join('/');
-            customPathParts.splice(2, 1);
-          } else {
-            customPathParts[2] = typeInfo[objectName].customUrls.listUrl;
-          }
-
-          newPath = customPathParts.join('/');
-        }
-
-        var origNewPath = newPath;
-
-        // TODO, DETECT IF FILE ALREADY EXISTS, IF IT DOES APPEND A NUMBER TO IT DUMMY
-        if(baseName === 'list')
-        {
-          newPath = newPath + '/index.html';
-
-          if(listPath) {
-            newPath = listPath + '/index.html';
-          }
-
-          writeTemplate(file, newPath, { emitter: opts.emitter });
-
-        } else if (baseName === 'individual') {
-          // Output should be path + id + '/index.html'
-          // Should pass in object as 'item'
-          baseNewPath = newPath;
-          var previewPath = baseNewPath.replace('./.build', './.build/_wh_previews');
-
-          // TODO: Check to make sure file does not exist yet, and then adjust slug if it does? (how to handle in swig functions)
-          for(var key in publishedItems)
-          {
-            var val = publishedItems[key];
-
-            if(templateWidgetName && val[templateWidgetName]) {
-              overrideFile = 'templates/' + objectName + '/layouts/' + val[templateWidgetName];
-            }
-
-            var addSlug = true;
-            if(val.slug) {
-              baseNewPath = './.build/' + val.slug + '/';
-              addSlug = false;
-            } else {
-              if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.individualUrl) {
-                baseNewPath = origNewPath + '/' + utils.parseCustomUrl(typeInfo[objectName].customUrls.individualUrl, val) + '/';
-              } else {
-                baseNewPath = origNewPath + '/';
-              }
-            }
-
-            var tmpSlug = '';
-            if(!val.slug) {
-              tmpSlug = generateSlug(val);
-            } else {
-              tmpSlug = val.slug;
-            }
-
-            if(addSlug) {
-              val.slug = baseNewPath.replace('./.build/', '') + tmpSlug;
-              newPath = baseNewPath + tmpSlug + '/index.html';
-            } else {
-              newPath = baseNewPath + 'index.html';
-            }
-
-            if(fs.existsSync(overrideFile)) {
-              writeTemplate(overrideFile, newPath, { item: val, emitter: opts.emitter });
-              overrideFile = null;
-            } else {
-              writeTemplate(file, newPath, { item: val, emitter: opts.emitter });
-            }
-          }
-
-          // early return if we are not building preview pages
-          if ( build_preview === false ) return;
-
-          for(var key in items)
-          {
-            var val = items[key];
-
-            if(templateWidgetName && val[templateWidgetName]) {
-              overrideFile = 'templates/' + objectName + '/layouts/' + val[templateWidgetName];
-            }
-
-            newPath = previewPath + '/' + val.preview_url + '/index.html';
-
-            if(fs.existsSync(overrideFile)) {
-              writeTemplate(overrideFile, newPath, { item: val, emitter: opts.emitter });
-              overrideFile = null;
-            } else {
-              writeTemplate(file, newPath, { item: val, emitter: opts.emitter });
-            }
-          }
-
-        } else if(filePath.indexOf('templates/' + objectName + '/layouts') !== 0) { // Handle sub pages in here
-          baseNewPath = newPath;
-
-          var middlePathName = filePath.replace('templates/' + objectName, '') + '/' + baseName;
-          middlePathName = middlePathName.substring(1);
-
-          for(var key in publishedItems)
-          {
-            var val = publishedItems[key];
-
-            var addSlug = true;
-            if(val.slug) {
-              baseNewPath = './.build/' + val.slug + '/';
-              addSlug = false;
-            } else {
-              if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.individualUrl) {
-                baseNewPath = origNewPath + '/' + utils.parseCustomUrl(typeInfo[objectName].customUrls.individualUrl, val) + '/';
-              }   else {
-                baseNewPath = origNewPath + '/';
-              }
-            }
-
-            var tmpSlug = '';
-            if(!val.slug) {
-              tmpSlug = generateSlug(val);
-            } else {
-              tmpSlug = val.slug;
-            }
-
-            if(addSlug) {
-              val.slug = baseNewPath.replace('./.build/', '') + tmpSlug;
-              newPath = baseNewPath + tmpSlug + '/' + middlePathName + '/index.html';
-            } else {
-              newPath = baseNewPath + middlePathName + '/index.html';
-            }
-
-            writeTemplate(file, newPath, { item: val, emitter: opts.emitter });
-          }
-        }
+      if(!items) {
+        logger.error('Missing data for content type ' + objectName);
       }
 
-    } )
+      items = _.map(items, function(value, key) { value._id = key; value._type = objectName; return value });
+
+      var build_preview = true;
+      if ( opts.itemKey ) {
+        build_preview = true;
+        items = items.filter( function ( item ) { return item._id === opts.itemKey } )
+      }
+
+      var publishedItems = _.filter(items, function(item) {
+        if(!item.publish_date) {
+          return false;
+        }
+
+        var now = Date.now();
+        var pdate = Date.parse(item.publish_date);
+
+        if(pdate > now + (1 * 60 * 1000)) {
+          return false;
+        }
+
+        return true;
+      });
+
+      var baseNewPath = '';
+
+      // Find if this thing has a template control
+      var templateWidgetName = null;
+
+      if(typeInfo[objectName]) {
+        typeInfo[objectName].controls.forEach(function(control) {
+          if(control.controlType === 'layout') {
+            templateWidgetName = control.name;
+          }
+        });
+      }
+
+      var listPath = null;
+
+      if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.listUrl) {
+        var customPathParts = newPath.split('/');
+
+        if(typeInfo[objectName].customUrls.listUrl === '#') // Special remove syntax
+        {
+          listPath = customPathParts.join('/');
+          customPathParts.splice(2, 1);
+        } else {
+          customPathParts[2] = typeInfo[objectName].customUrls.listUrl;
+        }
+
+        newPath = customPathParts.join('/');
+      }
+
+      var origNewPath = newPath;
+
+      // TODO, DETECT IF FILE ALREADY EXISTS, IF IT DOES APPEND A NUMBER TO IT DUMMY
+      if(baseName === 'list')
+      {
+        newPath = newPath + '/index.html';
+
+        if(listPath) {
+          newPath = listPath + '/index.html';
+        }
+
+        await writeTemplate(file, newPath, { emitter: opts.emitter });
+
+      } else if (baseName === 'individual') {
+        // Output should be path + id + '/index.html'
+        // Should pass in object as 'item'
+        baseNewPath = newPath;
+        var previewPath = baseNewPath.replace('./.build', './.build/_wh_previews');
+
+        // TODO: Check to make sure file does not exist yet, and then adjust slug if it does? (how to handle in swig functions)
+        for(var key in publishedItems)
+        {
+          var val = publishedItems[key];
+
+          if(templateWidgetName && val[templateWidgetName]) {
+            overrideFile = 'templates/' + objectName + '/layouts/' + val[templateWidgetName];
+          }
+
+          var addSlug = true;
+          if(val.slug) {
+            baseNewPath = './.build/' + val.slug + '/';
+            addSlug = false;
+          } else {
+            if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.individualUrl) {
+              baseNewPath = origNewPath + '/' + utils.parseCustomUrl(typeInfo[objectName].customUrls.individualUrl, val) + '/';
+            } else {
+              baseNewPath = origNewPath + '/';
+            }
+          }
+
+          var tmpSlug = '';
+          if(!val.slug) {
+            tmpSlug = generateSlug(val);
+          } else {
+            tmpSlug = val.slug;
+          }
+
+          if(addSlug) {
+            val.slug = baseNewPath.replace('./.build/', '') + tmpSlug;
+            newPath = baseNewPath + tmpSlug + '/index.html';
+          } else {
+            newPath = baseNewPath + 'index.html';
+          }
+
+          debug('render-template:process-file:overrideFile')
+          debug(overrideFile)
+          if(await fileExists(overrideFile)) {
+            await writeTemplate(overrideFile, newPath, { item: val, emitter: opts.emitter });
+            overrideFile = null;
+          } else {
+            await writeTemplate(file, newPath, { item: val, emitter: opts.emitter });
+          }
+        }
+
+        // early return if we are not building preview pages
+        if ( build_preview === false ) return;
+
+        for(var key in items)
+        {
+          var val = items[key];
+
+          if(templateWidgetName && val[templateWidgetName]) {
+            overrideFile = 'templates/' + objectName + '/layouts/' + val[templateWidgetName];
+          }
+
+          newPath = previewPath + '/' + val.preview_url + '/index.html';
+
+          debug('render-template:process-file:overrideFile')
+          debug(overrideFile)
+          if(await fileExists(overrideFile)) {
+            await writeTemplate(overrideFile, newPath, { item: val, emitter: opts.emitter });
+            overrideFile = null;
+          } else {
+            await writeTemplate(file, newPath, { item: val, emitter: opts.emitter });
+          }
+        }
+
+      } else if(filePath.indexOf('templates/' + objectName + '/layouts') !== 0) { // Handle sub pages in here
+        baseNewPath = newPath;
+
+        var middlePathName = filePath.replace('templates/' + objectName, '') + '/' + baseName;
+        middlePathName = middlePathName.substring(1);
+
+        for(var key in publishedItems)
+        {
+          var val = publishedItems[key];
+
+          var addSlug = true;
+          if(val.slug) {
+            baseNewPath = './.build/' + val.slug + '/';
+            addSlug = false;
+          } else {
+            if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.individualUrl) {
+              baseNewPath = origNewPath + '/' + utils.parseCustomUrl(typeInfo[objectName].customUrls.individualUrl, val) + '/';
+            }   else {
+              baseNewPath = origNewPath + '/';
+            }
+          }
+
+          var tmpSlug = '';
+          if(!val.slug) {
+            tmpSlug = generateSlug(val);
+          } else {
+            tmpSlug = val.slug;
+          }
+
+          if(addSlug) {
+            val.slug = baseNewPath.replace('./.build/', '') + tmpSlug;
+            newPath = baseNewPath + tmpSlug + '/' + middlePathName + '/index.html';
+          } else {
+            newPath = baseNewPath + middlePathName + '/index.html';
+          }
+
+          await writeTemplate(file, newPath, { item: val, emitter: opts.emitter });
+        }
+      }
+    }
   }
 
 
@@ -1496,43 +1503,43 @@ module.exports.generator = function (config, options, logger, fileParser) {
       return Promise.resolve()
   };
 
-  var buildQueue = async.queue(function (task, callback) {
+  var buildQueue = async.queue(async function (task, callback) {
     if(task.type === 'static') {
 
       // For static builds we create a hash table to send correct livereload info
       // We only do this for static files for speed, normal builds dont really matter
       createStaticHashs();
 
-      removeDirectory('.build/static', function() {
-        var copyStaticOptions = {
-          emitter: task.emitter
-        }
-        self.copyStatic(copyStaticOptions, function( error ) {
-          if ( error ) return callback( error )
-          self.reloadFiles(callback);
-        });
-      });
+      await fse.remove('.build/static')
+      var copyStaticOptions = {
+        emitter: task.emitter
+      }
+      await self.copyStatic(copyStaticOptions)
+      await self.reloadFiles()
+      if (callback) callback()
+      return Promise.resolve()
     }
     else if (task.type === 'styles') {
       var copyStaticOptions = {
         emitter: task.emitter,
         baseDirectory: path.join('static', 'css')
       }
-      self.copyStatic(copyStaticOptions, function () {
-        self.reloadFiles(callback)
-      })
+      await self.copyStatic(copyStaticOptions)
+      await self.reloadFiles()
+      if (callback) callback()
+      return Promise.resolve()
     }
     else if (task.type === 'scripts') {
       var copyStaticOptions = {
         emitter: task.emitter,
-        baseDirectory: path.join('static', 'javascript')
+        baseDirectory: path.join('static', 'javascript'),
       }
-      self.copyStatic(copyStaticOptions, function () {
-        self.reloadFiles(callback)
-      })
+      await self.copyStatic(copyStaticOptions)
+      await self.reloadFiles()
+      if (callback) callback()
+      return Promise.resolve()
     }
     else {
-      /* pick up */
       var buildBothOptions = {
         concurrency: task.concurrency,
         emitter: task.emitter,
@@ -1540,17 +1547,10 @@ module.exports.generator = function (config, options, logger, fileParser) {
         pages: task.pages,
         templates: task.templates,
       }
-      self.realBuildBoth( buildBothOptions, function(error) {
-        if ( error === true ) {
-          return callback()
-        }
-        else if ( error ) {
-          callback(error)
-        }
-        else {
-          callback()
-        }
-      }, self.reloadFiles);
+      await self.realBuildBoth( buildBothOptions)
+      await self.reloadFiles()
+      if (callback) callback()
+      return Promise.resolve()
     }
   }, 1);
 
@@ -1957,11 +1957,11 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Array}      files     List of files to reload
    * @param  {Function}   done      Callback passed either a true value to indicate its done, or an error
    */
-  this.reloadFiles = function(done) {
+  this.reloadFiles = async function(done) {
     var fileList = 'true';
 
     if(self.staticHashs !== false && fs.existsSync('.build/static')) {
-      var newFiles = wrench.readdirSyncRecursive('.build/static');
+      var newFiles = await fse.remove('.build/static')
 
       newFiles.forEach(function(file) {
         var file = '.build/static/' + file;
@@ -1989,7 +1989,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
         if(done) done(true);
         self.staticHashs = false;
         self.changedStaticFiles = [];
-        return;
+        return Promise.resolve()
       }
 
       fileList = self.changedStaticFiles.join(',');
@@ -1998,10 +1998,14 @@ module.exports.generator = function (config, options, logger, fileParser) {
       self.changedStaticFiles = [];
     }
 
-
-    request({ url : 'http://localhost:' + liveReloadPort + '/changed?files=' + fileList, timeout: 10  }, function(error, response, body) {
-      if(done) done(true);
-    });
+    return new Promise ((resolve, reject) => {
+      request({ url : 'http://localhost:' + liveReloadPort + '/changed?files=' + fileList, timeout: 10  }, function(error, response, body) {
+        if (error && done) done(error)
+        if (error) return reject(error)
+        if(done) done(true);
+        resolve()
+      });
+    })
   };
 
   /**

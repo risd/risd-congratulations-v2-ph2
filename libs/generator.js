@@ -1,7 +1,8 @@
 'use strict';
 
 // Requires
-var firebase = require('firebase');
+const { initializeApp } = require('firebase/app')
+const { getDatabase } = require('firebase/database')
 var request = require('request');
 var mkdirp = require('mkdirp');
 var path = require('path');
@@ -142,12 +143,12 @@ module.exports.generator = function (config, options, logger, fileParser) {
   // We dont error out here so init can still be run
   if (firebaseName && firebaseAPIKey)
   {
-    firebase.initializeApp({
+    const app = initializeApp({
       apiKey: firebaseAPIKey,
       authDomain: `${ firebaseName }.firebaseapp.com`,
       databaseURL: `${ firebaseName }.firebaseio.com`,
-    });
-    this.root = firebase.database();
+    })
+    this.root = getDatabase(app)
   } else {
     this.root = null;
   }

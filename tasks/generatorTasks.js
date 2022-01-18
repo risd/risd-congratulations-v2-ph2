@@ -40,7 +40,7 @@ module.exports = function(grunt) {
   var email = grunt.option('email');
   var npmCache = grunt.option('npmcache');
 
-  var generator = require('../libs/generator').generator(grunt.config, { npm: npmBin, node: nodeBin, grunt: gruntBin, token: token, email: email, npmCache: npmCache }, grunt.log, grunt.file, root);
+  var generator = require('../libs/generator').generator(grunt.config, { npm: npmBin, node: nodeBin, grunt: gruntBin, token: token, email: email, npmCache: npmCache }, grunt.log, grunt.file);
 
   grunt.registerTask('scaffolding', 'Generate scaffolding for a new object', function(name) {
     var done = this.async();

@@ -136,10 +136,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-simple-watch');
   grunt.loadNpmTasks('grunt-rev');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-connect-proxy');
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-concurrent');
-  grunt.loadNpmTasks('grunt-usemin');
 };

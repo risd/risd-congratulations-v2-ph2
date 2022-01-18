@@ -3,7 +3,7 @@ const { spawn } = require('child_process')
 
 Error.strackTraceLimit = 20
 
-const pspawn = (cmd, args) => {
+const pspawn = async (cmd, args) => {
   let stdout = ''
   let stderr = ''
   return new Promise((resolve, reject) => {
@@ -38,7 +38,7 @@ test('download-data', async (t) => {
 
 test('build-page', async (t) => {
   try {
-    const page = pspawn('grunt', [
+    await pspawn('grunt', [
       'build-page',
       '--inFile=pages/index.html',
       '--data=./.build/data.json',
@@ -54,7 +54,7 @@ test('build-page', async (t) => {
 
 test('build-pages', async (t) => {
   try {
-    const page = pspawn('grunt', [
+    await pspawn('grunt', [
       'build-pages',
       '--data=./.build/data.json',
       '--emitter'
@@ -69,7 +69,7 @@ test('build-pages', async (t) => {
 
 test('build-template', async (t) => {
   try {
-    const template = pspawn('grunt', [
+    await pspawn('grunt', [
       'build-template',
       '--inFile=templates/universalpages/individual.html',
       '--data=./.build/data.json',
@@ -83,9 +83,24 @@ test('build-template', async (t) => {
   t.end()
 })
 
+test('build-templates', async (t) => {
+  try {
+    await pspawn('grunt', [
+      'build-templates',
+      '--data=./.build/data.json',
+      '--emitter'
+    ])
+    t.ok('build-templates:success')
+  } catch (error) {
+    console.error(error)
+    t.fail('build-templates:failed')
+  }
+  t.end()
+})
+
 test('build-page-cms', async (t) => {
   try {
-    const template = pspawn('grunt', [
+    await pspawn('grunt', [
       'build-page-cms',
       '--data=./.build/data.json',
       '--emitter'
@@ -96,13 +111,23 @@ test('build-page-cms', async (t) => {
     t.fail('build-page-cms:failed')
   }
   t.end()
-
 })
 
 // test('development-serve', async (t) => {
 //   t.end()
 // })
 
-// test('build-static', async (t) => {
-//   t.end()
-// })
+test('build-static', async (t) => {
+  try {
+    await pspawn('grunt', [
+      'build-static',
+      '--data=./.build/data.json',
+      '--emitter'
+    ])
+    t.ok('build-static:success')
+  } catch (error) {
+    console.error(error)
+    t.fail('build-static:failed')
+  }
+  t.end()
+})

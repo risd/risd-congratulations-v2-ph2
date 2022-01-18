@@ -36,17 +36,26 @@ test('download-data', async (t) => {
   t.end()
 })
 
-// test('build-page', async (t) => {
-//   try {
-//     const page = pspawn('grunt build-page --inFile=pages/index.html --data=./.build/data.json --emitter')  
-//     t.ok('build-page:success')
-//   } catch (error) {
-//     console.error(error)
-//     t.fail('build-page:failed')
-//   }
+test('build-page', async (t) => {
+  try {
+    const page = pspawn('grunt', [
+      'build-page',
+      '--inFile=pages/index.html',
+      '--data=./.build/data.json',
+      '--emitter'
+    ])
+    t.ok('build-page:success')
+  } catch (error) {
+    console.error(error)
+    t.fail('build-page:failed')
+  }
+  t.end()
+})
+
+// test('development-serve', async (t) => {
 //   t.end()
 // })
 
-// test('development-serve', async (t) => {
+// test('build-static', async (t) => {
 //   t.end()
 // })

@@ -52,6 +52,21 @@ test('build-page', async (t) => {
   t.end()
 })
 
+test('build-pages', async (t) => {
+  try {
+    const page = pspawn('grunt', [
+      'build-pages',
+      '--data=./.build/data.json',
+      '--emitter'
+    ])
+    t.ok('build-pages:success')
+  } catch (error) {
+    console.error(error)
+    t.fail('build-pages:failed')
+  }
+  t.end()
+})
+
 test('build-template', async (t) => {
   try {
     const template = pspawn('grunt', [
@@ -66,6 +81,22 @@ test('build-template', async (t) => {
     t.fail('build-template:failed')
   }
   t.end()
+})
+
+test('build-page-cms', async (t) => {
+  try {
+    const template = pspawn('grunt', [
+      'build-page-cms',
+      '--data=./.build/data.json',
+      '--emitter'
+    ])
+    t.ok('build-page-cms:success')
+  } catch (error) {
+    console.error(error)
+    t.fail('build-page-cms:failed')
+  }
+  t.end()
+
 })
 
 // test('development-serve', async (t) => {

@@ -2000,8 +2000,6 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
     return new Promise ((resolve, reject) => {
       request({ url : 'http://localhost:' + liveReloadPort + '/changed?files=' + fileList, timeout: 10  }, function(error, response, body) {
-        if (error && done) done(error)
-        if (error) return reject(error)
         if(done) done(true);
         resolve()
       });

@@ -56,7 +56,6 @@
     "grunt-postcss": "^0.9.0",
     "grunt-rev": "^0.1.0",
     "grunt-sass": "^3.1.0",
-    "grunt-simple-watch": "^0.1.2",
     "imagesloaded": "^3.1.8",
     "jquery": "^3.1.1",
     "jquery-bridget": "^2.0.1",
@@ -88,6 +87,7 @@
     "debug": "^4.3.3",
     "fs-extra": "^10.0.0",
     "grunt-cli": "^1.4.3",
+    "grunt-contrib-watch": "^1.1.0",
     "rm-webhook": "^3.0.1",
     "tape": "^5.4.1"
   },

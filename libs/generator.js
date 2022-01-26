@@ -2360,7 +2360,6 @@ module.exports.generator = function (config, options, logger, fileParser) {
         }
       });
 
-      grunt.task.run('useminPrepare');
       grunt.task.run('assetsMiddle');
 
       done();
@@ -2380,13 +2379,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
       grunt.task.run('concat');
     }
 
-    if(!_.isEmpty(grunt.config.get('cssmin')))
-    {
-      grunt.task.run('cssmin');
-    }
-
     grunt.task.run('rev');
-    grunt.task.run('usemin');
     grunt.task.run('assetsAfter');
   }
 

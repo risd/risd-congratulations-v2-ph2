@@ -51,9 +51,9 @@ module.exports = function(grunt) {
     var result = generator.makeScaffolding(name, done, force);
   });
 
-  grunt.registerTask('watch', 'Watch for changes in templates and regenerate site', function() {
+  grunt.registerTask('wh-watch', 'Watch for changes in templates and regenerate site', function() {
     generator.startLiveReload();
-    grunt.task.run('simple-watch');
+    grunt.task.run('watch')
   });
 
   grunt.registerTask('webListener', 'Listens for commands from CMS through websocket', function() {
@@ -340,7 +340,6 @@ module.exports = function(grunt) {
 
   // Check if initialized properly before running all these tasks
   grunt.registerTask('default',  'Clean, Build, Start Local Server, and Watch', function() {
-    grunt.task.run('configureProxies:wh-server')
     grunt.task.run('connect:wh-server');
     if ( grunt.option( 'skipBuild' ) ) {
       grunt.task.run('build-page-cms')

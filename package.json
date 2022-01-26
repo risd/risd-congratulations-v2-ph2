@@ -83,7 +83,7 @@
     "win-spawn": "^2.0.0"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.2",
+    "autoprefixer": "^9.8.8",
     "debug": "^4.3.3",
     "fs-extra": "^10.0.0",
     "grunt-cli": "^1.4.3",

@@ -344,7 +344,10 @@ module.exports = function(grunt) {
     if ( grunt.option( 'skipBuild' ) ) {
       grunt.task.run('build-page-cms')
     } else {
-      grunt.task.run('build');  
+      grunt.task.run('browserify')
+      grunt.task.run('sass')
+      grunt.task.run('postcss')
+      grunt.task.run('build')
     }
     grunt.task.run('concurrent:wh-concurrent');
   });

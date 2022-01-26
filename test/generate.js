@@ -1,30 +1,5 @@
 const test = require('tape')
-const { spawn } = require('child_process')
-
-Error.strackTraceLimit = 20
-
-const pspawn = async (cmd, args) => {
-  let stdout = ''
-  let stderr = ''
-  return new Promise((resolve, reject) => {
-    const p = spawn(cmd, args)
-    p.stdout.on('data', (data) => {
-      stdout += data.toString()
-    })
-    p.stderr.on('data', (data) => {
-      stderr += data.toString()
-    })
-    p.on('close', (code) => {
-      if (code !== 0) {
-        const msg = stderr.length > 0
-          ? stderr
-          : stdout
-        return reject(new Error(msg))
-      }
-      resolve(stdout)
-    })
-  })
-}
+const pspawn = require('./pspawn.js')
 
 test('download-data', async (t) => {
   try {
@@ -169,7 +144,3 @@ test('build', async (t) => {
   }
   t.end()
 })
-
-// test('development-serve', async (t) => {
-//   t.end()
-// })

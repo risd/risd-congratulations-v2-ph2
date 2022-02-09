@@ -11,6 +11,7 @@ var request = require('request');
 var mkdirp = require('mkdirp');
 var path = require('path');
 var fs = require('fs');
+const fsp = require('fs/promises')
 const fse = require('fs-extra')
 var glob = require('glob');
 var tinylr = require('tiny-lr');
@@ -30,7 +31,7 @@ var exec = require('child_process').exec;
 require('colors');
 
 // Template requires
-var swig = require('swig');
+var swig = require('@risd/swig');
 swig.setDefaults({ loader: swig.loaders.fs(__dirname + '/..') });
 var swigFunctions = require('./swig_functions').swigFunctions();
 var swigFilters = require('./swig_filters');
@@ -81,6 +82,18 @@ Function = wrap;
 var cmsSocketPort = 6557;
 var BUILD_DIRECTORY = '.build';
 var DATA_CACHE_PATH = path.join( BUILD_DIRECTORY, 'data.json' )
+let templateExtensions = [
+  '.html',
+  '.swig',
+  '.xml',
+  '.rss',
+  '.xhtml',
+  '.atom',
+  '.txt',
+  '.json',
+  '.svg',
+  '.html-partial',
+]
 
 // listened to by the webhook/push command
 // to determine if the deploy should halt.
@@ -160,8 +173,31 @@ const writeFile = async (filePath, content) => {
 
 /**
  * Generator that handles various commands
- * @param  {Object}   config     Configuration options from .firebase.conf
- * @param  {Object}   logger     Object to use for logging, defaults to no-ops
+ * @param  {Object}  config  grunt.config object
+ * @param  {Object}  config.webhook key:value from .firebase.conf
+ * @param  {string}  config.webhook.siteKey
+ * @param  {string}  config.webhook.siteName
+ * @param  {string}  config.webhook.firebase
+ * @param  {string}  config.webhook.firebaseAPIKey
+ * @param  {string}  config.webhook.embedly
+ * @param  {string}  config.webhook.server
+ * @param  {string}  config.webhook.imgix_host
+ * @param  {string}  config.webhook.imgix_secret
+ * @param  {string}  config.webhook.generator_url
+ * @param  {boolean}  config.webhook.custom
+ * @param  {object}  config.connect
+ * @param  {object}  config.connect.wh-server
+ * @param  {object}  config.connect.wh-server.options
+ * @param  {number}  config.connect.wh-server.options.liverload
+ * @param  {Object} config.swig
+ * @param  {Object} config.swig.functions
+ * @param  {Object} config.swig.filters
+ * @param  {Object} config.swig.tags
+ * @param  {Object} options
+ * @param  {boolean} options.npmCache
+ * @param  {string} options.npm  path to npm command path to use
+ * @param  {Object}  logger  Object to use for logging, defaults to no-ops
+ * @param  {Object}  fileParse  grunt.file instance
  */
 module.exports.generator = function (config, options, logger, fileParser) {
   var self = this;
@@ -216,6 +252,10 @@ module.exports.generator = function (config, options, logger, fileParser) {
     }
   }
 
+  const userTemplateExtensions = config.get('templateExtensions')
+  if (userTemplateExtensions) {
+    templateExtensions = templateExtensions.concat(userTemplateExtensions)
+  }
 
   var getTypeData = function(type, callback) {
     getBucket().child('contentType').child(type).once('value', function(data) {
@@ -970,10 +1010,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
   this.renderPages = async function (opts, done, cb)  {
     logger.ok('Rendering Pages\n');
 
-    var queryFiles = opts.pages || 'pages/**/*';
-    queryFiles = (queryFiles.indexOf('pages') === 0)
-      ? queryFiles
-      : [ 'pages', queryFiles ].join('/');
+    var queryFiles = opts.pages || 'pages/**/*'
 
     if ( opts.data ) setDataFrom( opts.data )
 
@@ -1002,7 +1039,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
       newFile = dir + '/' + filename + path.extname(file);
 
-      if(extension === '.html' || extension === '.xml' || extension === '.rss' || extension === '.xhtml' || extension === '.atom' || extension === '.txt' || extension === '.json' || extension === '.svg' || extension === '.html-partial') {
+      if (templateExtensions.indexOf(extension) !== -1) {
         await writeTemplate(file, newFile, { emitter: opts.emitter });
       } else {
         await mkdirp(path.dirname(newFile))
@@ -1065,7 +1102,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
   /**
    * Render a single template file.
    * @param  {object}   opts
-   * @param  {string}   opts.file      The template file to build
+   * @param  {string}   opts.inFile      The template file to build
    * @param  {string|object}  opts.data?      The data to use
    * @param  {string|object}  opts.settings?  The settings to use
    * @param  {boolean}  opts.emitter?  Boolean to determine if the build process should emit events of progress to process.stdin
@@ -1073,20 +1110,15 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Function} done           callback
    */
   this.renderTemplate = async function (opts, done) {
-    // todo, return any errors from processFile
-
-    opts.file = (opts.file.indexOf('templates/') === 0)
-      ? opts.file
-      : path.join( 'templates', opts.file );
 
     setSettingsFrom( opts.settings )
     setDataFrom( opts.data )
 
     const { data, typeInfo } = await getData()
 
-    if ( opts.emitter ) console.log(  BUILD_TEMPLATE_START( opts.file ) )
-    await processFile( opts.file );
-    if ( opts.emitter ) console.log( BUILD_TEMPLATE_END( opts.file ) )
+    if ( opts.emitter ) console.log(  BUILD_TEMPLATE_START( opts.inFile ) )
+    await processFile( opts.inFile );
+    if ( opts.emitter ) console.log( BUILD_TEMPLATE_END( opts.inFile ) )
     if (done) done();
     return Promise.resolve()
 
@@ -1699,13 +1731,9 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {string|object}  opts.data?
    * @param  {string|object}  opts.settings?
    * @param  {boolean}  opts.emitter?
-   * @param  {Function} done    callback when done
+   * @param  {Function} done?  callback when done
    */
   this.renderPage = async function (opts, done) {
-    opts.inFile = (opts.inFile.indexOf('pages/') === 0)
-      ? opts.inFile
-      : [ 'pages', opts.inFile ].join('/');
-
     if ( ! opts.outFile ) opts.outFile = opts.inFile.replace('pages/', './.build/')
 
     if ( opts.data ) setDataFrom( opts.data )
@@ -1715,19 +1743,24 @@ module.exports.generator = function (config, options, logger, fileParser) {
     
     if ( opts.emitter ) console.log( BUILD_PAGE_START( opts.inFile ) )
     var extension = path.extname( opts.inFile );
-    if( extension === '.html' || extension === '.xml' || extension === '.rss' || extension === '.xhtml' || extension === '.atom' || extension === '.txt' || extension === '.json' || extension === '.svg' || extension === '.html-partial' ) {
+    if (templateExtensions.indexOf(extension) !== -1) {
       await writeTemplate( opts.inFile, opts.outFile, { emitter: opts.emitter } )
     } else {
       await mkdirp( path.dirname( opts.outFile ) )
-      await writeDocument( {
-        file: opts.outFile,
-        content: fs.readFileSync( opts.inFile ),
-        emitter: opts.emitter,
-      } )
+      try {
+        const content = await fsp.readFile(opts.inFile)
+        await writeDocument({
+          file: opts.outFile,
+          content,
+          emitter: opts.emitter,
+        })
+      } catch (error) {
+        throw error
+      }
     }
 
     if ( opts.emitter ) console.log( BUILD_PAGE_END( opts.inFile ) )
-    done();
+    if (done) done()
   }
 
   /**

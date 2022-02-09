@@ -33,14 +33,10 @@ module.exports = function(grunt) {
     }
   };
 
-  var npmBin = grunt.option('npmbin');
-  var nodeBin = grunt.option('nodebin');
-  var gruntBin = grunt.option('gruntbin');
-  var token = grunt.option('token');
-  var email = grunt.option('email');
-  var npmCache = grunt.option('npmcache');
+  var npmBin = grunt.option('npmbin')
+  var npmCache = grunt.option('npmcache')
 
-  var generator = require('../libs/generator').generator(grunt.config, { npm: npmBin, node: nodeBin, grunt: gruntBin, token: token, email: email, npmCache: npmCache }, grunt.log, grunt.file);
+  var generator = require('../libs/generator').generator(grunt.config, { npm: npmBin, npmCache: npmCache }, grunt.log, grunt.file);
 
   grunt.registerTask('scaffolding', 'Generate scaffolding for a new object', function(name) {
     var done = this.async();
@@ -159,7 +155,7 @@ module.exports = function(grunt) {
     }
 
     var options = {
-      file: grunt.option('inFile'),
+      inFile: grunt.option('inFile'),
       emitter: grunt.option('emitter') || false,
       data: grunt.option('data') || undefined,
       settings: grunt.option('settings') || undefined,

@@ -29,7 +29,8 @@
     "build-page": "grunt build-page",
     "build-pages": "grunt build-pages",
     "build-template": "grunt build-template",
-    "configuration": "rm-wh conf welcome-phase-2"
+    "configuration": "rm-wh conf welcome-phase-2",
+    "push-static": "grunt --noWatch && rm-wh push-static welcome.risd.systems --staticFolder=.build"
   },
   "homepage": "https://github.com/risd/webhook-generate",
   "dependencies": {

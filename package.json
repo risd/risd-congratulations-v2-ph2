@@ -42,7 +42,7 @@
     "@risd/ui": "^16.0.0",
     "@risd/webhook-react-tag": "^3.0.1",
     "adm-zip": "^0.4.13",
-    "async": "^0.2.10",
+    "async": "^0.3.0",
     "babelify": "^10.0.0",
     "cheerio": "^1.0.0-rc.2",
     "colors": "^0.6.2",

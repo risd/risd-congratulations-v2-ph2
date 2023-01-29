@@ -13,20 +13,23 @@ module.exports = function(grunt) {
     watch: {
       sass: {
         files: ['scss/**/*.scss'],
-        tasks: ['sass',
-          'autoprefixer',
+        tasks: [
+          'sass',
+          'postcss',
           'build-styles'
         ]
       },
       browserify: {
         files: ['script/src/**/*.js'],
-        tasks: ['browserify:client',
+        tasks: [
+          'browserify:client',
           'build-scripts'
         ]
       },
       concat: {
         files: ['<%= concat.dist.src %>'],
-        tasks: ['concat',
+        tasks: [
+          'concat',
           'build-static'
         ]
       }
@@ -39,7 +42,8 @@ module.exports = function(grunt) {
         options: {
           // WebHook will minifiy, so we don't have to here
           style: 'expanded',
-          loadPath: require('node-neat').includePaths
+          loadPath: require('node-neat').includePaths,
+          implementation: require('sass'),
         },
         files: [{
           expand: 'true',
@@ -57,12 +61,12 @@ module.exports = function(grunt) {
       }
     },
 
-
-    // Add CSS prefixes once the Sass is compiled
-    autoprefixer: {
+    postcss: {
       options: {
-        browsers: ['last 2 versions', 'ie 9'],
-        map: true
+        map: true,
+        processors: [
+          require('autoprefixer')(),
+        ],
       },
       distSite: {
         src: 'static/css/site.css',
@@ -71,7 +75,7 @@ module.exports = function(grunt) {
       distCMS: {
         src: 'static/css/cms.css',
         dest: 'static/css/cms.css'
-      }
+      },
     },
 
     // Build process for Javascript
@@ -123,7 +127,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-autoprefixer');
+  grunt.loadNpmTasks('@lodder/grunt-postcss');
   grunt.loadNpmTasks('grunt-browserify');
 
   // NEVER REMOVE THESE LINES, OR ELSE YOUR PROJECT MAY NOT WORK

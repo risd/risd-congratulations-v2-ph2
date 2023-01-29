@@ -63,7 +63,7 @@
     "mississippi": "^1.3.0",
     "mkdirp": "^1.0.4",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.23",
+    "moment-timezone": "^0.5.35",
     "node-bourbon": "^4.2.3",
     "node-neat": "^1.7.2",
     "nodejs-websocket": "^1.7.2",

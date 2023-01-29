@@ -3,7 +3,7 @@ const pspawn = require('./pspawn.js')
 
 test('build javascript', async (t) => {
   try {
-    const output = await pspawn('grunt', ['browserify:client'])
+    const output = await pspawn('grunt', ['browserify'])
     t.ok('built client javascript')
   } catch (error) {
     t.ifError(error)

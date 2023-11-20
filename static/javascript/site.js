@@ -748,37 +748,28 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.App = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 var _styled = _interopRequireDefault(require("../styled"));
-
 var _templateObject;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
-
 var App = function App(props) {
   return /*#__PURE__*/_react.default.createElement(StyledApp, null, props.children);
 };
-
 exports.App = App;
-
 var StyledApp = _styled.default.div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  color: ", ";\n  font-size: ", ";\n  font-family: ", ";\n  line-height: ", ";\n  background-color: ", ";\n"])), function (props) {
   return props.theme.colors.text;
 }, function (props) {
@@ -798,42 +789,33 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Button = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 var _styled = _interopRequireDefault(require("../styled"));
-
 var _templateObject;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
-
 var Button = function Button(props) {
   return /*#__PURE__*/_react.default.createElement(StyledButton, {
     disabled: props.disabled
   }, props.children);
 };
-
 exports.Button = Button;
 Button.defaultProps = {
   disabled: false
 };
-
 var StyledButton = _styled.default.button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  margin-bottom: ", ";\n  padding: ", ";\n  color: ", ";\n  font-weight: ", ";\n  font-size: inherit;\n  font-family: ", ";\n  line-height: inherit;\n  background-color: ", ";\n  border: 0;\n\n  &:not([disabled]):hover {\n    background-color: ", ";\n  }\n\n  &[disabled] {\n    cursor: not-allowed;\n    opacity: 0.5;\n  }\n"])), function (props) {
   return props.theme.spacings[3];
 }, function (props) {
@@ -857,29 +839,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.FormattedDate = void 0;
-
 var _dateFns = require("date-fns");
-
 var _react = _interopRequireDefault(require("react"));
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
+
 /**
  * Parses one string as a start date and another string as an end date, then
  * renders a formatted date range.
  */
-
-
 var FormattedDate = function FormattedDate(props) {
   var formattedDate = getFormattedDate(props.start, props.end);
   return /*#__PURE__*/_react.default.createElement("span", null, " ", formattedDate, " ");
 };
-
 exports.FormattedDate = FormattedDate;
-
 function getFormattedDate(startDate, endDate) {
   var start = (0, _dateFns.toDate)(new Date(startDate));
   var end = endDate ? (0, _dateFns.toDate)(new Date(endDate)) : undefined;
@@ -895,57 +871,45 @@ function getFormattedDate(startDate, endDate) {
   var formattedStart;
   var formattedEnd;
   var formattedRange;
-
   var removeYearFromFormatString = function removeYearFromFormatString(formatString) {
     return formatString.replace(", yyyy", "");
   };
-
   var removeMonthFromFormatString = function removeMonthFromFormatString(formatString) {
     return formatString.replace("MMM ", "");
   };
-
   if (start) {
     isStartCurrentYear = (0, _dateFns.isSameYear)(start, now);
-
     if (isStartCurrentYear) {
       startFormatString = removeYearFromFormatString(startFormatString);
     }
   }
-
   if (end) {
     isEndCurrentYear = (0, _dateFns.isSameYear)(end, now);
-
     if (isEndCurrentYear) {
       endFormatString = removeYearFromFormatString(endFormatString);
     }
   }
-
   if (start && end) {
     isRangeSameDate = (0, _dateFns.isSameDay)(start, end);
     isRangeSameYear = (0, _dateFns.isSameYear)(start, end);
     isRangeSameMonth = (0, _dateFns.isSameMonth)(start, end);
-
     if (!isRangeSameDate) {
       if (isStartCurrentYear || isRangeSameYear) {
         startFormatString = removeYearFromFormatString(startFormatString);
       }
-
       if (isRangeSameMonth && !isNowInRange) {
         endFormatString = removeMonthFromFormatString(endFormatString);
       }
     }
   }
-
   if (start) {
     formattedStart = (0, _dateFns.format)(start, startFormatString);
     formattedStart = formatMonthNames(formattedStart);
   }
-
   if (end) {
     formattedEnd = (0, _dateFns.format)(end, endFormatString);
     formattedEnd = formatMonthNames(formattedEnd);
   }
-
   if (start && end) {
     if (isRangeSameDate) {
       formattedRange = formattedStart;
@@ -959,7 +923,6 @@ function getFormattedDate(startDate, endDate) {
   } else if (end) {
     formattedRange = "through ".concat(formattedEnd);
   }
-
   return formattedRange;
 }
 /**
@@ -967,7 +930,6 @@ function getFormattedDate(startDate, endDate) {
  *
  * @param str Input string containing en-US month abbreviations
  */
-
 
 function formatMonthNames(str) {
   str = str.replace("Jun ", "June ");
@@ -983,58 +945,43 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Heading = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 var _styled = _interopRequireDefault(require("../styled"));
-
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
-
 var Heading = function Heading(props) {
   switch (props.level) {
     case 1:
       return /*#__PURE__*/_react.default.createElement(StyledHeading1, null, props.children);
-
     case 2:
       return /*#__PURE__*/_react.default.createElement(StyledHeading2, null, props.children);
-
     case 3:
       return /*#__PURE__*/_react.default.createElement(StyledHeading3, null, props.children);
-
     case 4:
       return /*#__PURE__*/_react.default.createElement(StyledHeading4, null, props.children);
-
     case 5:
       return /*#__PURE__*/_react.default.createElement(StyledHeading5, null, props.children);
-
     case 6:
       return /*#__PURE__*/_react.default.createElement(StyledHeading6, null, props.children);
-
     default:
       return /*#__PURE__*/_react.default.createElement("div", null, props.children);
   }
 };
-
 exports.Heading = Heading;
-
 var StyledHeading1 = _styled.default.h1(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  margin-top: ", ";\n  margin-bottom: ", ";\n  color: ", ";\n  font-weight: ", ";\n  font-size: ", ";\n  font-family: ", ";\n  line-height: ", ";\n"])), function (props) {
   return props.theme.spacings[4];
 }, function (props) {
@@ -1050,7 +997,6 @@ var StyledHeading1 = _styled.default.h1(_templateObject || (_templateObject = _t
 }, function (props) {
   return props.theme.lineHeights.tight;
 });
-
 var StyledHeading2 = _styled.default.h2(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  margin-top: ", ";\n  margin-bottom: ", ";\n  color: ", ";\n  font-weight: ", ";\n  font-size: ", ";\n  font-family: ", ";\n  line-height: ", ";\n"])), function (props) {
   return props.theme.spacings[4];
 }, function (props) {
@@ -1066,7 +1012,6 @@ var StyledHeading2 = _styled.default.h2(_templateObject2 || (_templateObject2 = 
 }, function (props) {
   return props.theme.lineHeights.tight;
 });
-
 var StyledHeading3 = _styled.default.h3(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  margin-top: ", ";\n  margin-bottom: ", ";\n  color: ", ";\n  font-weight: ", ";\n  font-size: ", ";\n  font-family: ", ";\n"])), function (props) {
   return props.theme.spacings[4];
 }, function (props) {
@@ -1080,7 +1025,6 @@ var StyledHeading3 = _styled.default.h3(_templateObject3 || (_templateObject3 = 
 }, function (props) {
   return props.theme.fontFamilies.heading;
 });
-
 var StyledHeading4 = _styled.default.h4(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  margin-top: ", ";\n  margin-bottom: ", ";\n  color: ", ";\n  font-weight: ", ";\n  font-size: ", ";\n  font-family: ", ";\n  line-height: ", ";\n"])), function (props) {
   return props.theme.spacings[4];
 }, function (props) {
@@ -1096,7 +1040,6 @@ var StyledHeading4 = _styled.default.h4(_templateObject4 || (_templateObject4 = 
 }, function (props) {
   return props.theme.lineHeights.tight;
 });
-
 var StyledHeading5 = _styled.default.h5(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  margin-top: ", ";\n  margin-bottom: ", ";\n  color: ", ";\n  font-weight: ", ";\n  font-size: ", ";\n  font-family: ", ";\n"])), function (props) {
   return props.theme.spacings[4];
 }, function (props) {
@@ -1110,7 +1053,6 @@ var StyledHeading5 = _styled.default.h5(_templateObject5 || (_templateObject5 = 
 }, function (props) {
   return props.theme.fontFamilies.heading;
 });
-
 var StyledHeading6 = _styled.default.h6(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n  margin-top: ", ";\n  margin-bottom: ", ";\n  color: ", ";\n  font-weight: ", ";\n  font-size: ", ";\n  font-family: ", ";\n"])), function (props) {
   return props.theme.spacings[4];
 }, function (props) {
@@ -1132,37 +1074,28 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Label = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 var _styled = _interopRequireDefault(require("../styled"));
-
 var _templateObject;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
-
 var Label = function Label(props) {
   return /*#__PURE__*/_react.default.createElement(StyledLabel, null, props.children);
 };
-
 exports.Label = Label;
-
 var StyledLabel = _styled.default.span(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  font-weight: ", ";\n  letter-spacing: ", ";\n  text-transform: uppercase;\n"])), function (props) {
   return props.theme.fontWeights.label;
 }, function (props) {
@@ -1176,59 +1109,47 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Link = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 var _styled = _interopRequireDefault(require("../styled"));
-
 var _templateObject;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
+
 /**
  * Intelligently render an anchor element as either an internal link or an
  * external link. External links will open in a new window or tab.
  */
-
-
 var Link = function Link(props) {
   var InternalLink = /*#__PURE__*/_react.default.createElement(StyledLink, {
     href: props.to,
     title: props.title
   }, props.children);
-
   var ExternalLink = /*#__PURE__*/_react.default.createElement(StyledLink, {
     href: props.to,
     title: props.title,
     target: "_blank",
     rel: "noopener"
   }, props.children);
-
   return isUrlExternal(props.to) ? ExternalLink : InternalLink;
 };
-
 exports.Link = Link;
-
 var isUrlExternal = function isUrlExternal(url) {
   var domainRe = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
   return domainRe.test(url);
 };
-
 var StyledLink = _styled.default.a(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  color: ", ";\n\n  &:visited {\n    color: ", ";\n  }\n\n  &:hover {\n    color: ", ";\n  }\n"])), function (props) {
   return props.theme.colors.link;
 }, function (props) {
@@ -1244,37 +1165,28 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Logo = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 var _styled = _interopRequireDefault(require("../styled"));
-
 var _templateObject;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
-
 var Logo = function Logo(props) {
   return /*#__PURE__*/_react.default.createElement(StyledLogo, null, props.children);
 };
-
 exports.Logo = Logo;
-
 var StyledLogo = _styled.default.span(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  font-weight: ", ";\n  font-size: ", ";\n  line-height: ", ";\n  letter-spacing: ", ";\n  text-transform: uppercase;\n"])), function (props) {
   return props.theme.fontWeights.logo;
 }, function (props) {
@@ -1297,34 +1209,23 @@ function _typeof(obj) {
     return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   }, _typeof(obj);
 }
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Nav = void 0;
-
 var _react = _interopRequireWildcard(require("react"));
-
 var _styledComponents = _interopRequireDefault(require("styled-components"));
-
 var _closeIcon = require("../images/close-icon");
-
 var _hamburgerIcon = require("../images/hamburger-icon");
-
 var _sealIcon = require("../images/seal-icon");
-
 var _heading = require("./heading");
-
 var _label = require("./label");
-
 var _search = require("./search");
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _getRequireWildcardCache(nodeInterop) {
   if (typeof WeakMap !== "function") return null;
   var cacheBabelInterop = new WeakMap();
@@ -1333,31 +1234,24 @@ function _getRequireWildcardCache(nodeInterop) {
     return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
   })(nodeInterop);
 }
-
 function _interopRequireWildcard(obj, nodeInterop) {
   if (!nodeInterop && obj && obj.__esModule) {
     return obj;
   }
-
   if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
     return {
       default: obj
     };
   }
-
   var cache = _getRequireWildcardCache(nodeInterop);
-
   if (cache && cache.has(obj)) {
     return cache.get(obj);
   }
-
   var newObj = {};
   var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-
   for (var key in obj) {
     if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
       var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-
       if (desc && (desc.get || desc.set)) {
         Object.defineProperty(newObj, key, desc);
       } else {
@@ -1365,24 +1259,18 @@ function _interopRequireWildcard(obj, nodeInterop) {
       }
     }
   }
-
   newObj.default = obj;
-
   if (cache) {
     cache.set(obj, newObj);
   }
-
   return newObj;
 }
-
 function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
-
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
   if (typeof o === "string") return _arrayLikeToArray(o, minLen);
@@ -1391,31 +1279,23 @@ function _unsupportedIterableToArray(o, minLen) {
   if (n === "Map" || n === "Set") return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
 }
-
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
-
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
     arr2[i] = arr[i];
   }
-
   return arr2;
 }
-
 function _iterableToArrayLimit(arr, i) {
   var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-
   if (_i == null) return;
   var _arr = [];
   var _n = true;
   var _d = false;
-
   var _s, _e;
-
   try {
     for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
       _arr.push(_s.value);
-
       if (i && _arr.length === i) break;
     }
   } catch (err) {
@@ -1428,24 +1308,19 @@ function _iterableToArrayLimit(arr, i) {
       if (_d) throw _e;
     }
   }
-
   return _arr;
 }
-
 function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
 }
-
 var Nav = function Nav(props) {
   var _useState = (0, _react.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      isNavOpen = _useState2[0],
-      setIsNavOpen = _useState2[1];
-
+    _useState2 = _slicedToArray(_useState, 2),
+    isNavOpen = _useState2[0],
+    setIsNavOpen = _useState2[1];
   var toggleNav = function toggleNav() {
     return setIsNavOpen(!isNavOpen);
   };
-
   return /*#__PURE__*/_react.default.createElement(Container, null, /*#__PURE__*/_react.default.createElement(Navbar, null, /*#__PURE__*/_react.default.createElement(Button, {
     title: "Open navigation",
     onClick: toggleNav
@@ -1484,9 +1359,7 @@ var Nav = function Nav(props) {
     rel: "noreferrer"
   }, /*#__PURE__*/_react.default.createElement(_sealIcon.SealIcon, null)))));
 };
-
 exports.Nav = Nav;
-
 var Container = _styledComponents.default.header.withConfig({
   displayName: "nav__Container",
   componentId: "sc-1kiqfee-0"
@@ -1503,12 +1376,10 @@ var Container = _styledComponents.default.header.withConfig({
 }, function (props) {
   return props.theme.colors.linkHover;
 });
-
 var Navbar = _styledComponents.default.nav.withConfig({
   displayName: "nav__Navbar",
   componentId: "sc-1kiqfee-1"
 })(["display:grid;grid-template-columns:3rem 1fr 3rem;justify-content:space-between;align-items:center;height:3rem;"]);
-
 var Button = _styledComponents.default.button.withConfig({
   displayName: "nav__Button",
   componentId: "sc-1kiqfee-2"
@@ -1517,7 +1388,6 @@ var Button = _styledComponents.default.button.withConfig({
 }, function (props) {
   return props.theme.colors.linkHover;
 });
-
 var HeadingContainer = _styledComponents.default.div.withConfig({
   displayName: "nav__HeadingContainer",
   componentId: "sc-1kiqfee-3"
@@ -1526,12 +1396,10 @@ var HeadingContainer = _styledComponents.default.div.withConfig({
 }, function (props) {
   return props.theme.spacings[3];
 });
-
 var SealIconContainer = _styledComponents.default.div.withConfig({
   displayName: "nav__SealIconContainer",
   componentId: "sc-1kiqfee-4"
 })(["font-size:2rem;line-height:0;text-align:right;a{display:inline-block;}path{fill:currentColor;}"]);
-
 var Sidebar = _styledComponents.default.div.withConfig({
   displayName: "nav__Sidebar",
   componentId: "sc-1kiqfee-5"
@@ -1554,7 +1422,6 @@ var Sidebar = _styledComponents.default.div.withConfig({
 }, function (props) {
   return props.theme.spacings[3];
 });
-
 var NavHeading = _styledComponents.default.span.withConfig({
   displayName: "nav__NavHeading",
   componentId: "sc-1kiqfee-6"
@@ -1563,7 +1430,6 @@ var NavHeading = _styledComponents.default.span.withConfig({
 }, function (props) {
   return props.theme.spacings[1];
 });
-
 var CloseIconContainer = _styledComponents.default.div.withConfig({
   displayName: "nav__CloseIconContainer",
   componentId: "sc-1kiqfee-7"
@@ -1584,42 +1450,33 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Paragraph = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 var _styled = _interopRequireDefault(require("../styled"));
-
 var _templateObject;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
-
 var Paragraph = function Paragraph(props) {
   return /*#__PURE__*/_react.default.createElement(StyledParagraph, {
     large: props.large
   }, props.children);
 };
-
 exports.Paragraph = Paragraph;
 Paragraph.defaultProps = {
   large: false
 };
-
 var StyledParagraph = _styled.default.p(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  max-width: 60ch;\n  margin-top: 0;\n  margin-bottom: ", ";\n  font-size: ", ";\n"])), function (props) {
   return props.large ? props.theme.spacings[4] : props.theme.spacings[3];
 }, function (props) {
@@ -1638,34 +1495,23 @@ function _typeof(obj) {
     return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   }, _typeof(obj);
 }
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Search = void 0;
-
 var _lodash = require("lodash");
-
 var _react = _interopRequireWildcard(require("react"));
-
 var _reactOnclickoutside = _interopRequireDefault(require("react-onclickoutside"));
-
 var _styled = _interopRequireDefault(require("../../styled"));
-
 var _searchInput = require("./search-input");
-
 var _searchLabel = require("./search-label");
-
 var _searchResults = require("./search-results");
-
 var _templateObject;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _getRequireWildcardCache(nodeInterop) {
   if (typeof WeakMap !== "function") return null;
   var cacheBabelInterop = new WeakMap();
@@ -1674,31 +1520,24 @@ function _getRequireWildcardCache(nodeInterop) {
     return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
   })(nodeInterop);
 }
-
 function _interopRequireWildcard(obj, nodeInterop) {
   if (!nodeInterop && obj && obj.__esModule) {
     return obj;
   }
-
   if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
     return {
       default: obj
     };
   }
-
   var cache = _getRequireWildcardCache(nodeInterop);
-
   if (cache && cache.has(obj)) {
     return cache.get(obj);
   }
-
   var newObj = {};
   var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-
   for (var key in obj) {
     if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
       var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-
       if (desc && (desc.get || desc.set)) {
         Object.defineProperty(newObj, key, desc);
       } else {
@@ -1706,34 +1545,27 @@ function _interopRequireWildcard(obj, nodeInterop) {
       }
     }
   }
-
   newObj.default = obj;
-
   if (cache) {
     cache.set(obj, newObj);
   }
-
   return newObj;
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
-
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
@@ -1743,7 +1575,6 @@ function _defineProperties(target, props) {
     Object.defineProperty(target, descriptor.key, descriptor);
   }
 }
-
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
@@ -1752,12 +1583,10 @@ function _createClass(Constructor, protoProps, staticProps) {
   });
   return Constructor;
 }
-
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function");
   }
-
   subClass.prototype = Object.create(superClass && superClass.prototype, {
     constructor: {
       value: subClass,
@@ -1770,58 +1599,45 @@ function _inherits(subClass, superClass) {
   });
   if (superClass) _setPrototypeOf(subClass, superClass);
 }
-
 function _setPrototypeOf(o, p) {
   _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
     o.__proto__ = p;
     return o;
   };
-
   return _setPrototypeOf(o, p);
 }
-
 function _createSuper(Derived) {
   var hasNativeReflectConstruct = _isNativeReflectConstruct();
-
   return function _createSuperInternal() {
     var Super = _getPrototypeOf(Derived),
-        result;
-
+      result;
     if (hasNativeReflectConstruct) {
       var NewTarget = _getPrototypeOf(this).constructor;
-
       result = Reflect.construct(Super, arguments, NewTarget);
     } else {
       result = Super.apply(this, arguments);
     }
-
     return _possibleConstructorReturn(this, result);
   };
 }
-
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
     return call;
   } else if (call !== void 0) {
     throw new TypeError("Derived constructors may only return object or undefined");
   }
-
   return _assertThisInitialized(self);
 }
-
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
   }
-
   return self;
 }
-
 function _isNativeReflectConstruct() {
   if (typeof Reflect === "undefined" || !Reflect.construct) return false;
   if (Reflect.construct.sham) return false;
   if (typeof Proxy === "function") return true;
-
   try {
     Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
     return true;
@@ -1829,14 +1645,12 @@ function _isNativeReflectConstruct() {
     return false;
   }
 }
-
 function _getPrototypeOf(o) {
   _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
   };
   return _getPrototypeOf(o);
 }
-
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -1848,30 +1662,20 @@ function _defineProperty(obj, key, value) {
   } else {
     obj[key] = value;
   }
-
   return obj;
 }
-
 var SWIFTYPE_ENDPOINT = "https://search-api.swiftype.com/api/v1/public/engines/search.json";
-
 var SearchClass = /*#__PURE__*/function (_Component) {
   _inherits(SearchClass, _Component);
-
   var _super = _createSuper(SearchClass);
-
   function SearchClass(props) {
     var _this;
-
     _classCallCheck(this, SearchClass);
-
     _this = _super.call(this, props);
-
     _defineProperty(_assertThisInitialized(_this), "id", "search");
-
     _defineProperty(_assertThisInitialized(_this), "getThrottledResults", (0, _lodash.throttle)(function () {
       _this.getResults(_this.state.query);
     }, 200));
-
     _this.state = {
       query: "",
       results: [],
@@ -1882,7 +1686,6 @@ var SearchClass = /*#__PURE__*/function (_Component) {
     _this.id = (0, _lodash.uniqueId)("".concat(_this.id, "-"));
     return _this;
   }
-
   _createClass(SearchClass, [{
     key: "render",
     value: function render() {
@@ -1905,7 +1708,6 @@ var SearchClass = /*#__PURE__*/function (_Component) {
     key: "handleChange",
     value: function handleChange(event) {
       var _this2 = this;
-
       var inputValue = event.currentTarget.value;
       this.setState({
         query: inputValue
@@ -1931,7 +1733,6 @@ var SearchClass = /*#__PURE__*/function (_Component) {
     key: "getResults",
     value: function getResults(query) {
       var _this3 = this;
-
       if (this.state.query) {
         fetch(SWIFTYPE_ENDPOINT, {
           method: "POST",
@@ -1970,40 +1771,30 @@ var SearchClass = /*#__PURE__*/function (_Component) {
       }
     }
   }]);
-
   return SearchClass;
 }(_react.Component);
-
 _defineProperty(SearchClass, "defaultProps", {
   maxResults: 4,
   inputPlaceholder: "Search"
 });
-
 var EnhancedSearch = (0, _reactOnclickoutside.default)(SearchClass); // tslint:disable-next-line: max-classes-per-file
 
 var Search = /*#__PURE__*/function (_SearchClass) {
   _inherits(Search, _SearchClass);
-
   var _super2 = _createSuper(Search);
-
   function Search() {
     _classCallCheck(this, Search);
-
     return _super2.apply(this, arguments);
   }
-
   _createClass(Search, [{
     key: "render",
     value: function render() {
       return /*#__PURE__*/_react.default.createElement(EnhancedSearch, this.props);
     }
   }]);
-
   return Search;
 }(SearchClass);
-
 exports.Search = Search;
-
 var StyledSearch = _styled.default.div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: relative;\n  fill: ", ";\n\n  &:focus-within {\n    fill: ", ";\n  }\n"])), function (props) {
   return props.theme.colors.link;
 }, function (props) {
@@ -2017,31 +1808,24 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SearchInput = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 var _styled = _interopRequireDefault(require("../../styled"));
-
 var _templateObject;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
-
 var SearchInput = function SearchInput(props) {
   return /*#__PURE__*/_react.default.createElement(StyledSearchInput, {
     type: "search",
@@ -2052,12 +1836,10 @@ var SearchInput = function SearchInput(props) {
     onFocus: props.onFocus
   });
 };
-
 exports.SearchInput = SearchInput;
 SearchInput.defaultProps = {
   placeholder: "Search"
 };
-
 var StyledSearchInput = _styled.default.input(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  box-sizing: border-box;\n  width: 100%;\n  margin: 0;\n  padding: ", ";\n  color: ", ";\n  font-size: inherit;\n  font-family: ", ";\n  line-height: inherit;\n  background-color: ", ";\n  border: 1px solid ", ";\n  appearance: none;\n\n  &::-webkit-search-decoration {\n    appearance: none;\n  }\n\n  &::placeholder {\n    padding: 0;\n    color: ", ";\n  }\n\n  &:focus {\n    border-color: ", ";\n  }\n"])), function (props) {
   return "".concat(props.theme.spacings[2], "\n     ").concat(props.theme.spacings[2], "\n     ").concat(props.theme.spacings[2], "\n     calc(").concat(props.theme.spacings[4], " + ").concat(props.theme.spacings[1], ")");
 }, function (props) {
@@ -2081,41 +1863,31 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SearchLabel = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 var _searchIcon = require("../../images/search-icon");
-
 var _styled = _interopRequireDefault(require("../../styled"));
-
 var _templateObject;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
-
 var SearchLabel = function SearchLabel(props) {
   return /*#__PURE__*/_react.default.createElement(StyledSearchLabel, {
     htmlFor: props.htmlFor
   }, /*#__PURE__*/_react.default.createElement(_searchIcon.SearchIcon, null));
 };
-
 exports.SearchLabel = SearchLabel;
-
 var StyledSearchLabel = _styled.default.label(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: absolute;\n  z-index: 1;\n  width: ", ";\n  height: 100%;\n  padding-right: ", ";\n  padding-left: ", ";\n\n  & svg {\n    width: 100%;\n    height: 100%;\n  }\n"])), function (props) {
   return "calc(".concat(props.theme.spacings[3], " + ").concat(props.theme.spacings[2], ")");
 }, function (props) {
@@ -2131,35 +1903,26 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SearchResults = void 0;
-
 var _lodash = require("lodash");
-
 var _react = _interopRequireDefault(require("react"));
-
 var _styled = _interopRequireDefault(require("../../styled"));
-
 var _link = require("../link");
-
 var _templateObject, _templateObject2, _templateObject3, _templateObject4;
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
   }
-
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
     }
   }));
 }
-
 var SearchResults = function SearchResults(props) {
   return /*#__PURE__*/_react.default.createElement(StyledSearchResults, null, props.results.map(function (result) {
     var id = result.id;
@@ -2184,9 +1947,7 @@ var SearchResults = function SearchResults(props) {
     }));
   }));
 };
-
 exports.SearchResults = SearchResults;
-
 var StyledSearchResults = _styled.default.ul(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  position: absolute;\n  z-index: 1;\n  box-sizing: border-box;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  color: ", ";\n  list-style: none;\n  background-color: ", ";\n  border-right: 1px solid ", ";\n  border-left: 1px solid ", ";\n"])), function (props) {
   return props.theme.colors.textSubtle;
 }, function (props) {
@@ -2196,17 +1957,14 @@ var StyledSearchResults = _styled.default.ul(_templateObject || (_templateObject
 }, function (props) {
   return props.theme.colors.border;
 });
-
 var StyledSearchResultItem = _styled.default.li(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  padding: ", ";\n  border-bottom: 1px solid ", ";\n"])), function (props) {
   return props.theme.spacings[2];
 }, function (props) {
   return props.theme.colors.border;
 });
-
 var StyledSearchResultItemTitle = _styled.default.span(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  display: inline-block;\n  font-size: ", ";\n"])), function (props) {
   return props.theme.fontSizes[2];
 });
-
 var StyledSearchResultItemDescription = _styled.default.p(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  margin: 0;\n  font-size: ", ";\n"])), function (props) {
   return props.theme.fontSizes[1];
 });
@@ -2218,15 +1976,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.CloseIcon = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 var CloseIcon = function CloseIcon() {
   return /*#__PURE__*/_react.default.createElement("svg", {
     viewBox: "0 0 14 14",
@@ -2246,7 +2001,6 @@ var CloseIcon = function CloseIcon() {
     transform: "matrix(.70710678 .70710678 -.70710678 .70710678 7 -2.899495)"
   })));
 };
-
 exports.CloseIcon = CloseIcon;
 
 },{"react":342}],20:[function(require,module,exports){
@@ -2256,15 +2010,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.HamburgerIcon = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 var HamburgerIcon = function HamburgerIcon() {
   return /*#__PURE__*/_react.default.createElement("svg", {
     viewBox: "0 0 18 15",
@@ -2285,7 +2036,6 @@ var HamburgerIcon = function HamburgerIcon() {
     d: "m.33333333 13.0046918h15.02618387"
   })));
 };
-
 exports.HamburgerIcon = HamburgerIcon;
 
 },{"react":342}],21:[function(require,module,exports){
@@ -2295,15 +2045,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SealIcon = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 var SealIcon = function SealIcon() {
   return /*#__PURE__*/_react.default.createElement("svg", {
     viewBox: "0 0 314 314.13",
@@ -2313,7 +2060,6 @@ var SealIcon = function SealIcon() {
     d: "M208 110.71a60 60 0 0 1-11.67 12.83c0-3.36-6.21-8-13.33-8-5.95 0-11.63 2.72-11.67 9.67-.05 11.17 5 15.45 14 25.33 10.58 11.22 17.88 19.29 17.83 28.33-.09 18.88-21.35 34.59-39.17 34.5-3.46 0-10.11-1.23-12.5-2.83 0-6.38 4.56-13.9 8.83-18.67 1.57 4.8 8.59 9.67 18.17 9.67 5.5 0 12.13-4.15 12.17-11.33 0-6.46-7.06-15.88-17.5-26.67-10.06-10.16-15.55-17.66-15.5-27.5.1-19.42 20.41-31.58 37.17-31.5 6.12.04 11.32 2.97 13.17 6.17zm-65.17 88.5c-1.17 5.67-3.33 8.33-8.83 11.33-2.69 1.46-11.32 1.75-28 1.67a52.54 52.54 0 0 0 4.5-11.67c1.23-5.61 2.82-13.52 6-36 3.33-23.58 5-36.17 6.33-46.17-4.83-.17-11-.11-15 .67 2.14-3.45 7.91-9.21 10.17-10.33s6.47-2.5 24.67-2.5c-2.83 7.83-6.33 26.83-9.67 50.83s-4.44 30.91-5.83 43.67c4.78.03 12 .17 15.66-1.5zm-101.5-45.33c2.83.67 5.84.48 9 .5A28.87 28.87 0 0 0 62 152.05c6.86-3.65 11.59-11.19 11.67-20.67.08-10.12-7.42-17.75-26.29-17.87-1.88 12.66-4.41 28.26-6.05 40.37zm206.92 99.67c0-7.18-6.76-11.87-16.33-11.92-9.88 0-19.4 2.46-25.48 4.38 5.87 5.07 12.67 14.36 12.63 24.69 0 .53 0 2.19-.06 3.56 14.49-2.32 29.19-9.57 29.24-20.71zm-105.12 13.46c6.67-3.16 13-5.87 21.21-9.71-4-5.6-9.77-8.87-19.08-8.92-8 0-13.42 1.42-18.75 4.58 5.54 6.42 9.99 10.29 16.62 14.05zm24 7.71a13.85 13.85 0 0 0 .83-5 22.49 22.49 0 0 0-1.17-7.17c-6.13 2.9-11.58 5.42-17.08 7.58 5.61 2.42 10.01 3.48 17.46 4.58zm-71.08 2c0-9.31 4.89-15.77 13.17-21.58a107.24 107.24 0 0 1-17.06-21.37c-15.48 4.74-26.07 13.11-26.12 24.44 0 7.18 3.83 21.09 24 21.19 1.6 0 3.94-.17 5.94-.08.02-.82.1-2.07.1-2.61zm17.17-.33c7.5-1.46 11.42-3.25 19.58-6.17a73.31 73.31 0 0 1-15.58-9.67 23.32 23.32 0 0 0-3.97 15.83zm8.67-28.75a68.84 68.84 0 0 1 23.86-4.26c12.5.06 22.39 3.88 28.75 9.5 5.6-2.37 9.69-4.08 14.94-6.25-11.65-11.76-30.4-18.81-57-18.94a163.21 163.21 0 0 0-22.94 1.75c5 7.74 8.25 12.63 12.42 18.19zm67.67 28.92c4.25 0 8-.12 12-.1a37.88 37.88 0 0 0-8.12-25.44c-5.58 2.08-9.35 3.71-14.94 6.29a18.73 18.73 0 0 1 4.92 12.5 20.15 20.15 0 0 1-.92 6.33 63.09 63.09 0 0 0 7.08.41zm-75.58 6c2.39 12.35 19.84 25.72 43.58 25.83 24.2.12 39-12.32 43.25-26.25-4 .17-7 .19-11.25.17-3.46 0-7-.07-10.71-.35-4 6.1-12.58 9.74-22.69 9.69-5.85 0-12.44-3.12-15.11-7.19-.41-.63.07-2 .86-1.56a16.36 16.36 0 0 0 9.25 2.5c4.12 0 9.61-1.63 12.31-4.75a114.85 114.85 0 0 1-23.67-6.33 245.41 245.41 0 0 1-25.8 8.23zm134-126.5c-2.51 23.93-3.59 34.23-4.17 43 15.47 2.22 31 1.26 39.5-6.67 7.42-6.88 13.93-23.11 14-38 .06-12.5-2.41-21.75-8.5-28.17-8.47-8.82-14.72-10.3-36-10.67-1.63 11.96-3.42 29.07-4.81 40.5zm19.25-69.1c6.13 0 14.81-4.18 14.81-10.56 0-2.94-3.26-5.69-7.25-5.69-7.69 0-14 4.44-16.81 15.38a52.73 52.73 0 0 0 9.27.85zm-135-57.19c0 9.31 3.75 14.55 10.38 19.38 4.54-3.7 9.28-7.79 14.63-11.75-8.74-4.02-24.99-7.64-24.99-7.64zm-41.5 21.75c9.57 0 20.38 3.13 35.5 11.19 3.74-2.64 5.73-4.69 10-8.12-12.73-6.21-20.44-14.71-20.92-26.15-12.66-.06-22.11 2.38-29.19 6.19-8.25 4.44-13.5 11.69-14.25 20.38 6.44-2.07 11.96-3.54 18.88-3.5zm-.44 5.13a39.94 39.94 0 0 0-18.56 4.5c1.25 11.19 9.28 20.45 20.19 20.5 7.71 0 13.83-2.63 28.25-14-10.86-6.72-19.75-10.97-29.86-11.02zm-35.87 1.69c.08-17 21.85-35.44 60.69-35.25C117.31 8.47 138.38-.07 158.86.03c21 .1 42.33 10.1 54.25 20 29.26.14 48.43 14 48.38 25.13 0 5.05-4.9 9.91-12.87 9.88-2.93 0-6.5-2.31-6.5-4.75 4.31-1.44 7.38-3.81 7.38-7.5 0-10.91-10.58-16.91-30-17 8.47 8.55 15.77 20.42 15.69 36.38a26.55 26.55 0 0 1-3.56 13.94 75.52 75.52 0 0 0 16.25 7.38c5.9-10.61 16.23-17.24 27.94-17.19s18 4.18 18.06 11.19c.06 6.06-11.11 14.26-24.94 14.19-4.79 0-7.54-.15-12.06-.44-1.09 5.34-1.8 8.38-2.71 14.52 21.81-.16 39 0 49.83 11 7.15 7.22 10.06 17.4 10 28.83-.09 18.35-9.88 38-23.67 49.67-13.15 11.16-20.59 17-55.5 17a114.34 114.34 0 0 1-13.5-.83c2.94-3.44 3.15-5.55 4.5-10.33 1.63-7.17 3.79-21.21 6.83-45.67 1.94-16.48 3.52-28.84 5.17-40-10.64.21-13.2.89-16.67 3a8 8 0 0 0-4.17 7.17 12.55 12.55 0 0 0 2.5 6.33c-2.68 3.18-9.37 7.72-12.83 9.83-1.32-1.6-3.85-6.34-3.83-9 0-5.05 4.09-11.09 11.83-17.17 7.48-5.81 14.19-8.75 24.83-9.5 1.64-8.24 3.75-11.73 5.44-16.92-6.37-1.89-10.34-3.68-17.5-7.44-7.75 8.47-21.39 12.24-32.56 12.19-20.75-.1-42.25-6.77-62.94-19.37-13.61 8.71-25 12.51-40.19 12.44-16.23-.08-27.33-5.77-32.87-14.31-6.37 10.58-8 19.58-10.21 31.08 19.31.09 29.83 1.79 35.33 6.83 2.8 2.56 5.52 7.37 5.5 11.67-.07 14.36-8.35 24.2-22.5 34.5 8.44 14.14 27.22 47.31 39.63 67.85a202 202 0 0 1 26.44-1.44c22.08.11 51.38 5.88 68.88 19 13.32-4.46 25.34-7.46 34.65-7.42 19.68.1 30.63 5.72 30.58 14.5-.07 14.33-20.84 27.21-49.17 31.13-7.14 22.49-39.33 33.86-62.42 33.75-33.25-.16-54-12.84-58.42-29.08a53.82 53.82 0 0 1-6.75.42c-24.47-.12-42-11.25-41.92-26.15.07-14.36 14.16-26.17 40.25-31.62-16.89-27.74-30.1-51-37.75-63.31-3.73 0-9.74.17-11.33.17-2.21 15.95-3.63 28.23-5 37a60.47 60.47 0 0 0 13.67-1c-1.08 3.45-6.43 9.11-9.67 11-2 1.14-7.22 1.54-12.67 1.68-5.72 0-11.28-.12-13.94-.22a43.79 43.79 0 0 0 5.94-11.46c1.25-4 3.86-21.8 7.33-44.17 3.52-22.63 5.29-34.87 6.67-44.67-7.45 0-11.5.5-14.17 2.5-2.19 1.64-3.31 5-3.33 9a14.2 14.2 0 0 0 1 4.83c-3.2 2.11-9.43 5.32-13.17 7.17a12.93 12.93 0 0 1-2.33-7.33 16.77 16.77 0 0 1 5.5-11.67c7.67-7.33 17.72-11.12 27.83-12.67 3.81-18.07 11.09-30.88 22-39.6a26.49 26.49 0 0 1-.88-6.63zm115.69-14.31c-5.34 3.7-8.94 7.28-13.75 11.25a45.21 45.21 0 0 0 13.25 1.63c6.65 0 11.38-1.87 13.88-4.25-5.61-4.03-8.59-5.71-13.36-8.65zm-31.94 25.69c17.51 9.66 32.87 16.75 46.44 16.81 10.11 0 20.5-4.81 28.69-13.06-6.36-4.29-13.31-9.37-19.94-14.19a30.54 30.54 0 0 1-15.37 3.75 110.06 110.06 0 0 1-26.75-3.37c-5.06 4.2-8.52 6.86-13.05 10.03zm33.44-48.43c-.8-.27-1-1 0-1.26 4.5-1.12 12.13.73 16.38 2.88a67.37 67.37 0 0 1 15.5-2.37c-12.37-8.5-26-13.25-41.5-13.29-13.56 0-27.37 6.54-29.12 17.29A139.63 139.63 0 0 1 162 34.17a97.06 97.06 0 0 1 18.63-9 20.15 20.15 0 0 0-9.01-3.9zm31.64 24.09c-.1 3.72-.8 6.34-4 9.25 6.89 4.82 12.46 8.84 18.56 13.13 3.75-5.3 5-10.58 5-17.5 0-9.31-7.56-20.75-11.94-24-5.87.5-9.28.9-14.87 3 5.29 5.12 7.38 11.25 7.25 16.12zm-13.37-5.25a18 18 0 0 0-1.62-7.5 150.88 150.88 0 0 0-13.13 7.75c3.63 2 8.23 4 13 7.25a11.87 11.87 0 0 0 1.75-7.5z"
   }));
 };
-
 exports.SealIcon = SealIcon;
 
 },{"react":342}],22:[function(require,module,exports){
@@ -2323,15 +2069,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SearchIcon = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-
 var SearchIcon = function SearchIcon() {
   return /*#__PURE__*/_react.default.createElement("svg", {
     viewBox: "0 0 48 48",
@@ -2346,7 +2089,6 @@ var SearchIcon = function SearchIcon() {
     fillRule: "nonzero"
   }));
 };
-
 exports.SearchIcon = SearchIcon;
 
 },{"react":342}],23:[function(require,module,exports){
@@ -2361,7 +2103,6 @@ function _typeof(obj) {
     return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   }, _typeof(obj);
 }
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -2385,45 +2126,25 @@ Object.defineProperty(exports, "default", {
   }
 });
 exports.themes = void 0;
-
 var _app = require("./components/app");
-
 var _button = require("./components/button");
-
 var _formattedDate = require("./components/formatted-date");
-
 var _heading = require("./components/heading");
-
 var _label = require("./components/label");
-
 var _link = require("./components/link");
-
 var _logo = require("./components/logo");
-
 var _nav = require("./components/nav");
-
 var _paragraph = require("./components/paragraph");
-
 var _search = require("./components/search");
-
 var _styled = _interopRequireWildcard(require("./styled"));
-
 var _theme = require("./theme");
-
 var _commencement = require("./themes/commencement");
-
 var _default = require("./themes/default");
-
 var _graduateStudy = require("./themes/graduate-study");
-
 var _infoSite = require("./themes/info-site");
-
 var _natureLab = require("./themes/nature-lab");
-
 var _startHere = require("./themes/start-here");
-
 var _congratulationsV = require("./themes/congratulations-v2");
-
 function _getRequireWildcardCache(nodeInterop) {
   if (typeof WeakMap !== "function") return null;
   var cacheBabelInterop = new WeakMap();
@@ -2432,31 +2153,24 @@ function _getRequireWildcardCache(nodeInterop) {
     return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
   })(nodeInterop);
 }
-
 function _interopRequireWildcard(obj, nodeInterop) {
   if (!nodeInterop && obj && obj.__esModule) {
     return obj;
   }
-
   if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
     return {
       default: obj
     };
   }
-
   var cache = _getRequireWildcardCache(nodeInterop);
-
   if (cache && cache.has(obj)) {
     return cache.get(obj);
   }
-
   var newObj = {};
   var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-
   for (var key in obj) {
     if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
       var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-
       if (desc && (desc.get || desc.set)) {
         Object.defineProperty(newObj, key, desc);
       } else {
@@ -2464,16 +2178,12 @@ function _interopRequireWildcard(obj, nodeInterop) {
       }
     }
   }
-
   newObj.default = obj;
-
   if (cache) {
     cache.set(obj, newObj);
   }
-
   return newObj;
 }
-
 var themes = {
   default: _default.defaultTheme,
   infoSite: _infoSite.infoSiteTheme,
@@ -2510,14 +2220,11 @@ function _typeof(obj) {
     return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   }, _typeof(obj);
 }
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.keyframes = exports.default = exports.css = exports.createGlobalStyle = exports.ThemeProvider = void 0;
-
 var styledComponents = _interopRequireWildcard(require("styled-components"));
-
 function _getRequireWildcardCache(nodeInterop) {
   if (typeof WeakMap !== "function") return null;
   var cacheBabelInterop = new WeakMap();
@@ -2526,31 +2233,24 @@ function _getRequireWildcardCache(nodeInterop) {
     return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
   })(nodeInterop);
 }
-
 function _interopRequireWildcard(obj, nodeInterop) {
   if (!nodeInterop && obj && obj.__esModule) {
     return obj;
   }
-
   if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
     return {
       default: obj
     };
   }
-
   var cache = _getRequireWildcardCache(nodeInterop);
-
   if (cache && cache.has(obj)) {
     return cache.get(obj);
   }
-
   var newObj = {};
   var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-
   for (var key in obj) {
     if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
       var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-
       if (desc && (desc.get || desc.set)) {
         Object.defineProperty(newObj, key, desc);
       } else {
@@ -2558,22 +2258,18 @@ function _interopRequireWildcard(obj, nodeInterop) {
       }
     }
   }
-
   newObj.default = obj;
-
   if (cache) {
     cache.set(obj, newObj);
   }
-
   return newObj;
 }
-
 var _ref = styledComponents,
-    styled = _ref.default,
-    css = _ref.css,
-    createGlobalStyle = _ref.createGlobalStyle,
-    keyframes = _ref.keyframes,
-    ThemeProvider = _ref.ThemeProvider;
+  styled = _ref.default,
+  css = _ref.css,
+  createGlobalStyle = _ref.createGlobalStyle,
+  keyframes = _ref.keyframes,
+  ThemeProvider = _ref.ThemeProvider;
 exports.ThemeProvider = ThemeProvider;
 exports.keyframes = keyframes;
 exports.createGlobalStyle = createGlobalStyle;
@@ -2647,8 +2343,8 @@ var fontSizes = {
   "6": "3.375rem",
   // 54px
   "7": "5.0625rem" // 81px
-
 };
+
 var lineHeights = {
   solid: 1,
   tight: 1.2,
@@ -2729,8 +2425,8 @@ var fontSizes = {
   "6": "3.375rem",
   // 54px
   "7": "5.0625rem" // 81px
-
 };
+
 var lineHeights = {
   solid: 1,
   tight: 1.2,
@@ -2811,8 +2507,8 @@ var fontSizes = {
   "6": "3.375rem",
   // 54px
   "7": "5.0625rem" // 81px
-
 };
+
 var lineHeights = {
   solid: 1,
   tight: 1.2,
@@ -2893,8 +2589,8 @@ var fontSizes = {
   "6": "3.375rem",
   // 54px
   "7": "5.0625rem" // 81px
-
 };
+
 var lineHeights = {
   solid: 1,
   tight: 1.2,
@@ -2975,8 +2671,8 @@ var fontSizes = {
   "6": "3.375rem",
   // 54px
   "7": "5.0625rem" // 81px
-
 };
+
 var lineHeights = {
   solid: 1,
   tight: 1.2,
@@ -3057,8 +2753,8 @@ var fontSizes = {
   "6": "3.375rem",
   // 54px
   "7": "5.0625rem" // 81px
-
 };
+
 var lineHeights = {
   solid: 1,
   tight: 1.2,
@@ -3144,8 +2840,8 @@ var fontSizes = {
   "6": "3.375rem",
   // 54px
   "7": "5.0625rem" // 81px
-
 };
+
 var lineHeights = {
   solid: 1,
   tight: 1.2,
@@ -87248,12 +86944,12 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 var $ = global.jQuery;
 module.exports = AlumniAccordion;
-
 function AlumniAccordion() {
   if (!(this instanceof AlumniAccordion)) {
     return new AlumniAccordion();
-  } // console.log('AlumniAccordion initialized.');
+  }
 
+  // console.log('AlumniAccordion initialized.');
 
   $('.alumni__header').click(function (event) {
     $(this).parents('.alumni__person').toggleClass('toggled');
@@ -87267,12 +86963,12 @@ function AlumniAccordion() {
 
 var $ = global.jQuery;
 module.exports = CalendarAccordion;
-
 function CalendarAccordion() {
   if (!(this instanceof CalendarAccordion)) {
     return new CalendarAccordion();
-  } // console.log('CalendarAccordion initialized.');
+  }
 
+  // console.log('CalendarAccordion initialized.');
 
   $('.calendar__title').click(function () {
     if ($(this).siblings('.calendar__description').length) {
@@ -87285,11 +86981,11 @@ function CalendarAccordion() {
 },{}],355:[function(require,module,exports){
 "use strict";
 
-module.exports = cssTimeToMS; // cssTime : String, defaulMS : Number? => ms : Number
+module.exports = cssTimeToMS;
 
+// cssTime : String, defaulMS : Number? => ms : Number
 function cssTimeToMS(cssTime, defaultMS) {
   if (!defaultMS) defaultMS = 300;
-
   if (cssTime.endsWith('ms')) {
     var ms = Number(cssTime.slice(0, -2));
   } else if (cssTime.endsWith('s')) {
@@ -87297,7 +86993,6 @@ function cssTimeToMS(cssTime, defaultMS) {
   } else {
     var ms = defaultMS;
   }
-
   return ms;
 }
 
@@ -87306,16 +87001,14 @@ function cssTimeToMS(cssTime, defaultMS) {
 "use strict";
 
 var $ = global.jQuery;
-
 var imagesLoaded = require('imagesloaded');
-
 module.exports = EdgeImageShift;
-
 function EdgeImageShift() {
   if (!(this instanceof EdgeImageShift)) {
     return new EdgeImageShift();
-  } // console.log('EdgeImageShift initialized.');
+  }
 
+  // console.log('EdgeImageShift initialized.');
 
   var imageHeight;
   var windowHeight;
@@ -87329,7 +87022,6 @@ function EdgeImageShift() {
   $(window).resize(function () {
     setShiftValue($('.page__edge-images'));
   });
-
   function setShiftValue(edgeImage) {
     edgeImage.children('.page__edge-image').each(function () {
       imageHeight = $(this).height();
@@ -87348,19 +87040,14 @@ function EdgeImageShift() {
 "use strict";
 
 global.jQuery = global.$ = require('jquery');
-
 var EventEmitter = require('events');
-
 module.exports = Galleries;
-
 function Galleries(options) {
   if (!(this instanceof Galleries)) return new Galleries(options);
-
   if (!options) {
     console.log('Pass in an options object : { selector, attribute } to initialize galleries.');
     return;
   }
-
   var selector = options.selector;
   var attribute = options.attribute;
   var initialDelay = options.intialDelay || 500;
@@ -87376,40 +87063,33 @@ function Galleries(options) {
   }));
   return galleries;
 }
-
 function exclude(excludeValue) {
   return function filterExcludeValue(value) {
     return excludeValue !== value;
   };
 }
-
 function extractSpec(options) {
   var attribute = options.attribute;
   var errorValue = options.errorValue;
   return extractSpecForElement;
-
   function extractSpecForElement(index, element) {
     var $element = $(element);
-
     try {
       var specs = JSON.parse($element.attr(attribute));
     } catch (error) {
       console.log('Could not initalize gallery at:');
       console.log(element);
       return errorValue;
-    } // must wrap in an array for jquery to treat as a normal array
+    }
+    // must wrap in an array for jquery to treat as a normal array
     // even though the specs object is an array already
-
-
     return [specs];
   }
 }
-
 function cycleManager(options) {
   var initialDelay = options.initialDelay;
   var duration = options.duration;
   return cycleManagerForSpecs;
-
   function cycleManagerForSpecs(specs) {
     var previous = false;
     var current = 0;
@@ -87421,41 +87101,35 @@ function cycleManager(options) {
       resume: resumeCycle,
       emitter: emitter
     };
-
     function cycle() {
       // nothing to cycle through
       if (specs.length === 1) return;
       if (paused) return;
       setTimeout(initialFrame, initialDelay);
     }
-
     function pauseCycle() {
       paused = true;
       emitter.emit('paused');
     }
-
     function resumeCycle() {
       paused = false;
       setTimeout(initialFrame, initialDelay);
     }
-
     function initialFrame() {
       if (paused) return;
       setInterval(showNext, duration);
     }
-
     function showNext() {
       if (paused) return;
       previous = nextIndex(previous);
       current = nextIndex(current);
       emitter.emit('next', {
-        previous: previous,
-        current: current
+        previous,
+        current
       });
       showSpec(specs[current]);
       hideSpec(specs[previous]);
     }
-
     function nextIndex(index) {
       if (index === false) {
         return 0;
@@ -87467,6 +87141,7 @@ function cycleManager(options) {
     }
   }
 }
+
 /**
  * spec : [ {
  *    background_image?: {
@@ -87482,45 +87157,36 @@ function cycleManager(options) {
  *  } ]
  */
 
-
 function showSpec(spec) {
   if (validSpec(spec.background_image)) {
     showToggleClassSpec(spec.background_image);
   }
-
   if (validSpec(spec.color)) {
     showToggleClassSpec(spec.color);
   }
 }
-
 function hideSpec(spec) {
   if (validSpec(spec.background_image)) {
     hideToggleClassSpec(spec.background_image);
   }
-
   if (validSpec(spec.color)) {
     hideToggleClassSpec(spec.color);
   }
 }
-
 function showToggleClassSpec(toggleClassSpec) {
   // $( toggleClassSpec.querySelector ).addClass( toggleClassSpec.class )
   document.querySelectorAll(toggleClassSpec.querySelector).forEach(addClass);
-
   function addClass(element) {
     element.classList.add(toggleClassSpec.class);
   }
 }
-
 function hideToggleClassSpec(toggleClassSpec) {
   // $( toggleClassSpec.querySelector ).removeClass( toggleClassSpec.class )
   document.querySelectorAll(toggleClassSpec.querySelector).forEach(removeClass);
-
   function removeClass(element) {
     element.classList.remove(toggleClassSpec.class);
   }
 }
-
 function validSpec(spec) {
   return spec && spec.querySelector && spec.class ? true : false;
 }
@@ -87533,31 +87199,27 @@ function validSpec(spec) {
 global.jQuery = require('jquery');
 global.$ = global.jQuery;
 global._ = require('lodash');
+var {
+  hydrateComponents
+} = require('@risd/react-hydrator');
+var {
+  themes
+} = require('@risd/ui');
 
-var _require = require('@risd/react-hydrator'),
-    hydrateComponents = _require.hydrateComponents;
-
-var _require2 = require('@risd/ui'),
-    themes = _require2.themes; // Hydrate React components
-
-
+// Hydrate React components
 hydrateComponents(themes.congratulationsV2);
-var navSelector = '[data-react-component="Nav"]'; // unhide nav element once it's hydrated
+var navSelector = '[data-react-component="Nav"]';
 
-var navElement = document.querySelector(navSelector);
+// unhide nav element once it's hydrated
+const navElement = document.querySelector(navSelector);
 navElement.style.display = 'block';
-
 var galleries = require('./galleries')({
   selector: '[data-gallery-spec]',
   attribute: 'data-gallery-spec'
 });
-
 var mainNav = require('./main-nav-v2')();
-
 var modal = require('./modal')();
-
 window.modal = modal;
-
 if (modal && modal.emitter) {
   modal.emitter.on('show', function () {
     if (galleries && galleries[0] && typeof galleries[0].pause === 'function') {
@@ -87571,40 +87233,30 @@ if (modal && modal.emitter) {
   });
   var forceShowModal = false;
   modal.show(forceShowModal);
-} // var exampleModule = require('./exampleModule.js')();
+}
+
+// var exampleModule = require('./exampleModule.js')();
 // var stickyNav = require('./stickyNav.js')();
 // var mobileMenuToggle = require('./mobileMenuToggle.js')();
 // var desktopMenuToggle = require('./desktopMenuToggle.js')();
 // var desktopNavHeight = require('./desktopNavHeight.js')();
-
-
 var resourceImageSort = require('./resourceImageSort.js')();
-
 var wysiwygLightbox = require('./lightbox.js')();
 /*var alumniImageLightbox = require('./lightbox.js')({
   decorate: '.alumni__portrait'
 });*/
-
 /*var programImageLightbox = require('./lightbox.js')({
   decorate: '.program__image'
 });*/
-
-
 var resourceImageLightbox = require('./lightbox.js')({
   decorate: ".resource__image"
 });
-
 var smartquotes = require('smartquotes')();
-
-var linkTarget = require('./linkTarget.js')(); // var calendarFilter = require('./calendarFilter.js')();
-
-
+var linkTarget = require('./linkTarget.js')();
+// var calendarFilter = require('./calendarFilter.js')();
 var calendarAccordion = require('./calendarAccordion.js')();
-
 var alumniAccordion = require('./alumniAccordion.js')();
-
 var edgeImageShift = require('./edgeImageShift.js')();
-
 var videoSize = require('./video-size')({
   headerSelector: navSelector,
   videoModuleSelector: '.video-module',
@@ -87615,9 +87267,8 @@ var videoSize = require('./video-size')({
 },{"./alumniAccordion.js":353,"./calendarAccordion.js":354,"./edgeImageShift.js":356,"./galleries":357,"./lightbox.js":359,"./linkTarget.js":360,"./main-nav-v2":361,"./modal":362,"./resourceImageSort.js":363,"./video-size":364,"@risd/react-hydrator":5,"@risd/ui":23,"jquery":320,"lodash":321,"smartquotes":350}],359:[function(require,module,exports){
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-
 module.exports = Lightbox;
+
 /**
  * Lightbox with default configuration to
  * lightbox all webhook wysiwyg generated
@@ -87636,12 +87287,13 @@ module.exports = Lightbox;
  * @param {string} opts.appendTo Query selector string of element to
  *                               append the lightbox to.
  */
-
 function Lightbox(opts) {
   if (!(this instanceof Lightbox)) return new Lightbox(opts);
-  if (_typeof(opts) !== 'object') opts = {}; // console.log('Lightbox initialized.');
-  // classes
+  if (typeof opts !== 'object') opts = {};
 
+  // console.log('Lightbox initialized.');
+
+  // classes
   this.box = bem('lightbox');
   this.viewport = this.box('viewport');
   this.image = this.box('image');
@@ -87655,8 +87307,8 @@ function Lightbox(opts) {
   $decorated.on('click', this.open.bind(this));
   this.boxes.$box.on('click', this.close.bind(this));
 }
-
 ;
+
 /**
  * Expects a click event whose target is within the scope of a
  * $(this.decorateQuery) element to find its lightbox image ID.
@@ -87667,18 +87319,15 @@ function Lightbox(opts) {
  * @param  {object} event Click event
  * @return {undefined}
  */
-
 Lightbox.prototype.open = function (event) {
   event.preventDefault();
   $(event.target).closest(this.decorateQuery).each(lightboxFor.bind(this));
-
   function lightboxFor(index, element) {
     var imageId = element.dataset.lightboxableImageId;
     this.$images.each(updateClasslist.bind(this, imageId));
     this.boxes.$box.removeClass(this.inactive()).addClass(this.active());
     document.body.classList.add(this.noscroll());
   }
-
   function updateClasslist(activeId, uindex, uelement) {
     if (uelement.dataset.lightboxId === activeId) {
       uelement.classList.add(this.active());
@@ -87689,18 +87338,18 @@ Lightbox.prototype.open = function (event) {
     }
   }
 };
+
 /**
  * Closes the lightbox. Both the box and body return to their
  * default state, not active.
  *
  * @return {undefined}
  */
-
-
 Lightbox.prototype.close = function lightboxClose() {
   this.boxes.$box.removeClass(this.active()).addClass(this.inactive());
   document.body.classList.remove(this.noscroll());
 };
+
 /**
  * Looks through decorated images, and adds a new img tag to the
  * $viewport with the same source. These are the images that will
@@ -87712,11 +87361,8 @@ Lightbox.prototype.close = function lightboxClose() {
  *                            the lightbox
  * @return {object} $this     jQuery selector of the lightbox images
  */
-
-
 Lightbox.prototype.addImages = function ($viewport, $decorated) {
   $decorated.each(addem.bind(this));
-
   function addem(index, element) {
     var img = document.createElement('img');
     img.src = srcFor(element);
@@ -87725,12 +87371,9 @@ Lightbox.prototype.addImages = function ($viewport, $decorated) {
     img.classList.add(this.inactive());
     $viewport.append(img);
   }
-
   return $viewport.children();
-
   function srcFor(element) {
     var innerImage = $(element).find('img').get(0);
-
     if (innerImage) {
       if (innerImage.dataset.hasOwnProperty('resizeSrc')) {
         return innerImage.dataset.resizeSrc + '=s1200';
@@ -87740,6 +87383,7 @@ Lightbox.prototype.addImages = function ($viewport, $decorated) {
     }
   }
 };
+
 /**
  * Decorate targets with lightbox attributes, to attach lightbox
  * functionality to thme.
@@ -87749,8 +87393,6 @@ Lightbox.prototype.addImages = function ($viewport, $decorated) {
  *                                selector query
  * @return {object} $decorated
  */
-
-
 Lightbox.prototype.decorate = function ($query) {
   if (typeof $query === 'string') $query = $($query);
   var $decorated = $query;
@@ -87759,6 +87401,7 @@ Lightbox.prototype.decorate = function ($query) {
   });
   return $decorated;
 };
+
 /**
  * Build the lightbox container.
  * Returns $viewport, the place where
@@ -87770,8 +87413,6 @@ Lightbox.prototype.decorate = function ($query) {
  * @return {object.$box} $box
  * @return {object.$viewport} $viewport
  */
-
-
 Lightbox.prototype.build = function ($query) {
   if (typeof $query === 'string') $query = $($query);
   var box = document.createElement('div');
@@ -87786,6 +87427,7 @@ Lightbox.prototype.build = function ($query) {
     $box: $(box)
   };
 };
+
 /**
  * bem helper. base__element--modifier.
  *
@@ -87804,12 +87446,9 @@ Lightbox.prototype.build = function ($query) {
  * @param  {string} base The base string
  * @return {function}
  */
-
-
 function bem(base) {
   function element(element) {
     if (!element) return base;
-
     function modifier(modifier) {
       var baseElement = [base, element].join('__');
       if (!modifier) return baseElement;
@@ -87817,16 +87456,13 @@ function bem(base) {
         return [baseElement, modifier].join('--');
       };
     }
-
     return modifier;
   }
-
   element.modifier = function (modifier) {
     return function () {
       return [base, modifier].join('--');
     };
   };
-
   return element;
 }
 
@@ -87836,17 +87472,16 @@ function bem(base) {
 
 var $ = global.jQuery;
 module.exports = LinkTarget;
-
 function LinkTarget() {
   if (!(this instanceof LinkTarget)) {
     return new LinkTarget();
-  } // console.log('LinkTarget initialized.');
+  }
 
+  // console.log('LinkTarget initialized.');
 
   $('a').each(function () {
     if ($(this).attr('href')) {
       var href = $(this).attr('href');
-
       if (href.indexOf('http://') === 0 || href.indexOf('https://') === 0) {
         $(this).attr('target', '_blank');
       }
@@ -87861,6 +87496,7 @@ function LinkTarget() {
 
 var $ = global.jQuery;
 module.exports = MainNav;
+
 /**
  * Main Nav uses the @risd/ui nav component
  * to define its markup, and this script to
@@ -87870,20 +87506,17 @@ module.exports = MainNav;
  *   differentiating different link types
  * - Adding class toggling to show nav items
  */
-
 function MainNav() {
   if (!(this instanceof MainNav)) {
     return new MainNav();
   }
-
   var headings = Headings();
   var externalLinks = ExternalLinks();
   return {
-    headings: headings,
-    externalLinks: externalLinks
+    headings,
+    externalLinks
   };
 }
-
 function Headings() {
   var classes = {
     root: 'main-nav__section-heading',
@@ -87891,24 +87524,25 @@ function Headings() {
     opened: 'main-nav__section--opened',
     link: 'main-nav__page-link'
   };
-  init(); // emitters would be nice
+  init();
 
+  // emitters would be nice
   return {};
-
   function init() {
     addLinksToHeadings();
   }
-
   function addLinksToHeadings() {
-    $(".".concat(classes.root, " span span")).replaceWith(function () {
+    $(`.${classes.root} span span`).replaceWith(function () {
       var $span = $(this);
       var text = $span.text();
       var textSlug = text.toLowerCase().replace(/ /g, '-');
-      return "\n          <span>\n            <a href=\"/".concat(textSlug, "/\">").concat(text, "</a>\n          </span>");
+      return `
+          <span>
+            <a href="/${textSlug}/">${text}</a>
+          </span>`;
     });
   }
 }
-
 function ExternalLinks() {
   var classes = {
     link: 'main-nav__useful-link',
@@ -87916,16 +87550,20 @@ function ExternalLinks() {
   };
   init();
   return {};
-
   function init() {
     appendExternalLinkIcon();
   }
-
   function appendExternalLinkIcon() {
-    $(".".concat(classes.link)).each(function (index, link) {
-      var $link = $(link); // this svg is a duplicate of /templates/partials/icons/arrow--naked.svg
+    $(`.${classes.link}`).each(function (index, link) {
+      var $link = $(link);
 
-      $link.children('a').prepend("<span class=\"".concat(classes.icon, "\">\n          <svg class=\"arrow arrow--naked\" width=\"16px\" height=\"13px\" viewBox=\"0 0 16 13\">\n            <title>arrow naked</title>\n            <path d=\"M9.47789 5.2828L0.903218 5.28279L0.903216 8.14102L9.47789 8.14102L4.61891 13L8.90624 13L15.1943 6.71191L8.90625 0.423814L4.61891 0.423814L9.47789 5.2828Z\" class=\"arrow-geometry\" />\n          </svg>\n        </span>"));
+      // this svg is a duplicate of /templates/partials/icons/arrow--naked.svg
+      $link.children('a').prepend(`<span class="${classes.icon}">
+          <svg class="arrow arrow--naked" width="16px" height="13px" viewBox="0 0 16 13">
+            <title>arrow naked</title>
+            <path d="M9.47789 5.2828L0.903218 5.28279L0.903216 8.14102L9.47789 8.14102L4.61891 13L8.90624 13L15.1943 6.71191L8.90625 0.423814L4.61891 0.423814L9.47789 5.2828Z" class="arrow-geometry" />
+          </svg>
+        </span>`);
     });
   }
 }
@@ -87936,18 +87574,13 @@ function ExternalLinks() {
 "use strict";
 
 var $ = global.jQuery;
-
 var EventEmitter = require('events');
-
 var cssTimeToMs = require('./css-time-to-ms');
-
 module.exports = Modal;
-
 function Modal() {
   if (!(this instanceof Modal)) {
     return new Modal();
   }
-
   var emitter = new EventEmitter();
   var showingClassName = 'modal--showing';
   var animateInClassName = 'animate-in';
@@ -87961,8 +87594,9 @@ function Modal() {
     help: '.modal__help'
   };
   var $selectors = {};
-  var nodes = {}; // populate `$selectors` and `nodes` from `selectors`
+  var nodes = {};
 
+  // populate `$selectors` and `nodes` from `selectors`
   Object.keys(selectors).forEach(function (key) {
     $selectors[key] = $(selectors[key]);
     nodes[key] = $selectors[key].get(0);
@@ -87973,54 +87607,52 @@ function Modal() {
     dismiss: dismiss,
     emitter: emitter
   };
-
   function show(force) {
     var toShow = toggler.tryShow(force);
     if (toShow === false) return;
-    emitter.emit('show'); // show the modal
+    emitter.emit('show');
 
-    document.body.classList.add(showingClassName); // position modal elements to be animated in if they haven't already
+    // show the modal
+    document.body.classList.add(showingClassName);
 
+    // position modal elements to be animated in if they haven't already
     if (parseFloat(getComputedStyle(nodes.top).getPropertyValue('--animation-translate')) === 0) {
       // remove animation duration
       var animationDuration = nodes.root.style.getPropertyValue('--animation-duration');
       nodes.root.style.setProperty('--animation-duration', '0ms');
       var topBBox = nodes.top.getBoundingClientRect();
       var topStartPosition = (topBBox.left + topBBox.width) * -1;
-      nodes.top.style.setProperty('--animation-translate', "".concat(topStartPosition, "px"));
+      nodes.top.style.setProperty('--animation-translate', `${topStartPosition}px`);
       var bottomBBox = nodes.bottom.getBoundingClientRect();
       var bottomStartPosition = window.innerWidth - bottomBBox.right + bottomBBox.width;
-      nodes.bottom.style.setProperty('--animation-translate', "".concat(bottomStartPosition, "px"));
+      nodes.bottom.style.setProperty('--animation-translate', `${bottomStartPosition}px`);
       var leftBBox = nodes.left.getBoundingClientRect();
       var leftStartPosition = (leftBBox.left + leftBBox.width) * -1;
-      nodes.left.style.setProperty('--animation-translate', "".concat(leftStartPosition, "px"));
+      nodes.left.style.setProperty('--animation-translate', `${leftStartPosition}px`);
       var rightBBox = nodes.right.getBoundingClientRect();
       var rightStartPosition = window.innerWidth - rightBBox.right + rightBBox.width;
-      nodes.right.style.setProperty('--animation-translate', "".concat(rightStartPosition, "px"));
+      nodes.right.style.setProperty('--animation-translate', `${rightStartPosition}px`);
       var helpBBox = nodes.help.getBoundingClientRect();
       var helpStartPosition = helpBBox.bottom + helpBBox.height;
-      nodes.help.style.setProperty('--animation-translate', "".concat(helpStartPosition, "px")); // restore animation duration
+      nodes.help.style.setProperty('--animation-translate', `${helpStartPosition}px`);
 
+      // restore animation duration
       nodes.root.style.setProperty('--animation-duration', animationDuration);
-    } // animate in
+    }
 
-
+    // animate in
     setTimeout(function () {
       $selectors.root.addClass(animateInClassName);
     }, 500);
   }
-
   function dismiss() {
     var duration = cssTimeToMs(getComputedStyle(nodes.root).getPropertyValue('--animation-duration'), 0);
-
     if (duration > 0) {
       $selectors.root.on('transitionend', completeDismissModal);
     } else {
       completeDismissModal();
     }
-
     $selectors.root.removeClass(animateInClassName);
-
     function completeDismissModal() {
       $selectors.root.off('transitionend', completeDismissModal);
       document.body.classList.remove(showingClassName);
@@ -88029,35 +87661,32 @@ function Modal() {
     }
   }
 }
-
 function Toggler() {
   var dismissedKey = 'modal-dismissed';
   return {
     tryShow: tryShow,
     dismiss: dismiss
   };
-
   function tryShow(force) {
-    var dismissed = window.localStorage.getItem(dismissedKey); // determine whether to show modal or not
+    var dismissed = window.localStorage.getItem(dismissedKey);
 
-    var showModal = true; // do not show if previously dismissed
+    // determine whether to show modal or not
+    var showModal = true;
+    // do not show if previously dismissed
     // - turned off to make room for time based dismissal
     // if ( dismissed === "true" ) showModal = false;
     // do not show if coming from admissions site
-
-    if (document.referrer === "https://admissions.risd.edu/") showModal = false; // do not show if coming from same site
+    if (document.referrer === "https://admissions.risd.edu/") showModal = false;
+    // do not show if coming from same site
     // - turned off for now, because manually typing the URL gives you 
     //   the same host
     // if ( document.referrer.indexOf( window.location.host ) ) { showModal = false; console.log('samesies')}
     // show if forced
-
     if (Number.isInteger(Number(dismissed))) {
       var lastDismissed = Number(dismissed);
       var now = timeInMilliSeconds();
       var sinceDismissed = now - lastDismissed;
-      var sessionTime = 30 * 1000 * 60;
-      /* 30 minutes in milliseconds */
-
+      var sessionTime = 30 * 1000 * 60; /* 30 minutes in milliseconds */
       if (sinceDismissed > sessionTime) {
         // show if the time that has elapsed since being dismissed
         // is longer than a single session time
@@ -88066,16 +87695,13 @@ function Toggler() {
         showModal = false;
       }
     }
-
     if (force === true) showModal = true;
     return showModal;
   }
-
   function dismiss() {
     var dismissedTime = timeInMilliSeconds();
     window.localStorage.setItem(dismissedKey, dismissedTime);
   }
-
   function timeInMilliSeconds(date) {
     if (!date) date = new Date();
     return date.getTime();
@@ -88088,69 +87714,62 @@ function Toggler() {
 "use strict";
 
 var $ = global.jQuery;
-
 var jQueryBridget = require('jquery-bridget');
-
 var Packery = require('packery');
-
 var imagesLoaded = require('imagesloaded');
-
 module.exports = StudioImageSort;
-
 function StudioImageSort() {
   if (!(this instanceof StudioImageSort)) {
     return new StudioImageSort();
-  } // console.log('StudioImageSort initialized.');
+  }
+
+  // console.log('StudioImageSort initialized.');
 
   /* Initial random resize ----------------------------------------------------------------- */
-
 
   var $images = $('.resource__image-container');
   var imageCount = $images.length;
   var firstThird = Math.round(imageCount / 2);
   var secondThird = Math.round(imageCount / 5);
-
   function shuffle(array) {
     var m = array.length,
-        t,
-        i; // While there remain elements to shuffle…
-
+      t,
+      i;
+    // While there remain elements to shuffle…
     while (m) {
       // Pick a remaining element…
-      i = Math.floor(Math.random() * m--); // And swap it with the current element.
-
+      i = Math.floor(Math.random() * m--);
+      // And swap it with the current element.
       t = array[m];
       array[m] = array[i];
       array[i] = t;
     }
-
     return array;
   }
-
   $images.each(function () {
     var images = $(this);
-
     for (var i = 0; i < images.length; i++) {
       $(images[i]).remove();
     }
-
     $(shuffle($images));
-
     for (var j = 0; j < images.length; j++) {
       $(images[j]).appendTo($('.resource'));
     }
   });
+
   /* Packery sort ----------------------------------------------------------------- */
 
   var $imageContainer = $('.resource');
-  var $imageItems = $('.resource__image-container img'); // setup imagesLoaded & packery as jquery plugins
+  var $imageItems = $('.resource__image-container img');
 
+  // setup imagesLoaded & packery as jquery plugins
   imagesLoaded.makeJQueryPlugin($);
   jQueryBridget('packery', Packery, $);
   imagesLoaded($imageItems).on('progress', function (imagesLoadedInstance, image) {
     $(image.img).parents('.resource__image-container').addClass('show');
-  }); // now use .imagesLoaded() jQuery plugin
+  });
 
+  // now use .imagesLoaded() jQuery plugin
   $imageContainer.imagesLoaded(function () {
     // now you can use $().packery()
     var $grid = $imageContainer.packery({
@@ -88161,6 +87780,7 @@ function StudioImageSort() {
       transitionDuration: '0.2s',
       percentPosition: true
     });
+
     /*  // expand images to large size on click and rearrange the grid
         $grid.on( 'click', '.resource__image', function( event ) {
           var $item = $( event.currentTarget );
@@ -88180,12 +87800,10 @@ function StudioImageSort() {
 
 var $ = global.jQuery;
 module.exports = VideoSize;
-
 function VideoSize(opts) {
   if (!(this instanceof VideoSize)) {
     return new VideoSize(opts);
   }
-
   if (!opts) opts = {};
   var headerSelector = opts.headerSelector;
   var videoModuleSelector = opts.videoModuleSelector;
@@ -88200,7 +87818,6 @@ function VideoSize(opts) {
   $(window).resize(function () {
     setVideoSize();
   });
-
   function setVideoSize() {
     headerHeight = $(headerSelector).outerHeight();
     videoModule = $(videoModuleSelector);

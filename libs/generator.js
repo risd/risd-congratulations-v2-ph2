@@ -1967,7 +1967,15 @@ module.exports.generator = function (config, options, logger, fileParser) {
     }
 
     const url = 'http://localhost:' + liveReloadPort + '/changed?files=' + fileList
-    return axios({ method: 'get', url }).then(() => done?.(true))
+    try {
+      await axios({ method: 'get', url }) 
+    }
+    catch (error) {
+      debug('Could not reload files, we swallow this error.')
+    }
+    finally {
+      done?.(true)
+    }
   };
 
   /**

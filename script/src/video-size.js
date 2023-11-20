@@ -13,8 +13,6 @@ function VideoSize(opts) {
   var videoModuleSelector = opts.videoModuleSelector
   var videoContainerSelector = opts.videoContainerSelector
 
-  console.log(opts);
-
 
   var headerHeight;
   var videoModule;
